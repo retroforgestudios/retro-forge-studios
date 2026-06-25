@@ -6,6 +6,7 @@ import ServiceCard from "../components/sections/ServiceCard.astro";
 import StatsBar from "../components/sections/StatsBar.astro";
 import CTABanner from "../components/sections/CTABanner.astro";
 import VeteranPill from "../components/badges/VeteranPill.astro";
+import ToolIcon from "../components/ui/ToolIcon.astro";
 import { HERO_HEADLINE, HERO_HEADLINE_ALT, SERVICES, TRUST_TOOLS } from "../data/site";
 ---
 
@@ -54,8 +55,8 @@ import { HERO_HEADLINE, HERO_HEADLINE_ALT, SERVICES, TRUST_TOOLS } from "../data
         Powered by the tools that actually move the needle — built by a veteran who calls Nebraska home.
       </p>
       <!-- TODO(open-item): confirm full tool/platform logo list -->
-      <div class="mt-4 flex flex-wrap items-center justify-center gap-6 text-sm font-semibold text-gray-800">
-        {TRUST_TOOLS.map((tool) => <span>{tool}</span>)}
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+        {TRUST_TOOLS.map((tool) => <ToolIcon name={tool} />)}
       </div>
     </div>
   </section>
