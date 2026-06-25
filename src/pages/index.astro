@@ -62,7 +62,7 @@ import { HERO_HEADLINE, HERO_HEADLINE_ALT, SERVICES, TRUST_TOOLS } from "../data
 
   <!-- Services -->
   <section class="px-4 py-20 sm:px-6">
-    <SectionHeader eyebrow="what i do" heading="Three ways I help your business grow" />
+    <SectionHeader onLight eyebrow="what i do" heading="Three ways I help your business grow" />
     <div class="mx-auto mt-12 grid max-w-content grid-cols-1 gap-6 sm:grid-cols-3">
       {SERVICES.map((service) => (
         <ServiceCard name={service.name} teaser={service.teaser} href={`/services#${service.slug}`} />

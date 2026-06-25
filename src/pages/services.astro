@@ -16,51 +16,43 @@ import { PROCESS_STEPS, SERVICES } from "../data/site";
     subhead="Whether you need a one-time push or ongoing monthly support, I act as a fast, tech-forward extension of your team — not another vendor to manage."
   />
 
-  {SERVICES.map((service, i) => {
-    const isLight = i % 2 === 1;
-    return (
-      <section id={service.slug} class:list={["px-4 py-16 sm:px-6", isLight && "bg-band"]}>
-        <div class="mx-auto max-w-3xl">
-          <h2 class:list={["text-3xl sm:text-4xl", isLight ? "text-gray-900" : "text-white"]}>{service.heading}</h2>
+  {SERVICES.map((service) => (
+    <section id={service.slug} class="px-4 py-16 sm:px-6">
+      <div class="mx-auto max-w-3xl">
+        <h2 class="text-3xl text-gray-900 sm:text-4xl">{service.heading}</h2>
 
-          <div class="mt-8 grid gap-8 sm:grid-cols-2">
-            <div>
-              <p class:list={["text-marker", isLight ? "text-amber-deep" : "text-amber"]}>included</p>
-              <ul class:list={["mt-3 space-y-2", isLight ? "text-gray-700" : "text-gray-300"]}>
-                {service.included.map((item) => (
-                  <li class="flex gap-2">
-                    <span class:list={[isLight ? "text-teal-deep" : "text-teal"]}>&#8226;</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+        <div class="mt-8 grid gap-8 sm:grid-cols-2">
+          <div>
+            <p class="text-marker text-amber-deep">included</p>
+            <ul class="mt-3 space-y-2 text-gray-700">
+              {service.included.map((item) => (
+                <li class="flex gap-2">
+                  <span class="text-teal-deep">&#8226;</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-            <div class="space-y-4">
-              {service.statCallout && (
-                <p
-                  class:list={[
-                    "rounded-md border border-amber/40 p-4 text-sm",
-                    isLight ? "bg-amber/15 text-amber-deep" : "bg-amber/10 text-amber",
-                  ]}
-                >
-                  {service.statCallout}
-                </p>
-              )}
-              <p class:list={["text-sm", isLight ? "text-gray-600" : "text-gray-400"]}>
-                <span class:list={["font-semibold", isLight ? "text-gray-900" : "text-white"]}>Who it's for: </span>
-                {service.who}
+          <div class="space-y-4">
+            {service.statCallout && (
+              <p class="rounded-md border border-amber/40 bg-amber/15 p-4 text-sm text-amber-deep">
+                {service.statCallout}
               </p>
-              <p class:list={["text-sm", isLight ? "text-gray-600" : "text-gray-400"]}>
-                <span class:list={["font-semibold", isLight ? "text-gray-900" : "text-white"]}>Outcome: </span>
-                {service.outcome}
-              </p>
-            </div>
+            )}
+            <p class="text-sm text-gray-600">
+              <span class="font-semibold text-gray-900">Who it's for: </span>
+              {service.who}
+            </p>
+            <p class="text-sm text-gray-600">
+              <span class="font-semibold text-gray-900">Outcome: </span>
+              {service.outcome}
+            </p>
           </div>
         </div>
-      </section>
-    );
-  })}
+      </div>
+    </section>
+  ))}
 
   <!-- Process strip -->
   <section class="bg-band px-4 py-20 sm:px-6">
