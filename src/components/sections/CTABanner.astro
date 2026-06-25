@@ -10,8 +10,8 @@ interface Props {
 const { heading, subtext, buttonLabel, buttonHref = "/contact" } = Astro.props;
 ---
 
-<div class="rounded-xl bg-surface px-6 py-12 text-center sm:px-12">
+<section class="bg-surface px-4 py-16 text-center sm:px-6">
   <h2 class="text-3xl text-white sm:text-4xl">{heading}</h2>
   <p class="mx-auto mt-4 max-w-xl text-gray-200">{subtext}</p>
   <Button href={buttonHref} class="mt-8">{buttonLabel}</Button>
-</div>
+</section>
