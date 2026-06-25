@@ -1,0 +1,97 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/ui/Button.astro";
+import SectionHeader from "../components/ui/SectionHeader.astro";
+import ServiceCard from "../components/sections/ServiceCard.astro";
+import StatsBar from "../components/sections/StatsBar.astro";
+import CTABanner from "../components/sections/CTABanner.astro";
+import VeteranPill from "../components/badges/VeteranPill.astro";
+import { HERO_HEADLINE, HERO_HEADLINE_ALT, SERVICES, TRUST_TOOLS } from "../data/site";
+---
+
+<BaseLayout
+  title="Home"
+  description="AI-enhanced content, social, and brand strategy for Nebraska & Iowa business owners — moving at the speed your business needs."
+>
+  <!-- Hero -->
+  <section class="mx-auto max-w-4xl px-4 py-20 text-center sm:px-6">
+    <p class="text-marker text-lg text-amber">forged for local business</p>
+    <h1 class="mt-2 text-4xl text-white sm:text-6xl">{HERO_HEADLINE}</h1>
+    <!-- TODO(open-item): confirm Option A vs B headline; alt copy kept here for reference -->
+    <p class="sr-only">{HERO_HEADLINE_ALT}</p>
+    <p class="mx-auto mt-6 max-w-2xl text-lg text-gray-300">
+      AI-enhanced content, social, and brand strategy — moving at the speed your business needs, without the
+      big-agency price tag or red tape.
+    </p>
+
+    <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+      <Button href="/contact">Book a free call</Button>
+      <a href="/how-i-work" class="font-semibold text-teal hover:underline">See how I work &rarr;</a>
+    </div>
+
+    <div class="mt-8 flex items-center justify-center gap-3">
+      <VeteranPill />
+      <span class="text-marker text-sm text-amber">forged for local business</span>
+    </div>
+  </section>
+
+  <!-- Trust bar -->
+  <section class="border-y border-surface bg-[#1a1a1a] py-8">
+    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6">
+      <p class="text-sm text-gray-400">
+        Powered by the tools that actually move the needle — built by a veteran who calls Nebraska home.
+      </p>
+      <!-- TODO(open-item): confirm full tool/platform logo list -->
+      <div class="mt-4 flex flex-wrap items-center justify-center gap-6 text-sm font-semibold text-gray-300">
+        {TRUST_TOOLS.map((tool) => <span>{tool}</span>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="px-4 py-20 sm:px-6">
+    <SectionHeader eyebrow="what i do" heading="Three ways I help your business grow" />
+    <div class="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-6 sm:grid-cols-3">
+      {SERVICES.map((service) => (
+        <ServiceCard name={service.name} teaser={service.teaser} href={`/services#${service.slug}`} />
+      ))}
+    </div>
+  </section>
+
+  <!-- Differentiator -->
+  <section class="px-4 py-20 sm:px-6">
+    <div class="mx-auto max-w-3xl text-center">
+      <h2 class="text-3xl text-white sm:text-4xl">Why a local studio instead of a big agency?</h2>
+      <p class="mt-6 text-gray-300">
+        Big agencies hand you off to a junior account manager and a 12-month contract. I'm the one doing the work,
+        and I know the Nebraska and Iowa market because I live in it. You get agency-level strategy and AI-powered
+        speed, with the kind of personal attention a small business actually needs.
+      </p>
+    </div>
+  </section>
+
+  <!-- How I Work teaser -->
+  <section class="px-4 py-20 sm:px-6">
+    <div class="mx-auto max-w-3xl rounded-xl bg-surface px-6 py-10 text-center sm:px-12">
+      <h2 class="text-3xl text-white">Curious what working together actually looks like?</h2>
+      <p class="mt-4 text-gray-200">
+        No mystery, no jargon — here's exactly how a project runs from first call to delivery.
+      </p>
+      <a href="/how-i-work" class="mt-6 inline-block font-semibold text-teal hover:underline">See how I work &rarr;</a>
+    </div>
+  </section>
+
+  <!-- Stats bar -->
+  <section class="px-4 py-20 sm:px-6">
+    <StatsBar />
+  </section>
+
+  <!-- Closing CTA -->
+  <section class="px-4 py-20 sm:px-6">
+    <CTABanner
+      heading="Ready to grow your business?"
+      subtext="Let's talk about what's actually going to move the needle for you — no pressure, no sales pitch."
+      buttonLabel="Book your free consultation"
+    />
+  </section>
+</BaseLayout>

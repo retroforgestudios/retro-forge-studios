@@ -1,0 +1,79 @@
+---
+import { NAV_LINKS } from "../data/site";
+
+const currentPath = new URL(Astro.request.url).pathname;
+---
+
+<header class="sticky top-0 z-50 border-b border-surface bg-charcoal/95 backdrop-blur">
+  <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
+    <a href="/" class="text-xl text-white" style="font-family: var(--font-display);">
+      retro forge studios
+    </a>
+
+    <ul class="hidden items-center gap-6 md:flex">
+      {NAV_LINKS.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class:list={[
+              "text-sm font-semibold transition-colors hover:text-teal",
+              currentPath === link.href ? "text-teal" : "text-gray-200",
+            ]}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <a
+      href="/contact"
+      class="hidden rounded-md bg-red px-4 py-2 text-sm font-bold text-white hover:bg-red/90 md:inline-flex"
+    >
+      Book a free call
+    </a>
+
+    <button
+      id="nav-toggle"
+      type="button"
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      class="inline-flex items-center justify-center rounded-md p-2 text-white md:hidden"
+    >
+      <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" />
+      </svg>
+    </button>
+  </nav>
+
+  <ul id="nav-mobile" class="hidden flex-col gap-1 border-t border-surface px-4 pb-4 md:hidden">
+    {NAV_LINKS.map((link) => (
+      <li>
+        <a
+          href={link.href}
+          class:list={[
+            "block rounded-md px-3 py-3 text-sm font-semibold",
+            currentPath === link.href ? "text-teal" : "text-gray-200",
+          ]}
+        >
+          {link.label}
+        </a>
+      </li>
+    ))}
+    <li>
+      <a href="/contact" class="mt-2 block rounded-md bg-red px-3 py-3 text-center text-sm font-bold text-white">
+        Book a free call
+      </a>
+    </li>
+  </ul>
+</header>
+
+<script>
+  const toggle = document.getElementById("nav-toggle");
+  const menu = document.getElementById("nav-mobile");
+  toggle?.addEventListener("click", () => {
+    const isOpen = menu?.classList.toggle("flex");
+    menu?.classList.toggle("hidden");
+    toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  });
+</script>

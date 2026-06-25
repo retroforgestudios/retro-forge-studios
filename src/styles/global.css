@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand palette */
+  --color-charcoal: #202020;
+  --color-surface: #494d54;
+  --color-surface-hover: #2c2f34;
+  --color-surface-hover-light: #34373d;
+  --color-red: #ef342f;
+  --color-teal: #4caac9;
+  --color-amber: #ef9c2f;
+
+  /* Fonts */
+  --font-display: "Carter One", sans-serif;
+  --font-marker: "Permanent Marker", cursive;
+  --font-body: "Open Sans", sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-charcoal);
+    color: #f5f5f5;
+    font-family: var(--font-body);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer utilities {
+  .text-marker {
+    font-family: var(--font-marker);
+  }
+}

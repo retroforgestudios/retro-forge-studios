@@ -1,0 +1,97 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/ui/SectionHeader.astro";
+import CTABanner from "../components/sections/CTABanner.astro";
+import VeteranSeal from "../components/badges/VeteranSeal.astro";
+
+const confidence = [
+  "A decade-plus of hands-on experience growing brand presence for companies including Nvidia, now applied to local Nebraska and Iowa businesses",
+  "Built strategies across gaming, retail, and consumer electronics — industries where attention is hard to win and trends move fast",
+  "I use the same AI-enhanced tools and research methods that larger agencies charge a premium for",
+  "I know this market because I live in it — not guessing at what works for Nebraska and Iowa small businesses",
+];
+
+const approach = [
+  { name: "Straight talk", desc: "no jargon, no inflated promises" },
+  { name: "Speed without sacrificing quality", desc: "AI accelerates the process, it doesn't cut corners" },
+  { name: "Local-first thinking", desc: "strategy built around your actual market, not a generic playbook" },
+  { name: "Full attention", desc: "you're not one account among hundreds" },
+];
+---
+
+<BaseLayout
+  title="About"
+  description="Meet the veteran-owned studio behind Retro Forge Studios — local roots, modern tools, real results."
+>
+  <section class="px-4 py-20 sm:px-6">
+    <SectionHeader
+      eyebrow="about"
+      heading="Local roots. Modern tools. Real results."
+      subhead="A quick introduction to who's actually doing the work."
+    />
+    <p class="text-marker mt-6 text-center text-amber">
+      Father &middot; Veteran &middot; GenX technophile &middot; Dungeon Master &middot; Content creator
+    </p>
+  </section>
+
+  <section class="px-4 py-16 sm:px-6">
+    <div class="mx-auto grid max-w-4xl gap-10 sm:grid-cols-[1fr_auto] sm:items-start">
+      <div class="space-y-4 text-gray-300">
+        <h2 class="text-2xl text-white">My story</h2>
+        <p>
+          Retired USAF veteran. The Air Force is what brought me to Nebraska, and I've called it home since 2008.
+        </p>
+        <p>
+          Before Retro Forge Studios, I spent over a decade helping brands grow through social media strategy,
+          content creation, and brand development — working with mid-market companies across gaming, retail, and
+          consumer electronics, including a stretch with Nvidia focused on building real community and brand
+          loyalty, not just chasing a sale.
+        </p>
+        <p>
+          I started Retro Forge Studios to bring that same level of strategy to the businesses I actually see every
+          day here in Nebraska and Iowa — without the agency price tag or the 12-month contract.
+        </p>
+      </div>
+
+      <div class="flex flex-col items-center gap-4">
+        <!-- TODO(open-item): swap in real photo of John Gregory; placeholder shown below -->
+        <div class="flex h-48 w-48 items-center justify-center rounded-full border border-surface bg-[#2c2f34] text-sm text-gray-500">
+          Photo placeholder
+        </div>
+        <VeteranSeal size={140} />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[#1a1a1a] px-4 py-16 sm:px-6">
+    <SectionHeader eyebrow="why me" heading="Why I'm confident I can help" />
+    <ul class="mx-auto mt-8 max-w-2xl space-y-3">
+      {confidence.map((item) => (
+        <li class="flex gap-3 text-gray-300">
+          <span class="text-teal">&#8226;</span>
+          {item}
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="px-4 py-16 sm:px-6">
+    <SectionHeader eyebrow="how i operate" heading="How I approach the work" />
+    <div class="mx-auto mt-10 grid max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2">
+      {approach.map((item) => (
+        <div class="rounded-lg border border-surface bg-[#2c2f34] p-6">
+          <h3 class="font-bold text-teal">{item.name}</h3>
+          <p class="mt-2 text-sm text-gray-300">{item.desc}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="px-4 py-20 sm:px-6">
+    <CTABanner
+      heading="Let's see if we're a fit"
+      subtext="No pressure, no sales pitch — just a conversation about your business."
+      buttonLabel="Book a free call"
+    />
+  </section>
+</BaseLayout>

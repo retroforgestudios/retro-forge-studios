@@ -1,0 +1,19 @@
+---
+interface Props {
+  label?: string;
+  class?: string;
+}
+const { label = "fan favorite", class: className = "" } = Astro.props;
+---
+
+<span
+  class:list={[
+    "inline-flex items-center gap-1 rounded-full bg-red px-3 py-1 text-xs font-bold uppercase tracking-wide text-white shadow-md -rotate-3",
+    className,
+  ]}
+>
+  <svg viewBox="0 0 24 24" class="h-3 w-3" fill="currentColor" aria-hidden="true">
+    <path d="M2 19h20l-2-9-5 4-3-7-3 7-5-4-2 9z" />
+  </svg>
+  {label}
+</span>

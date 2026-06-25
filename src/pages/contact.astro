@@ -1,0 +1,82 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SectionHeader from "../components/ui/SectionHeader.astro";
+import { SITE, SOCIAL_LINKS } from "../data/site";
+
+const callPoints = [
+  "We'll talk through where your business is right now and what's not working",
+  "I'll ask about your goals and who you're actually trying to reach",
+  "You'll leave knowing whether — and how — I can help. No pressure either way.",
+];
+---
+
+<BaseLayout
+  title="Contact / Book a Call"
+  description="Book a free consultation with Retro Forge Studios — no obligation, no sales script. Email or scheduler only, no phone."
+>
+  <section class="px-4 py-20 sm:px-6">
+    <SectionHeader
+      eyebrow="let's talk"
+      heading="No pitch deck. No pressure. Just a conversation."
+      subhead="Book a free consultation — no obligation, no sales script."
+    />
+  </section>
+
+  <!-- Scheduler block -->
+  <section class="px-4 py-10 sm:px-6">
+    <div class="mx-auto max-w-3xl rounded-xl border border-surface bg-[#1f2125] p-2 sm:p-4">
+      <!--
+        TODO(open-item): confirm embed approach — current implementation is a plain iframe of the
+        HubSpot meetings link. If you'd rather use HubSpot's native meetings JS widget (auto-resizing,
+        analytics-aware), swap this iframe for their embed snippet instead.
+      -->
+      <iframe
+        src={SITE.schedulerUrl}
+        title="Book a free consultation"
+        class="h-[760px] w-full rounded-lg border-0"
+        loading="lazy"
+      ></iframe>
+    </div>
+
+    <p class="mx-auto mt-6 max-w-2xl text-center text-sm text-gray-400">
+      Prefer email? Reach out directly at
+      <a href={`mailto:${SITE.email}`} class="text-teal hover:underline">{SITE.email}</a>.
+      No phone number listed — by choice.
+    </p>
+  </section>
+
+  <section class="px-4 py-16 sm:px-6">
+    <div class="mx-auto max-w-2xl">
+      <h2 class="text-center text-2xl text-white">What happens on this call</h2>
+      <ul class="mt-8 space-y-3">
+        {callPoints.map((point) => (
+          <li class="flex gap-3 text-gray-300">
+            <span class="text-teal">&#8226;</span>
+            {point}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="px-4 py-16 sm:px-6">
+    <div class="mx-auto max-w-2xl text-center">
+      <p class="text-gray-300">
+        Curious about the founding client rate?
+        <a href="/pricing" class="text-teal hover:underline">See pricing &rarr;</a>
+      </p>
+
+      <div class="mt-8 flex justify-center gap-6">
+        {SOCIAL_LINKS.map((social) => (
+          <a href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} class="text-gray-300 hover:text-teal">
+            {social.label}
+          </a>
+        ))}
+      </div>
+
+      <p class="mt-8 text-sm text-gray-400">
+        I read every message personally — you'll hear back from me, not a bot.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
