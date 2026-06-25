@@ -59,7 +59,7 @@ These are tracked inline in the code with `TODO(open-item)` comments — search 
 - [ ] **Social URLs** — placeholder links in [`src/data/site.ts`](src/data/site.ts) (`SOCIAL_LINKS`), confirm real handles.
 - [ ] **Trust-bar tool logos** — confirm full list beyond HubSpot/WordPress in `TRUST_TOOLS`.
 - [ ] **Veteran-owned seal artwork** — currently a built-from-spec SVG placeholder in [`src/components/badges/VeteranSeal.astro`](src/components/badges/VeteranSeal.astro); swap for real logo-team artwork if supplied.
-- [ ] **Logo files** — nav/footer currently render the wordmark as styled text; swap for real SVG wordmark/icon mark once available.
+- [x] **Logo files** — done for the horizontal wordmark, now used in nav and footer ([`public/images/logo-wordmark.png`](public/images/logo-wordmark.png)). Still need the standalone icon mark (rF monogram with crown) for favicon/social avatars — currently using Astro's default favicon.
 - [ ] **Contact scheduler embed** — currently a plain `<iframe>` of the HubSpot meetings link in [`src/pages/contact.astro`](src/pages/contact.astro); confirm if you'd rather use HubSpot's native JS meetings widget.
 - [ ] **Analytics/SEO** — no GA/Search Console tags, sitemap, or per-page meta descriptions beyond what's in each page's `description` prop yet.
 - [x] **Background treatment** — done. Sections now alternate between `#202020` (base) and `#1a1a1a` (`bg-band` utility, [`src/styles/global.css`](src/styles/global.css)) for visual rhythm across all 6 pages, staying within the brand brief's all-dark palette rather than introducing literal light sections like the reference site.
