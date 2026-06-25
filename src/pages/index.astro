@@ -13,37 +13,37 @@ import { HERO_HEADLINE, HERO_HEADLINE_ALT, SERVICES, TRUST_TOOLS } from "../data
   title="Home"
   description="AI-enhanced content, social, and brand strategy for Nebraska & Iowa business owners — moving at the speed your business needs."
 >
-  <!-- Hero image banner -->
-  <div class="h-[534px] w-full overflow-hidden">
+  <!-- Hero -->
+  <section class="relative flex h-[534px] w-full items-center overflow-hidden">
     <img
       src="/images/hero-forge.webp"
       alt="A blacksmith forging a glowing YouTube play button on an anvil stamped with the Retro Forge Studios logo"
-      class="h-full w-full object-cover"
+      class="absolute inset-0 h-full w-full object-cover"
       width="2048"
       height="1152"
       loading="eager"
     />
-  </div>
+    <div class="absolute inset-0 bg-charcoal/65"></div>
 
-  <!-- Hero -->
-  <section class="mx-auto max-w-4xl px-4 py-20 text-center sm:px-6">
-    <p class="text-marker text-lg text-amber">forged for local business</p>
-    <h1 class="mt-2 text-4xl text-white sm:text-6xl">{HERO_HEADLINE}</h1>
-    <!-- TODO(open-item): confirm Option A vs B headline; alt copy kept here for reference -->
-    <p class="sr-only">{HERO_HEADLINE_ALT}</p>
-    <p class="mx-auto mt-6 max-w-2xl text-lg text-gray-300">
-      AI-enhanced content, social, and brand strategy — moving at the speed your business needs, without the
-      big-agency price tag or red tape.
-    </p>
+    <div class="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
+      <p class="text-marker text-lg text-amber">forged for local business</p>
+      <h1 class="mt-2 text-4xl text-white sm:text-6xl">{HERO_HEADLINE}</h1>
+      <!-- TODO(open-item): confirm Option A vs B headline; alt copy kept here for reference -->
+      <p class="sr-only">{HERO_HEADLINE_ALT}</p>
+      <p class="mx-auto mt-6 max-w-2xl text-lg text-gray-200">
+        AI-enhanced content, social, and brand strategy — moving at the speed your business needs, without the
+        big-agency price tag or red tape.
+      </p>
 
-    <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-      <Button href="/contact">Book a free call</Button>
-      <a href="/how-i-work" class="font-semibold text-teal hover:underline">See how I work &rarr;</a>
-    </div>
+      <div class="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <Button href="/contact">Book a free call</Button>
+        <a href="/how-i-work" class="font-semibold text-teal hover:underline">See how I work &rarr;</a>
+      </div>
 
-    <div class="mt-8 flex items-center justify-center gap-3">
-      <VeteranPill />
-      <span class="text-marker text-sm text-amber">forged for local business</span>
+      <div class="mt-8 flex items-center justify-center gap-3">
+        <VeteranPill />
+        <span class="text-marker text-sm text-amber">forged for local business</span>
+      </div>
     </div>
   </section>
 
