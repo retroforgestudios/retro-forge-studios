@@ -4,96 +4,17 @@ interface Props {
   class?: string;
 }
 const { name, class: className = "" } = Astro.props;
+
+const LOGOS: Record<string, string> = {
+  HubSpot: "/images/brands/hubspot.png",
+  Claude: "/images/brands/claude.webp",
+  YouTube: "/images/brands/youtube.png",
+  WordPress: "/images/brands/wordpress.png",
+  Gemini: "/images/brands/gemini.png",
+  TikTok: "/images/brands/tiktok.png",
+};
+
+const src = LOGOS[name];
 ---
 
-<span class:list={["inline-flex items-center gap-2", className]}>
-  {
-    name === "HubSpot" && (
-      <>
-        <svg viewBox="0 0 24 24" class="h-6 w-6" aria-hidden="true">
-          <circle cx="17.5" cy="16" r="3" fill="none" stroke="#ff7a59" stroke-width="2" />
-          <circle cx="12" cy="6" r="1.6" fill="#ff7a59" />
-          <circle cx="6.5" cy="9" r="1.6" fill="#ff7a59" />
-          <path d="M12 7.4V12M11 12.5 7.6 10" fill="none" stroke="#ff7a59" stroke-width="1.6" stroke-linecap="round" />
-          <path d="M17.5 13V8" fill="none" stroke="#ff7a59" stroke-width="2" stroke-linecap="round" />
-        </svg>
-        <span class="text-lg font-bold text-[#33475b]">HubSpot</span>
-      </>
-    )
-  }
-  {
-    name === "Claude" && (
-      <>
-        <svg viewBox="0 0 24 24" class="h-6 w-6" fill="#cc6d34" aria-hidden="true">
-          <path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M19.1 4.9l-2.8 2.8M7.7 16.3l-2.8 2.8" stroke="#cc6d34" stroke-width="1.8" stroke-linecap="round" />
-        </svg>
-        <span class="text-lg" style="font-family: Georgia, serif; color: #1a1a1a;">Claude</span>
-      </>
-    )
-  }
-  {
-    name === "YouTube" && (
-      <>
-        <svg viewBox="0 0 28 20" class="h-5 w-7" aria-hidden="true">
-          <rect width="28" height="20" rx="6" fill="#ff0000" />
-          <path d="M11 6l8 4-8 4V6z" fill="#fff" />
-        </svg>
-        <span class="text-lg font-extrabold text-gray-900">YouTube</span>
-      </>
-    )
-  }
-  {
-    name === "WordPress" && (
-      <>
-        <svg viewBox="0 0 24 24" class="h-6 w-6" aria-hidden="true">
-          <circle cx="12" cy="12" r="10" fill="none" stroke="#3b3b3b" stroke-width="1.6" />
-          <path
-            d="M4.6 9.3l3.4 9.1-4-1.2A8 8 0 0 1 4.6 9.3ZM18.5 8.7c.3.9.2 1.9-.3 3l-2 5.9 2-.6a8 8 0 0 0 .3-8.3ZM12 4.3c1 0 2 .2 2.8.5-.6 0-1 .4-1 .9 0 .4.3 1.1.6 1.7.3.5.6 1.2.6 2 0 .7-.4 1.7-.7 2.6l-1 3.1-3.2-9.4c.5 0 .9-.1.9-.1Z"
-            fill="#3b3b3b"
-          />
-        </svg>
-        <span class="text-lg font-semibold text-gray-700">WordPress</span>
-      </>
-    )
-  }
-  {
-    name === "Gemini" && (
-      <>
-        <svg viewBox="0 0 24 24" class="h-6 w-6" aria-hidden="true">
-          <defs>
-            <linearGradient id="gemini-grad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#4285f4" />
-              <stop offset="50%" stop-color="#9b72cb" />
-              <stop offset="100%" stop-color="#d96570" />
-            </linearGradient>
-          </defs>
-          <path d="M12 2c0 5.5-4.5 10-10 10 5.5 0 10 4.5 10 10 0-5.5 4.5-10 10-10-5.5 0-10-4.5-10-10Z" fill="url(#gemini-grad)" />
-        </svg>
-        <span class="text-lg font-medium text-gray-800">Gemini</span>
-      </>
-    )
-  }
-  {
-    name === "TikTok" && (
-      <>
-        <svg viewBox="0 0 24 24" class="h-6 w-6" aria-hidden="true">
-          <path
-            d="M16.6 5.82c-1-.86-1.6-2.1-1.66-3.46h-3.07v13.5a2.59 2.59 0 1 1-1.8-2.46v-3.2a5.8 5.8 0 1 0 4.87 5.73V9.4a7 7 0 0 0 4.3 1.46V7.8c-.9 0-1.8-.3-2.64-.86Z"
-            fill="#010101"
-          />
-          <path
-            d="M17.2 5.4c-1-.86-1.6-2.1-1.66-3.46h-1.6v13.5a2.59 2.59 0 1 1-1.8-2.46v-1.6a4.2 4.2 0 1 0 3.4 4.06V9c1.2.9 2.7 1.4 4.3 1.4V7.4c-.9 0-1.7-.3-2.64-2Z"
-            fill="#25f4ee"
-            opacity="0.7"
-          />
-          <path
-            d="M16 5.2c-1-.86-1.6-2.1-1.66-3.46H12.8v13.5a2.59 2.59 0 1 1-1.8-2.46V11a4.2 4.2 0 1 0 3.4 4.06V8.8c1.2.9 2.7 1.4 4.3 1.4V7.2c-.9 0-1.76-.34-2.7-2Z"
-            fill="#fe2c55"
-            opacity="0.7"
-          />
-        </svg>
-        <span class="text-lg font-bold text-gray-900">TikTok</span>
-      </>
-    )
-  }
-</span>
+{src && <img src={src} alt={name} class:list={["h-7 w-auto", className]} width="800" height="200" loading="lazy" />}
