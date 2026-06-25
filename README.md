@@ -62,6 +62,6 @@ These are tracked inline in the code with `TODO(open-item)` comments — search 
 - [ ] **Logo files** — nav/footer currently render the wordmark as styled text; swap for real SVG wordmark/icon mark once available.
 - [ ] **Contact scheduler embed** — currently a plain `<iframe>` of the HubSpot meetings link in [`src/pages/contact.astro`](src/pages/contact.astro); confirm if you'd rather use HubSpot's native JS meetings widget.
 - [ ] **Analytics/SEO** — no GA/Search Console tags, sitemap, or per-page meta descriptions beyond what's in each page's `description` prop yet.
-- [ ] **Background treatment** — add contrasting/textured background color to break up the flat charcoal background, similar to the effect on [retroforgestudios.com](https://www.retroforgestudios.com/). Needs a follow-up look at that site's actual styling to pin down the exact treatment (gradient vs. section color-blocking vs. texture) before implementing.
+- [x] **Background treatment** — done. Sections now alternate between `#202020` (base) and `#1a1a1a` (`bg-band` utility, [`src/styles/global.css`](src/styles/global.css)) for visual rhythm across all 6 pages, staying within the brand brief's all-dark palette rather than introducing literal light sections like the reference site.
 
 Phone number is intentionally omitted site-wide — confirmed: email + scheduler only.

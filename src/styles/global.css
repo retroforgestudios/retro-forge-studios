@@ -3,6 +3,7 @@
 @theme {
   /* Brand palette */
   --color-charcoal: #202020;
+  --color-charcoal-band: #1a1a1a;
   --color-surface: #494d54;
   --color-surface-hover: #2c2f34;
   --color-surface-hover-light: #34373d;
@@ -34,5 +35,9 @@
 @layer utilities {
   .text-marker {
     font-family: var(--font-marker);
+  }
+
+  .bg-band {
+    background-color: var(--color-charcoal-band);
   }
 }
