@@ -58,7 +58,7 @@ import { PROCESS_STEPS, SERVICES } from "../data/site";
   <!-- Process strip -->
   <section class="bg-band px-4 py-20 sm:px-6">
     <SectionHeader eyebrow="the process" heading="How a project actually runs" />
-    <div class="mx-auto mt-10 grid max-w-4xl grid-cols-1 gap-4 sm:grid-cols-4">
+    <div class="mx-auto mt-10 grid max-w-content grid-cols-1 gap-4 sm:grid-cols-4">
       {PROCESS_STEPS.map((step) => (
         <div class="rounded-lg border border-surface bg-[#2c2f34] p-4 text-center">
           <p class="font-bold text-teal">{step.name}</p>

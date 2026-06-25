@@ -15,6 +15,9 @@
   --font-display: "Carter One", sans-serif;
   --font-marker: "Permanent Marker", cursive;
   --font-body: "Open Sans", sans-serif;
+
+  /* Site-wide content boundary */
+  --container-content: 81rem; /* 1296px */
 }
 
 @layer base {

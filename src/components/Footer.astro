@@ -4,7 +4,7 @@ import VeteranSeal from "./badges/VeteranSeal.astro";
 ---
 
 <footer class="border-t border-surface bg-charcoal">
-  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3">
+  <div class="mx-auto grid max-w-content gap-10 px-4 py-12 sm:px-6 md:grid-cols-3">
     <div>
       <p class="text-xl text-white" style="font-family: var(--font-display);">retro forge studios</p>
       <p class="mt-3 max-w-xs text-sm text-gray-400">
@@ -37,7 +37,9 @@ import VeteranSeal from "./badges/VeteranSeal.astro";
     </div>
   </div>
 
-  <div class="border-t border-surface px-4 py-6 text-center text-xs text-gray-500">
-    &copy; {new Date().getFullYear()} Retro Forge Studios. All rights reserved.
+  <div class="border-t border-surface py-6">
+    <div class="mx-auto max-w-content px-4 text-center text-xs text-gray-500 sm:px-6">
+      &copy; {new Date().getFullYear()} Retro Forge Studios. All rights reserved.
+    </div>
   </div>
 </footer>
