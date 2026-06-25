@@ -17,4 +17,4 @@ const LOGOS: Record<string, string> = {
 const src = LOGOS[name];
 ---
 
-{src && <img src={src} alt={name} class:list={["h-7 w-auto", className]} width="800" height="200" loading="lazy" />}
+{src && <img src={src} alt={name} class:list={["w-auto", className || "h-7"]} width="800" height="200" loading="lazy" />}

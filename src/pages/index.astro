@@ -50,13 +50,13 @@ import { HERO_HEADLINE, HERO_HEADLINE_ALT, SERVICES, TRUST_TOOLS } from "../data
 
   <!-- Trust bar -->
   <section class="border-y border-surface bg-band py-8">
-    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6">
+    <div class="mx-auto max-w-content px-4 text-center sm:px-6">
       <p class="text-sm text-gray-700">
         Powered by the tools that actually move the needle — built by a veteran who calls Nebraska home.
       </p>
       <!-- TODO(open-item): confirm full tool/platform logo list -->
-      <div class="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
-        {TRUST_TOOLS.map((tool) => <ToolIcon name={tool} />)}
+      <div class="mt-6 flex flex-nowrap items-center justify-center gap-x-4 overflow-x-auto sm:gap-x-10">
+        {TRUST_TOOLS.map((tool) => <ToolIcon name={tool} class="h-5 shrink-0 sm:h-7" />)}
       </div>
     </div>
   </section>
