@@ -1,15 +1,27 @@
 ---
 import { STATS } from "../../data/site";
+
+interface Props {
+  onLight?: boolean;
+}
+const { onLight = false } = Astro.props;
 ---
 
 <div class="mx-auto max-w-4xl">
-  <p class="text-marker text-center text-lg text-amber">The numbers back it up:</p>
+  <p class:list={["text-marker text-center text-lg", onLight ? "text-amber-deep" : "text-amber"]}>
+    The numbers back it up:
+  </p>
   <div class="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-3">
     {STATS.map((stat) => (
       <div class="text-center">
         <p class="text-4xl text-red">{stat.value}</p>
-        <p class="mt-2 text-sm text-gray-300">{stat.label}</p>
-        <a href={stat.sourceUrl} target="_blank" rel="noopener noreferrer" class="mt-1 inline-block text-xs text-teal underline">
+        <p class:list={["mt-2 text-sm", onLight ? "text-gray-700" : "text-gray-300"]}>{stat.label}</p>
+        <a
+          href={stat.sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class:list={["mt-1 inline-block text-xs underline", onLight ? "text-teal-deep" : "text-teal"]}
+        >
           via {stat.sourceLabel}
         </a>
       </div>

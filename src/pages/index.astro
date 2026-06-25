@@ -50,11 +50,11 @@ import { HERO_HEADLINE, HERO_HEADLINE_ALT, SERVICES, TRUST_TOOLS } from "../data
   <!-- Trust bar -->
   <section class="border-y border-surface bg-band py-8">
     <div class="mx-auto max-w-4xl px-4 text-center sm:px-6">
-      <p class="text-sm text-gray-400">
+      <p class="text-sm text-gray-700">
         Powered by the tools that actually move the needle — built by a veteran who calls Nebraska home.
       </p>
       <!-- TODO(open-item): confirm full tool/platform logo list -->
-      <div class="mt-4 flex flex-wrap items-center justify-center gap-6 text-sm font-semibold text-gray-300">
+      <div class="mt-4 flex flex-wrap items-center justify-center gap-6 text-sm font-semibold text-gray-800">
         {TRUST_TOOLS.map((tool) => <span>{tool}</span>)}
       </div>
     </div>
@@ -73,8 +73,8 @@ import { HERO_HEADLINE, HERO_HEADLINE_ALT, SERVICES, TRUST_TOOLS } from "../data
   <!-- Differentiator -->
   <section class="bg-band px-4 py-20 sm:px-6">
     <div class="mx-auto max-w-3xl text-center">
-      <h2 class="text-3xl text-white sm:text-4xl">Why a local studio instead of a big agency?</h2>
-      <p class="mt-6 text-gray-300">
+      <h2 class="text-3xl text-gray-900 sm:text-4xl">Why a local studio instead of a big agency?</h2>
+      <p class="mt-6 text-gray-700">
         Big agencies hand you off to a junior account manager and a 12-month contract. I'm the one doing the work,
         and I know the Nebraska and Iowa market because I live in it. You get agency-level strategy and AI-powered
         speed, with the kind of personal attention a small business actually needs.
@@ -95,7 +95,7 @@ import { HERO_HEADLINE, HERO_HEADLINE_ALT, SERVICES, TRUST_TOOLS } from "../data
 
   <!-- Stats bar -->
   <section class="bg-band px-4 py-20 sm:px-6">
-    <StatsBar />
+    <StatsBar onLight />
   </section>
 
   <!-- Closing CTA -->

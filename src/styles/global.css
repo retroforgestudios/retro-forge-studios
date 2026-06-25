@@ -3,13 +3,17 @@
 @theme {
   /* Brand palette */
   --color-charcoal: #202020;
-  --color-charcoal-band: #1a1a1a;
+  --color-band: #f2f2f2;
   --color-surface: #494d54;
   --color-surface-hover: #2c2f34;
   --color-surface-hover-light: #34373d;
   --color-red: #ef342f;
   --color-teal: #4caac9;
   --color-amber: #ef9c2f;
+
+  /* Darker accent variants for legibility on the light --color-band sections */
+  --color-teal-deep: #1f7a93;
+  --color-amber-deep: #a85f12;
 
   /* Fonts */
   --font-display: "Carter One", sans-serif;
@@ -41,6 +45,6 @@
   }
 
   .bg-band {
-    background-color: var(--color-charcoal-band);
+    background-color: var(--color-band);
   }
 }

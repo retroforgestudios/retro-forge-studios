@@ -37,9 +37,9 @@ const callPoints = [
       ></iframe>
     </div>
 
-    <p class="mx-auto mt-6 max-w-2xl text-center text-sm text-gray-400">
+    <p class="mx-auto mt-6 max-w-2xl text-center text-sm text-gray-700">
       Prefer email? Reach out directly at
-      <a href={`mailto:${SITE.email}`} class="text-teal hover:underline">{SITE.email}</a>.
+      <a href={`mailto:${SITE.email}`} class="text-teal-deep hover:underline">{SITE.email}</a>.
       No phone number listed — by choice.
     </p>
   </section>
@@ -60,20 +60,20 @@ const callPoints = [
 
   <section class="bg-band px-4 py-16 sm:px-6">
     <div class="mx-auto max-w-2xl text-center">
-      <p class="text-gray-300">
+      <p class="text-gray-700">
         Curious about the founding client rate?
-        <a href="/pricing" class="text-teal hover:underline">See pricing &rarr;</a>
+        <a href="/pricing" class="text-teal-deep hover:underline">See pricing &rarr;</a>
       </p>
 
       <div class="mt-8 flex justify-center gap-6">
         {SOCIAL_LINKS.map((social) => (
-          <a href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} class="text-gray-300 hover:text-teal">
+          <a href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} class="text-gray-700 hover:text-teal-deep">
             <SocialIcon label={social.label} class="h-6 w-6" />
           </a>
         ))}
       </div>
 
-      <p class="mt-8 text-sm text-gray-400">
+      <p class="mt-8 text-sm text-gray-700">
         I read every message personally — you'll hear back from me, not a bot.
       </p>
     </div>
