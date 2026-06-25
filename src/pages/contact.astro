@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SectionHeader from "../components/ui/SectionHeader.astro";
+import PageHero from "../components/sections/PageHero.astro";
 import { SITE, SOCIAL_LINKS } from "../data/site";
 
 const callPoints = [
@@ -14,13 +14,11 @@ const callPoints = [
   title="Contact / Book a Call"
   description="Book a free consultation with Retro Forge Studios — no obligation, no sales script. Email or scheduler only, no phone."
 >
-  <section class="px-4 py-20 sm:px-6">
-    <SectionHeader
-      eyebrow="let's talk"
-      heading="No pitch deck. No pressure. Just a conversation."
-      subhead="Book a free consultation — no obligation, no sales script."
-    />
-  </section>
+  <PageHero
+    eyebrow="let's talk"
+    heading="No pitch deck. No pressure. Just a conversation."
+    subhead="Book a free consultation — no obligation, no sales script."
+  />
 
   <!-- Scheduler block -->
   <section class="bg-band px-4 py-10 sm:px-6">

@@ -1,9 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import SectionHeader from "../components/ui/SectionHeader.astro";
 import CTABanner from "../components/sections/CTABanner.astro";
 import Button from "../components/ui/Button.astro";
 import CrownBadge from "../components/badges/CrownBadge.astro";
+import PageHero from "../components/sections/PageHero.astro";
 import { PRICING_FAQ, PRICING_TIERS } from "../data/site";
 ---
 
@@ -11,13 +11,11 @@ import { PRICING_FAQ, PRICING_TIERS } from "../data/site";
   title="Pricing"
   description="Straightforward, tiered pricing for content, brand strategy, and social media management — no surprises."
 >
-  <section class="px-4 py-20 sm:px-6">
-    <SectionHeader
-      eyebrow="pricing"
-      heading="Straightforward pricing, no surprises."
-      subhead="Pick a package that fits where your business is now, or let's build something custom. Either way, you'll know exactly what you're getting."
-    />
-  </section>
+  <PageHero
+    eyebrow="pricing"
+    heading="Straightforward pricing, no surprises."
+    subhead="Pick a package that fits where your business is now, or let's build something custom. Either way, you'll know exactly what you're getting."
+  />
 
   <!-- TODO(open-item): all prices below are $XXX placeholders pending final numbers -->
   <section class="bg-band px-4 py-10 sm:px-6">

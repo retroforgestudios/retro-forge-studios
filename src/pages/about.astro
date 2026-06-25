@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SectionHeader from "../components/ui/SectionHeader.astro";
 import CTABanner from "../components/sections/CTABanner.astro";
+import PageHero from "../components/sections/PageHero.astro";
 import VeteranSeal from "../components/badges/VeteranSeal.astro";
 
 const confidence = [
@@ -23,16 +24,15 @@ const approach = [
   title="About"
   description="Meet the veteran-owned studio behind Retro Forge Studios — local roots, modern tools, real results."
 >
-  <section class="px-4 py-20 sm:px-6">
-    <SectionHeader
-      eyebrow="about"
-      heading="Local roots. Modern tools. Real results."
-      subhead="A quick introduction to who's actually doing the work."
-    />
-    <p class="text-marker mt-6 text-center text-amber">
+  <PageHero
+    eyebrow="about"
+    heading="Local roots. Modern tools. Real results."
+    subhead="A quick introduction to who's actually doing the work."
+  >
+    <p class="text-marker mt-6 text-amber">
       Father &middot; Veteran &middot; GenX technophile &middot; Dungeon Master &middot; Content creator
     </p>
-  </section>
+  </PageHero>
 
   <section class="bg-band px-4 py-16 sm:px-6">
     <div class="mx-auto grid max-w-4xl gap-10 sm:grid-cols-[1fr_auto] sm:items-start">
