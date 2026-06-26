@@ -22,15 +22,20 @@ const callPoints = [
   />
 
   <!-- Scheduler block -->
-  <section class="bg-band px-4 py-10 sm:px-6">
-    <div class="mx-auto max-w-3xl rounded-xl border border-surface bg-[#1f2125] p-2 sm:p-4">
+  <section class="bg-surface px-4 py-16 sm:px-6">
+    <h2 class="text-center text-3xl text-white sm:text-4xl">Pick a time that works for you</h2>
+    <p class="mx-auto mt-3 max-w-xl text-center text-gray-200">
+      Grab a free 30-minute slot below — no forms to fill out first, no waiting on a callback.
+    </p>
+
+    <div class="mx-auto mt-8 max-w-3xl rounded-xl border border-surface bg-[#1f2125] p-2 sm:p-4">
       <div class="meetings-iframe-container" data-src={`${SITE.schedulerUrl}?embed=true`}></div>
       <script type="text/javascript" src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js" async></script>
     </div>
 
-    <p class="mx-auto mt-6 max-w-2xl text-center text-sm text-gray-700">
+    <p class="mx-auto mt-6 max-w-2xl text-center text-sm text-gray-300">
       Prefer email? Reach out directly at
-      <a href={`mailto:${SITE.email}`} class="text-teal-deep hover:underline">{SITE.email}</a>.
+      <a href={`mailto:${SITE.email}`} class="text-teal hover:underline">{SITE.email}</a>.
       No phone number listed — by choice.
     </p>
   </section>
