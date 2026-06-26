@@ -24,17 +24,8 @@ const callPoints = [
   <!-- Scheduler block -->
   <section class="bg-band px-4 py-10 sm:px-6">
     <div class="mx-auto max-w-3xl rounded-xl border border-surface bg-[#1f2125] p-2 sm:p-4">
-      <!--
-        TODO(open-item): confirm embed approach — current implementation is a plain iframe of the
-        HubSpot meetings link. If you'd rather use HubSpot's native meetings JS widget (auto-resizing,
-        analytics-aware), swap this iframe for their embed snippet instead.
-      -->
-      <iframe
-        src={SITE.schedulerUrl}
-        title="Book a free consultation"
-        class="h-[760px] w-full rounded-lg border-0"
-        loading="lazy"
-      ></iframe>
+      <div class="meetings-iframe-container" data-src={`${SITE.schedulerUrl}?embed=true`}></div>
+      <script type="text/javascript" src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js" async></script>
     </div>
 
     <p class="mx-auto mt-6 max-w-2xl text-center text-sm text-gray-700">
