@@ -55,7 +55,7 @@ These are tracked inline in the code with `TODO(open-item)` comments — search 
 - [ ] **Hero headline** — confirm Option A ("Marketing that hits different.") vs Option B. Set in [`src/data/site.ts`](src/data/site.ts).
 - [ ] **Pricing** — Starter/Growth/Pro are all `$XXX` placeholders in [`src/data/site.ts`](src/data/site.ts).
 - [ ] **How I Work → communication style** — placeholder text in [`src/pages/how-i-work.astro`](src/pages/how-i-work.astro).
-- [ ] **About page photo** — replace the placeholder circle in [`src/pages/about.astro`](src/pages/about.astro) with a real photo.
+- [x] **About page photo** — done. Real circular headshot in [`src/pages/about.astro`](src/pages/about.astro), saved at [`public/images/johnny-headshot.png`](public/images/johnny-headshot.png).
 - [ ] **Social URLs** — placeholder links in [`src/data/site.ts`](src/data/site.ts) (`SOCIAL_LINKS`), confirm real handles.
 - [x] **Trust-bar tool logos** — done. `TRUST_TOOLS` lists HubSpot, Claude, YouTube, WordPress, Gemini, TikTok, rendered via [`src/components/ui/ToolIcon.astro`](src/components/ui/ToolIcon.astro) using the real logo files supplied, saved in `public/images/brands/`. Confirm this is the final list of tools to feature.
 - [ ] **Veteran-owned seal artwork** — currently a built-from-spec SVG placeholder in [`src/components/badges/VeteranSeal.astro`](src/components/badges/VeteranSeal.astro); swap for real logo-team artwork if supplied.
