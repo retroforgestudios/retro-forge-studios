@@ -53,7 +53,7 @@ No environment variables or Pages Functions are required — this is a fully sta
 These are tracked inline in the code with `TODO(open-item)` comments — search the repo for that string to find every blocking spot. As of this writing:
 
 - [ ] **Hero headline** — confirm Option A ("Marketing that hits different.") vs Option B. Set in [`src/data/site.ts`](src/data/site.ts).
-- [ ] **Pricing** — Starter/Growth/Pro are all `$XXX` placeholders in [`src/data/site.ts`](src/data/site.ts).
+- [x] **Pricing** — done. Starter $99/mo, Growth $199/mo, Pro $299/mo, set in [`src/data/site.ts`](src/data/site.ts).
 - [ ] **How I Work → communication style** — placeholder text in [`src/pages/how-i-work.astro`](src/pages/how-i-work.astro).
 - [x] **About page photo** — done. Real circular headshot in [`src/pages/about.astro`](src/pages/about.astro), saved at [`public/images/johnny-headshot.png`](public/images/johnny-headshot.png).
 - [ ] **Social URLs** — placeholder links in [`src/data/site.ts`](src/data/site.ts) (`SOCIAL_LINKS`), confirm real handles.

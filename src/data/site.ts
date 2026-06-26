@@ -111,12 +111,11 @@ export const PROCESS_STEPS = [
   },
 ];
 
-// TODO(open-item): pricing — dollar amounts are placeholders ($XXX) per the brief
 export const PRICING_TIERS = [
   {
     name: "Starter",
     tagline: "for businesses just getting consistent",
-    price: "$XXX/mo",
+    price: "$99/mo",
     featured: false,
     features: ["A few posts a week", "Basic content calendar", "Monthly check-in"],
     cta: "Get started",
@@ -124,7 +123,7 @@ export const PRICING_TIERS = [
   {
     name: "Growth",
     tagline: "fan favorite",
-    price: "$XXX/mo",
+    price: "$199/mo",
     featured: true,
     features: [
       "Daily social presence",
@@ -132,12 +131,12 @@ export const PRICING_TIERS = [
       "SEO optimization",
       "Bi-weekly reporting",
     ],
-    cta: "Book a free call",
+    cta: "I'm ready grow today",
   },
   {
     name: "Pro",
     tagline: "for businesses ready to scale",
-    price: "$XXX/mo",
+    price: "$299/mo",
     featured: false,
     features: ["Everything in Growth", "Brand strategy sessions", "Priority turnaround"],
     cta: "Get started",
