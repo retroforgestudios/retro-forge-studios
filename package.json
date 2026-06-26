@@ -12,7 +12,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@fontsource/carter-one": "^5.2.8",
+    "@fontsource/bungee": "^5.2.7",
     "@fontsource/open-sans": "^5.2.7",
     "@fontsource/permanent-marker": "^5.2.7",
     "@tailwindcss/vite": "^4.3.1",
