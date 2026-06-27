@@ -1,10 +1,17 @@
 ---
-// TODO(open-item): replace with final logo-team artwork if/when supplied — this is a built-from-spec placeholder.
 interface Props {
   class?: string;
   size?: number;
 }
 const { class: className = "", size = 160 } = Astro.props;
+
+// Leaf positions along each laurel stem (distance up the stem, leaf tilt)
+const leaves = [
+  { t: 0.12, tilt: 38 },
+  { t: 0.34, tilt: 30 },
+  { t: 0.56, tilt: 22 },
+  { t: 0.78, tilt: 14 },
+];
 ---
 
 <svg
@@ -28,17 +35,50 @@ const { class: className = "", size = 160 } = Astro.props;
     </textPath>
   </text>
 
-  <g transform="translate(100 92)">
+  <!-- Laurel wreath flanking the shield -->
+  <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+    <!-- left stem -->
+    <path d="M62 134 Q48 104 60 74" />
+    <!-- right stem (mirror) -->
+    <path d="M138 134 Q152 104 140 74" />
+  </g>
+  <g fill="currentColor">
+    {leaves.map(({ t, tilt }) => {
+      const ly = 134 - t * 60;
+      const lx = 56 + Math.sin(t * Math.PI) * 4;
+      return <ellipse cx="0" cy="0" rx="6.5" ry="3" transform={`translate(${lx} ${ly}) rotate(${-tilt})`} />;
+    })}
+    {leaves.map(({ t, tilt }) => {
+      const ly = 134 - t * 60;
+      const lx = 144 - Math.sin(t * Math.PI) * 4;
+      return <ellipse cx="0" cy="0" rx="6.5" ry="3" transform={`translate(${lx} ${ly}) rotate(${tilt})`} />;
+    })}
+  </g>
+
+  <!-- Five-pointed star -->
+  <path
+    d="M100,57 L102.1,63.1 L108.6,63.2 L103.4,67.1 L105.3,73.3 L100,69.6 L94.7,73.3 L96.6,67.1 L91.4,63.2 L97.9,63.1 Z"
+    fill="currentColor"
+  />
+
+  <!-- Shield with checkmark -->
+  <g transform="translate(100 96)">
     <path
-      d="M0 -32 L26 -22 V4 C26 26 12 38 0 44 C-12 38 -26 26 -26 4 V-22 Z"
-      fill="none"
+      d="M0 -28 L24 -19 V4 C24 24 11 35 0 40 C-11 35 -24 24 -24 4 V-19 Z"
+      fill="#202020"
       stroke="currentColor"
       stroke-width="3"
     />
-    <path d="M-10 0 L-2 10 L13 -10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M-9 0 L-1 9 L12 -9" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
   </g>
 
-  <text x="100" y="158" text-anchor="middle" fill="currentColor" font-family="Carter One, sans-serif" font-size="14">
-    EST. 2008
-  </text>
+  <!-- Ribbon banner -->
+  <g transform="translate(100 158)">
+    <path d="M-46 -10 L46 -10 L46 10 L0 4 L-46 10 Z" fill="currentColor" opacity="0.15" />
+    <path d="M-46 -10 L-58 0 L-46 10 Z" fill="currentColor" />
+    <path d="M46 -10 L58 0 L46 10 Z" fill="currentColor" />
+    <text x="0" y="5" text-anchor="middle" fill="currentColor" font-family="Carter One, sans-serif" font-size="13">
+      EST. 2008
+    </text>
+  </g>
 </svg>
