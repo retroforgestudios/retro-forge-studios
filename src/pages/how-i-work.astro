@@ -74,9 +74,9 @@ const expectations = [
   </section>
 
   <section class="bg-band px-4 py-16 sm:px-6">
-    <div class="mx-auto max-w-3xl">
-      <SectionHeader onLight eyebrow="the toolkit" heading="AI is the speed. I'm still the voice." />
-      <ul class="mx-auto mt-8 max-w-xl space-y-3">
+    <SectionHeader onLight eyebrow="the toolkit" heading="AI is the speed. I'm still the voice." />
+    <div class="mx-auto mt-10 grid max-w-4xl items-center gap-10 sm:grid-cols-2">
+      <ul class="space-y-3">
         {toolkit.map((item) => (
           <li class="flex gap-3 text-gray-700">
             <span class="text-teal-deep">&#8226;</span>
@@ -84,6 +84,14 @@ const expectations = [
           </li>
         ))}
       </ul>
+      <img
+        src="/images/workflow-engagement-graphic.webp"
+        alt="Workflow time savings and engagement lift metrics from AI-assisted content work"
+        class="mx-auto w-full max-w-sm rounded-xl"
+        width="1000"
+        height="1000"
+        loading="lazy"
+      />
     </div>
   </section>
 
