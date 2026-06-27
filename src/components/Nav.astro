@@ -28,7 +28,7 @@ const currentPath = new URL(Astro.request.url).pathname;
 
     <a
       href="/contact"
-      class="hidden rounded-md bg-red px-4 py-2 text-sm font-bold text-white hover:bg-red/90 md:inline-flex"
+      class="hidden rounded-md bg-red px-4 py-2 text-sm font-bold text-white transition duration-200 hover:bg-red/90 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red/40 md:inline-flex"
     >
       Book a free call
     </a>
@@ -61,7 +61,7 @@ const currentPath = new URL(Astro.request.url).pathname;
       </li>
     ))}
     <li>
-      <a href="/contact" class="mt-2 block rounded-md bg-red px-3 py-3 text-center text-sm font-bold text-white">
+      <a href="/contact" class="mt-2 block rounded-md bg-red px-3 py-3 text-center text-sm font-bold text-white transition duration-200 hover:bg-red/90">
         Book a free call
       </a>
     </li>
