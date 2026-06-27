@@ -1,0 +1,91 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE } from "../data/site";
+---
+
+<BaseLayout
+  title="Terms & Conditions"
+  description="The terms and conditions for using the Retro Forge Studios website and services."
+>
+  <section class="bg-band px-4 py-16 sm:px-6">
+    <div class="mx-auto max-w-2xl">
+      <h1 class="text-3xl text-gray-900 sm:text-4xl">Terms & Conditions</h1>
+      <p class="mt-2 text-sm text-gray-600">Last updated: June 2026</p>
+
+      <div class="mt-8 space-y-6 text-gray-700">
+        <p>
+          These terms govern your use of this website and your engagement with Retro Forge Studios ("we," "us," or
+          "our"). By using this site or booking a consultation, you agree to the terms below.
+        </p>
+
+        <div>
+          <h2 class="text-xl text-gray-900">Services</h2>
+          <p class="mt-2">
+            Retro Forge Studios provides content creation, brand strategy & SEO, and social media management
+            services. The specific scope, deliverables, and pricing for any engagement are agreed separately with
+            each client before work begins — nothing on this website constitutes a binding service agreement on its
+            own.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl text-gray-900">Engagements and billing</h2>
+          <p class="mt-2">
+            Ongoing services are billed monthly and run month-to-month — there is no long-term contract. One-off
+            projects are quoted and billed per project. Either party may end an ongoing engagement at any time;
+            outstanding fees for work already completed remain due.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl text-gray-900">Website content</h2>
+          <p class="mt-2">
+            The content on this website — including text, graphics, and logos — belongs to Retro Forge Studios or
+            its licensors and may not be copied or reused without permission. Pricing, service details, and other
+            information on this site are subject to change without notice.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl text-gray-900">Third-party services</h2>
+          <p class="mt-2">
+            Booking a consultation uses HubSpot's scheduling tools. Your use of that scheduler is also subject to
+            HubSpot's own terms of service.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl text-gray-900">No guarantee of results</h2>
+          <p class="mt-2">
+            Marketing, content, and SEO outcomes depend on many factors outside our control. We don't guarantee
+            specific traffic, ranking, or revenue results from our services.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl text-gray-900">Limitation of liability</h2>
+          <p class="mt-2">
+            To the fullest extent permitted by law, Retro Forge Studios isn't liable for indirect, incidental, or
+            consequential damages arising from your use of this website or our services.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl text-gray-900">Changes to these terms</h2>
+          <p class="mt-2">
+            We may update these terms from time to time. Continued use of this site after changes are posted means
+            you accept the updated terms.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl text-gray-900">Contact us</h2>
+          <p class="mt-2">
+            Questions about these terms? Reach out at{" "}
+            <a href={`mailto:${SITE.email}`} class="text-teal-deep hover:underline">{SITE.email}</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
