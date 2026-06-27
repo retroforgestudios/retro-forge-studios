@@ -60,37 +60,34 @@ const SERVICE_ICONS: Record<string, string> = {
     </div>
   </section>
 
-  {SERVICES.map((service, i) => (
-    <section id={service.slug} class:list={["px-4 py-16 sm:px-6", i % 2 === 1 && "bg-band"]}>
-      <div class="mx-auto max-w-4xl rounded-2xl border border-surface bg-[#1f2125] p-8 sm:p-10">
-        <div class="flex items-center gap-4">
-          <div class="flex h-12 w-12 flex-none items-center justify-center rounded-full bg-charcoal text-amber">
+  <section class="px-4 py-16 sm:px-6">
+    <div class="mx-auto grid max-w-content grid-cols-1 gap-6 sm:grid-cols-3 sm:items-stretch">
+      {SERVICES.map((service) => (
+        <div id={service.slug} class="flex flex-col rounded-2xl border border-surface bg-[#1f2125] p-8">
+          <div class="flex h-12 w-12 items-center justify-center rounded-full bg-charcoal text-amber">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
               <path d={SERVICE_ICONS[service.slug]} />
             </svg>
           </div>
-          <h2 class="text-2xl text-white sm:text-3xl">{service.heading}</h2>
-        </div>
+          <h2 class="mt-4 text-xl text-white">{service.heading}</h2>
 
-        <div class="mt-8 grid gap-8 sm:grid-cols-2">
-          <div>
-            <p class="text-marker text-amber">included</p>
-            <ul class="mt-3 space-y-2 text-gray-300">
-              {service.included.map((item) => (
-                <li class="flex gap-2">
-                  <span class="text-teal">&#8226;</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <p class="mt-6 text-marker text-sm text-amber">included</p>
+          <ul class="mt-3 space-y-2">
+            {service.included.map((item) => (
+              <li class="flex gap-2 text-sm text-gray-300">
+                <span class="text-teal">&#8226;</span>
+                {item}
+              </li>
+            ))}
+          </ul>
 
-          <div class="space-y-4">
-            {service.statCallout && (
-              <p class="rounded-md border border-amber/30 bg-amber/10 p-4 text-sm text-amber">
-                {service.statCallout}
-              </p>
-            )}
+          {service.statCallout && (
+            <p class="mt-6 rounded-md border border-amber/30 bg-amber/10 p-4 text-sm text-amber">
+              {service.statCallout}
+            </p>
+          )}
+
+          <div class="mt-6 space-y-3 border-t border-surface pt-6">
             <p class="text-sm text-gray-400">
               <span class="font-semibold text-white">Who it's for: </span>
               {service.who}
@@ -101,9 +98,9 @@ const SERVICE_ICONS: Record<string, string> = {
             </p>
           </div>
         </div>
-      </div>
-    </section>
-  ))}
+      ))}
+    </div>
+  </section>
 
   <!-- Process strip -->
   <section class="bg-band px-4 py-20 sm:px-6">
