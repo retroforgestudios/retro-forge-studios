@@ -166,5 +166,4 @@ export const SOCIAL_LINKS = [
   { label: "X", href: "https://x.com/RetroForgeStud" },
 ];
 
-// TODO(open-item): trust-bar tool/platform logos — confirm exact list beyond HubSpot, WordPress
 export const TRUST_TOOLS = ["HubSpot", "Claude", "YouTube", "WordPress", "Gemini", "TikTok"];

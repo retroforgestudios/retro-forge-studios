@@ -61,7 +61,13 @@ These are tracked inline in the code with `TODO(open-item)` comments — search 
 - [ ] **Veteran-owned seal artwork** — currently a built-from-spec SVG placeholder in [`src/components/badges/VeteranSeal.astro`](src/components/badges/VeteranSeal.astro); swap for real logo-team artwork if supplied.
 - [x] **Logo files** — done. Horizontal wordmark used in nav/footer ([`public/images/logo-wordmark.png`](public/images/logo-wordmark.png)), and the rF icon mark is now the favicon/apple-touch-icon (generated at 16x16, 32x32, 180x180 from [`public/images/icon-mark.png`](public/images/icon-mark.png)). The icon mark's full-res file is also available in `public/images/` if you want to use it for social avatars.
 - [x] **Contact scheduler embed** — done. Switched from a plain `<iframe>` to HubSpot's native auto-resizing meetings JS widget in [`src/pages/contact.astro`](src/pages/contact.astro); fixes the internal scrollbar the plain iframe had.
-- [ ] **Analytics/SEO** — no GA/Search Console tags, sitemap, or per-page meta descriptions beyond what's in each page's `description` prop yet.
+- [x] **SEO basics** — done. Added `robots.txt`, an auto-generated sitemap (`@astrojs/sitemap`, site URL set to `https://retroforgestudios.com` in `astro.config.mjs`), canonical links, and Open Graph/Twitter Card meta tags in [`src/layouts/BaseLayout.astro`](src/layouts/BaseLayout.astro). Still no GA/Search Console tags — analytics setup is a separate step.
+- [x] **404 page** — done. Branded not-found page at [`src/pages/404.astro`](src/pages/404.astro).
+- [ ] **Privacy policy** — no privacy policy page yet; worth adding since the site collects contact info via the scheduler/email.
 - [x] **Background treatment** — done, revised twice. The whole site body is now `#f2f2f2` (light) — nav, footer, and the hero photo+scrim sections (on every page) are the only parts that stay dark charcoal. This is a deviation from the brief's "primary background: charcoal everywhere" spec; flag if you'd rather revert to dark.
 
 Phone number is intentionally omitted site-wide — confirmed: email + scheduler only.
+
+## ⚠️ Domain not yet pointed at this site
+
+As of this writing, `www.retroforgestudios.com` is live with a **different, separate HubSpot CMS-built site** (not this project). This Astro/Cloudflare Pages project currently only exists at its Cloudflare Pages preview URL — the custom domain has never been connected to it. Confirm whether that HubSpot site should be replaced before going live, and update DNS/custom domain settings in the Cloudflare Pages dashboard accordingly.

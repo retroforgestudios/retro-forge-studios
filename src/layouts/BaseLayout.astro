@@ -13,6 +13,10 @@ interface Props {
   description: string;
 }
 const { title, description } = Astro.props;
+
+const pageTitle = `${title} | Retro Forge Studios`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL("/images/hero-forge.webp", Astro.site);
 ---
 
 <!doctype html>
@@ -23,8 +27,22 @@ const { title, description } = Astro.props;
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <title>{title} | Retro Forge Studios</title>
+    <link rel="canonical" href={canonicalURL} />
+    <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#202020" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:site_name" content="Retro Forge Studios" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
   </head>
   <body class="flex min-h-screen flex-col">
     <Nav />
