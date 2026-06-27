@@ -4,7 +4,7 @@
 export const SITE = {
   name: "Retro Forge Studios",
   email: "jgregory@retroforgestudios.com",
-  schedulerUrl: "https://meetings-na2.hubspot.com/john-gregory",
+  schedulerUrl: "https://meetings.hubspot.com/retroforgestudios",
 };
 
 export const NAV_LINKS = [
