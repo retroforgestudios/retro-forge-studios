@@ -158,13 +158,12 @@ export const PRICING_FAQ = [
   },
 ];
 
-// TODO(open-item): social URLs — placeholders below, confirm real handles
 export const SOCIAL_LINKS = [
-  { label: "LinkedIn", href: "https://linkedin.com/" },
-  { label: "Facebook", href: "https://facebook.com/" },
-  { label: "Instagram", href: "https://instagram.com/" },
-  { label: "TikTok", href: "https://tiktok.com/" },
-  { label: "X", href: "https://x.com/" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/retro-forge-studios/" },
+  { label: "Facebook", href: "https://www.facebook.com/RetroForgeStudios" },
+  { label: "Instagram", href: "https://www.instagram.com/retroforgestudios/" },
+  { label: "TikTok", href: "https://www.tiktok.com/@retroforgestudios" },
+  { label: "X", href: "https://x.com/RetroForgeStud" },
 ];
 
 // TODO(open-item): trust-bar tool/platform logos — confirm exact list beyond HubSpot, WordPress
