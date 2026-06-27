@@ -16,9 +16,7 @@ export const NAV_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
-// TODO(open-item): confirm final hero headline (Option A vs B)
 export const HERO_HEADLINE = "Marketing that hits different.";
-export const HERO_HEADLINE_ALT = "Built for Nebraska & Iowa business owners who need to be seen.";
 
 export const STATS = [
   {

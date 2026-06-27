@@ -52,18 +52,18 @@ No environment variables or Pages Functions are required — this is a fully sta
 
 These are tracked inline in the code with `TODO(open-item)` comments — search the repo for that string to find every blocking spot. As of this writing:
 
-- [ ] **Hero headline** — confirm Option A ("Marketing that hits different.") vs Option B. Set in [`src/data/site.ts`](src/data/site.ts).
+- [x] **Hero headline** — confirmed, keeping "Marketing that hits different." Removed the unused Option B alt copy from [`src/data/site.ts`](src/data/site.ts).
 - [x] **Pricing** — done. Starter $99/mo, Growth $199/mo, Pro $299/mo, set in [`src/data/site.ts`](src/data/site.ts).
-- [ ] **How I Work → communication style** — placeholder text in [`src/pages/how-i-work.astro`](src/pages/how-i-work.astro).
+- [x] **How I Work → communication style** — done. Real copy in [`src/pages/how-i-work.astro`](src/pages/how-i-work.astro): email for everything important, plus a shared doc/calendar for ongoing projects.
 - [x] **About page photo** — done. Real circular headshot in [`src/pages/about.astro`](src/pages/about.astro), saved at [`public/images/johnny-headshot.png`](public/images/johnny-headshot.png).
 - [x] **Social URLs** — done. Real LinkedIn, Facebook, Instagram, TikTok, and X handles set in [`src/data/site.ts`](src/data/site.ts) (`SOCIAL_LINKS`).
 - [x] **Trust-bar tool logos** — done. `TRUST_TOOLS` lists HubSpot, Claude, YouTube, WordPress, Gemini, TikTok, rendered via [`src/components/ui/ToolIcon.astro`](src/components/ui/ToolIcon.astro) using the real logo files supplied, saved in `public/images/brands/`. Confirm this is the final list of tools to feature.
-- [ ] **Veteran-owned seal artwork** — currently a built-from-spec SVG placeholder in [`src/components/badges/VeteranSeal.astro`](src/components/badges/VeteranSeal.astro); swap for real logo-team artwork if supplied.
+- [ ] **Veteran-owned seal artwork** — still a built-from-spec SVG placeholder in [`src/components/badges/VeteranSeal.astro`](src/components/badges/VeteranSeal.astro). Confirmed intentionally deferred — swap for real logo-team artwork whenever it's supplied.
 - [x] **Logo files** — done. Horizontal wordmark used in nav/footer ([`public/images/logo-wordmark.png`](public/images/logo-wordmark.png)), and the rF icon mark is now the favicon/apple-touch-icon (generated at 16x16, 32x32, 180x180 from [`public/images/icon-mark.png`](public/images/icon-mark.png)). The icon mark's full-res file is also available in `public/images/` if you want to use it for social avatars.
 - [x] **Contact scheduler embed** — done. Switched from a plain `<iframe>` to HubSpot's native auto-resizing meetings JS widget in [`src/pages/contact.astro`](src/pages/contact.astro); fixes the internal scrollbar the plain iframe had.
 - [x] **SEO basics** — done. Added `robots.txt`, an auto-generated sitemap (`@astrojs/sitemap`, site URL set to `https://retroforgestudios.com` in `astro.config.mjs`), canonical links, and Open Graph/Twitter Card meta tags in [`src/layouts/BaseLayout.astro`](src/layouts/BaseLayout.astro). Still no GA/Search Console tags — analytics setup is a separate step.
 - [x] **404 page** — done. Branded not-found page at [`src/pages/404.astro`](src/pages/404.astro).
-- [ ] **Privacy policy** — no privacy policy page yet; worth adding since the site collects contact info via the scheduler/email.
+- [x] **Privacy policy** — done. Basic privacy policy page at [`src/pages/privacy.astro`](src/pages/privacy.astro), linked in the footer copyright bar.
 - [x] **Background treatment** — done, revised twice. The whole site body is now `#f2f2f2` (light) — nav, footer, and the hero photo+scrim sections (on every page) are the only parts that stay dark charcoal. This is a deviation from the brief's "primary background: charcoal everywhere" spec; flag if you'd rather revert to dark.
 
 Phone number is intentionally omitted site-wide — confirmed: email + scheduler only.

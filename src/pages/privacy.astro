@@ -1,0 +1,74 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE } from "../data/site";
+---
+
+<BaseLayout
+  title="Privacy Policy"
+  description="How Retro Forge Studios collects, uses, and protects your information."
+>
+  <section class="bg-band px-4 py-16 sm:px-6">
+    <div class="mx-auto max-w-2xl">
+      <h1 class="text-3xl text-gray-900 sm:text-4xl">Privacy Policy</h1>
+      <p class="mt-2 text-sm text-gray-600">Last updated: June 2026</p>
+
+      <div class="mt-8 space-y-6 text-gray-700">
+        <p>
+          Retro Forge Studios ("we," "us," or "our") respects your privacy. This page explains what information we
+          collect through this website and how we use it.
+        </p>
+
+        <div>
+          <h2 class="text-xl text-gray-900">Information we collect</h2>
+          <p class="mt-2">
+            When you book a call through our scheduler or email us directly, we collect the information you provide
+            — typically your name, email address, and any details you share about your business or project. We do
+            not collect payment information through this website.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl text-gray-900">How we use your information</h2>
+          <p class="mt-2">
+            We use the information you provide solely to respond to your inquiry, schedule and conduct consultation
+            calls, and follow up about our services. We do not sell, rent, or share your information with third
+            parties for marketing purposes.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl text-gray-900">Third-party services</h2>
+          <p class="mt-2">
+            We use HubSpot to manage scheduling and client communication. When you book a call, your information is
+            processed by HubSpot in accordance with their own privacy policy. We do not use third-party advertising
+            trackers or sell data to ad networks.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl text-gray-900">Cookies</h2>
+          <p class="mt-2">
+            Our scheduling widget may set cookies necessary for it to function. This site does not use cookies for
+            advertising or cross-site tracking.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl text-gray-900">Your rights</h2>
+          <p class="mt-2">
+            You can request that we delete any information you've shared with us at any time by emailing{" "}
+            <a href={`mailto:${SITE.email}`} class="text-teal-deep hover:underline">{SITE.email}</a>.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl text-gray-900">Contact us</h2>
+          <p class="mt-2">
+            Questions about this policy? Reach out at{" "}
+            <a href={`mailto:${SITE.email}`} class="text-teal-deep hover:underline">{SITE.email}</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
