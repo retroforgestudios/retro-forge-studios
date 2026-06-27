@@ -45,6 +45,21 @@ const SERVICE_ICONS: Record<string, string> = {
     </div>
   </section>
 
+  <!-- Marketing dashboard banner -->
+  <section class="bg-band px-4 py-16 sm:px-6">
+    <div class="mx-auto max-w-3xl text-center">
+      <SectionHeader onLight eyebrow="real tools, real data" heading="Strategy backed by dashboards, not guesswork" />
+      <img
+        src="/images/marketing-dashboard.webp"
+        alt="A HubSpot marketing dashboard showing visits, contacts, and customer metrics"
+        class="mx-auto mt-8 w-full max-w-3xl rounded-xl border border-surface"
+        width="1080"
+        height="450"
+        loading="lazy"
+      />
+    </div>
+  </section>
+
   {SERVICES.map((service) => (
     <section id={service.slug} class="px-4 py-16 sm:px-6">
       <div class="mx-auto max-w-3xl">
