@@ -7,7 +7,12 @@ import StatsBar from "../components/sections/StatsBar.astro";
 import CTABanner from "../components/sections/CTABanner.astro";
 import VeteranPill from "../components/badges/VeteranPill.astro";
 import ToolIcon from "../components/ui/ToolIcon.astro";
+import { getCollection } from "astro:content";
 import { HERO_HEADLINE, SERVICES, TRUST_TOOLS } from "../data/site";
+
+const latestPosts = (await getCollection("blog"))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
 ---
 
 <BaseLayout
@@ -102,6 +107,41 @@ import { HERO_HEADLINE, SERVICES, TRUST_TOOLS } from "../data/site";
   <!-- Stats bar -->
   <section class="bg-band px-4 py-20 sm:px-6">
     <StatsBar onLight />
+  </section>
+
+  <!-- Blog teaser -->
+  <section class="px-4 py-20 sm:px-6">
+    <SectionHeader onLight eyebrow="the blog" heading="Tips to grow your business" />
+    <div class="mx-auto mt-12 grid max-w-content grid-cols-1 gap-6 sm:grid-cols-3">
+      {latestPosts.map((post) => (
+        <a
+          href={`/blog/${post.id}/`}
+          class="group flex flex-col overflow-hidden rounded-lg border border-surface bg-[#1f2125] transition-colors hover:border-teal"
+        >
+          {post.data.image && (
+            <div class="aspect-video overflow-hidden">
+              <img
+                src={post.data.image}
+                alt={post.data.title}
+                loading="lazy"
+                class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+              />
+            </div>
+          )}
+          <div class="flex flex-1 flex-col p-6">
+            <p class="text-marker text-sm text-amber">
+              {post.data.date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+            </p>
+            <h3 class="mt-1 text-lg text-white">{post.data.title}</h3>
+            <p class="mt-2 flex-1 text-sm text-gray-300">{post.data.description}</p>
+            <span class="mt-4 font-semibold text-teal">Read more &rarr;</span>
+          </div>
+        </a>
+      ))}
+    </div>
+    <p class="mt-10 text-center">
+      <a href="/blog" class="font-semibold text-teal-deep hover:underline">Read the blog &rarr;</a>
+    </p>
   </section>
 
   <!-- Closing CTA -->
