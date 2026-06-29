@@ -1,0 +1,30 @@
+backend:
+  name: github
+  repo: retroforgestudios/retro-forge-studios
+  branch: master
+  # Shared OAuth worker (already deployed) — handles GitHub login.
+  base_url: https://decap-oauth-worker.jgregory-bc5.workers.dev
+
+# Lets you edit locally with `npx decap-server` (no OAuth needed). Decap only
+# uses this on localhost; on the live site it uses the GitHub backend above.
+local_backend: true
+
+# CMS-uploaded images: committed to public/images/blog, referenced as /images/blog.
+media_folder: "public/images/blog"
+public_folder: "/images/blog"
+
+collections:
+  - name: "blog"
+    label: "Blog"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Author", name: "author", widget: "string", default: "John Gregory" }
+      - { label: "Featured Image", name: "image", widget: "image", required: false }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Body", name: "body", widget: "markdown" }
