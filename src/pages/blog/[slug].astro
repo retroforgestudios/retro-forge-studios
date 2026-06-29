@@ -1,0 +1,51 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CTABanner from "../../components/sections/CTABanner.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <!-- Post header -->
+  <section class="bg-charcoal px-4 py-16 text-center sm:px-6">
+    <div class="mx-auto max-w-2xl">
+      <p class="text-marker text-lg text-amber">the blog</p>
+      <h1 class="mt-1 text-3xl text-white sm:text-4xl">{post.data.title}</h1>
+      <p class="mt-3 text-sm text-gray-300">
+        {post.data.date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+        &middot; {post.data.author}
+      </p>
+    </div>
+  </section>
+
+  <!-- Post body -->
+  <section class="bg-band px-4 py-16 sm:px-6">
+    <div class="mx-auto max-w-2xl">
+      <a href="/blog/" class="text-sm font-semibold text-teal-deep hover:underline">&larr; Back to blog</a>
+
+      {post.data.image && (
+        <img src={post.data.image} alt={post.data.title} class="mt-6 w-full rounded-xl border border-surface" />
+      )}
+
+      <div class="prose prose-lg mt-8 max-w-none prose-headings:font-display prose-a:text-teal-deep">
+        <Content />
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    heading="Ready to grow your business?"
+    subtext="Let's talk through what's actually worth doing — no pressure, no jargon."
+    buttonLabel="Book a free call"
+  />
+</BaseLayout>

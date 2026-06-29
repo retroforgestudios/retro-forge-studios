@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography"; /* enables the `prose` classes for blog posts */
 
 @theme {
   /* Brand palette */

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 338">
+  <rect width="600" height="338" fill="#202020" />
+  <!-- browser window -->
+  <rect x="200" y="92" width="200" height="132" rx="12" fill="none" stroke="#4caac9" stroke-width="8" />
+  <line x1="200" y1="124" x2="400" y2="124" stroke="#4caac9" stroke-width="8" />
+  <circle cx="220" cy="108" r="4" fill="#4caac9" />
+  <circle cx="236" cy="108" r="4" fill="#4caac9" />
+  <circle cx="252" cy="108" r="4" fill="#4caac9" />
+  <!-- magnifying glass -->
+  <circle cx="322" cy="178" r="32" fill="none" stroke="#ef9c2f" stroke-width="10" />
+  <line x1="346" y1="202" x2="378" y2="234" stroke="#ef9c2f" stroke-width="12" stroke-linecap="round" />
+  <text x="300" y="292" font-family="'Carter One', sans-serif" font-size="26" fill="#ef9c2f" text-anchor="middle">Online Audit</text>
+</svg>
