@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 338">
+  <rect width="600" height="338" fill="#202020" />
+  <rect x="210" y="120" width="180" height="56" rx="12" fill="#4caac9" />
+  <text x="300" y="156" font-family="'Carter One', sans-serif" font-size="22" fill="#202020" text-anchor="middle">Book Now</text>
+  <path d="M360 168 l0 46 12 -12 10 20 9 -4 -10 -20 17 0 z" fill="#ef9c2f" stroke="#202020" stroke-width="3" />
+  <text x="300" y="270" font-family="'Carter One', sans-serif" font-size="26" fill="#ef9c2f" text-anchor="middle">Built to Convert</text>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 338">
+  <rect width="600" height="338" fill="#202020" />
+  <g fill="#ef9c2f">
+    <path d="M180 130 l7 21 22 0 -18 13 7 21 -18 -13 -18 13 7 -21 -18 -13 22 0 z" />
+    <path d="M240 130 l7 21 22 0 -18 13 7 21 -18 -13 -18 13 7 -21 -18 -13 22 0 z" />
+    <path d="M300 130 l7 21 22 0 -18 13 7 21 -18 -13 -18 13 7 -21 -18 -13 22 0 z" />
+    <path d="M360 130 l7 21 22 0 -18 13 7 21 -18 -13 -18 13 7 -21 -18 -13 22 0 z" />
+    <path d="M420 130 l7 21 22 0 -18 13 7 21 -18 -13 -18 13 7 -21 -18 -13 22 0 z" />
+  </g>
+  <text x="300" y="250" font-family="'Carter One', sans-serif" font-size="26" fill="#4caac9" text-anchor="middle">More Reviews</text>
+</svg>

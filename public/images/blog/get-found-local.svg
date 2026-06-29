@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 338">
+  <rect width="600" height="338" fill="#202020" />
+  <path d="M300 70 a58 58 0 0 1 58 58 c0 44 -58 100 -58 100 s-58 -56 -58 -100 a58 58 0 0 1 58 -58 z" fill="none" stroke="#4caac9" stroke-width="10" />
+  <circle cx="300" cy="128" r="22" fill="#ef9c2f" />
+  <text x="300" y="300" font-family="'Carter One', sans-serif" font-size="26" fill="#ef9c2f" text-anchor="middle">Get Found Local</text>
+</svg>

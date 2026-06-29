@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 338">
+  <rect width="600" height="338" fill="#202020" />
+  <path d="M300 90 l14 38 38 14 -38 14 -14 38 -14 -38 -38 -14 38 -14 z" fill="#ef9c2f" />
+  <circle cx="232" cy="120" r="8" fill="#4caac9" />
+  <circle cx="372" cy="190" r="8" fill="#4caac9" />
+  <text x="300" y="300" font-family="'Carter One', sans-serif" font-size="26" fill="#ef9c2f" text-anchor="middle">AI, Honestly</text>
+</svg>
