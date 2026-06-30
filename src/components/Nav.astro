@@ -1,7 +1,14 @@
 ---
-import { NAV_LINKS } from "../data/site";
+import { NAV_LINKS, SERVICES, MENU_FEATURE } from "../data/site";
+import MegaMenu from "./MegaMenu.astro";
 
 const currentPath = new URL(Astro.request.url).pathname;
+
+const serviceLinks = SERVICES.map((s) => ({
+  href: `/services/${s.slug}`,
+  label: s.name,
+  description: s.teaser,
+}));
 ---
 
 <header class="sticky top-0 z-50 bg-charcoal/95 shadow-xl shadow-black/50 backdrop-blur">
@@ -11,19 +18,34 @@ const currentPath = new URL(Astro.request.url).pathname;
     </a>
 
     <ul class="hidden items-center gap-6 md:flex">
-      {NAV_LINKS.map((link) => (
-        <li>
-          <a
-            href={link.href}
-            class:list={[
-              "text-sm font-semibold transition-colors hover:text-teal",
-              currentPath === link.href ? "text-teal" : "text-gray-200",
-            ]}
-          >
-            {link.label}
-          </a>
-        </li>
-      ))}
+      {NAV_LINKS.map((link) => {
+        if (link.href === "/services") {
+          return (
+            <MegaMenu
+              label={link.label}
+              href="/services"
+              active={currentPath.startsWith("/services")}
+              linksHeading="what i do"
+              links={serviceLinks}
+              feature={MENU_FEATURE}
+            />
+          );
+        }
+
+        return (
+          <li>
+            <a
+              href={link.href}
+              class:list={[
+                "text-sm font-semibold transition-colors hover:text-teal",
+                currentPath === link.href ? "text-teal" : "text-gray-200",
+              ]}
+            >
+              {link.label}
+            </a>
+          </li>
+        );
+      })}
     </ul>
 
     <a
@@ -47,19 +69,40 @@ const currentPath = new URL(Astro.request.url).pathname;
   </nav>
 
   <ul id="nav-mobile" class="hidden flex-col gap-1 border-t border-surface px-4 pb-4 md:hidden">
-    {NAV_LINKS.map((link) => (
-      <li>
-        <a
-          href={link.href}
-          class:list={[
-            "block rounded-md px-3 py-3 text-sm font-semibold",
-            currentPath === link.href ? "text-teal" : "text-gray-200",
-          ]}
-        >
-          {link.label}
-        </a>
-      </li>
-    ))}
+    {NAV_LINKS.map((link) => {
+      if (link.href === "/services") {
+        return (
+          <li>
+            <a href="/services" class="block px-3 pt-3 text-marker text-sm text-amber">Services</a>
+            {serviceLinks.map((sub) => (
+              <a
+                href={sub.href}
+                class:list={[
+                  "block rounded-md py-2 pl-6 pr-3 text-sm font-semibold",
+                  currentPath === sub.href ? "text-teal" : "text-gray-200",
+                ]}
+              >
+                {sub.label}
+              </a>
+            ))}
+          </li>
+        );
+      }
+
+      return (
+        <li>
+          <a
+            href={link.href}
+            class:list={[
+              "block rounded-md px-3 py-3 text-sm font-semibold",
+              currentPath === link.href ? "text-teal" : "text-gray-200",
+            ]}
+          >
+            {link.label}
+          </a>
+        </li>
+      );
+    })}
     <li>
       <a href="/contact" class="mt-2 block rounded-md bg-red px-3 py-3 text-center text-sm font-bold text-white transition duration-200 hover:bg-red/90">
         Book a free call

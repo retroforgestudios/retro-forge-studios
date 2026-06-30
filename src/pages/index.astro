@@ -68,7 +68,7 @@ const latestPosts = (await getCollection("blog"))
     <SectionHeader onLight eyebrow="what i do" heading="Three ways I help your business grow" />
     <div class="mx-auto mt-12 grid max-w-content grid-cols-1 gap-6 sm:grid-cols-3">
       {SERVICES.map((service) => (
-        <ServiceCard name={service.name} teaser={service.teaser} href={`/services#${service.slug}`} />
+        <ServiceCard name={service.name} teaser={service.teaser} href={`/services/${service.slug}`} />
       ))}
     </div>
   </section>

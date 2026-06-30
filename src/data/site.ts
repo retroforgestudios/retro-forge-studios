@@ -17,6 +17,16 @@ export const NAV_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
+// Featured CTA card on the right side of the Services mega-menu in the nav.
+export const MENU_FEATURE = {
+  eyebrow: "Not sure where to start?",
+  title: "Book a free call",
+  text: "No pressure, no jargon — let's figure out the right mix for your business.",
+  image: "/images/menu/book-call.svg",
+  ctaLabel: "Book a free call",
+  href: "/contact",
+};
+
 export const HERO_HEADLINE = "Marketing that hits different.";
 
 export const STATS = [
@@ -44,6 +54,7 @@ export const SERVICES = [
   {
     slug: "content-creation",
     name: "Content Creation",
+    icon: "M7 4h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM9 12h6M9 16h6",
     teaser: "High-quality content that sounds like you, not a robot — built fast with AI, polished by hand.",
     heading: "Content that sounds like you, built at AI speed",
     included: [
@@ -58,6 +69,7 @@ export const SERVICES = [
   {
     slug: "brand-strategy-seo",
     name: "Brand Strategy & SEO",
+    icon: "M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm0-3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM20 20l-4.35-4.35",
     teaser: "A brand identity backed by real data, so you stand out in your market instead of blending in.",
     heading: "A brand identity backed by data, not guesswork",
     included: [
@@ -74,6 +86,7 @@ export const SERVICES = [
   {
     slug: "social-media-management",
     name: "Social Media Management",
+    icon: "M18 8a3 3 0 1 0-2.83-4H15a3 3 0 1 0 0 6 2.97 2.97 0 0 0 1.74-.56l-5.49 3.2a3 3 0 1 0 0 2.72l5.49 3.2A2.97 2.97 0 0 0 15 17a3 3 0 1 0 2.83-4",
     teaser: "Consistent posting, smarter timing, and content that actually gets engagement — not just likes.",
     heading: "Social media that builds real engagement, not just impressions",
     included: [
