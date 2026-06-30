@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/sections/PageHero.astro";
+import SectionHeader from "../../components/ui/SectionHeader.astro";
 import CTABanner from "../../components/sections/CTABanner.astro";
 import { SERVICES } from "../../data/site";
 
@@ -18,63 +19,99 @@ const others = SERVICES.filter((s) => s.slug !== service.slug);
 <BaseLayout title={service.name} description={service.teaser}>
   <PageHero eyebrow="what i do" heading={service.name} subhead={service.teaser} />
 
+  <!-- Intro -->
   <section class="px-4 py-16 sm:px-6">
     <div class="mx-auto max-w-3xl">
       <a href="/services" class="text-sm font-semibold text-teal-deep hover:underline">&larr; All services</a>
-
-      <div class="mt-6 rounded-2xl border border-surface bg-[#1f2125] p-8 sm:p-10">
-        <div class="flex items-center gap-4">
-          <div class="flex h-12 w-12 flex-none items-center justify-center rounded-full bg-charcoal text-amber">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6">
-              <path d={service.icon} />
-            </svg>
-          </div>
-          <h2 class="text-2xl text-white sm:text-3xl">{service.heading}</h2>
-        </div>
-
-        <div class="mt-8 grid gap-8 sm:grid-cols-2">
-          <div>
-            <p class="text-marker text-sm text-amber">included</p>
-            <ul class="mt-3 space-y-2">
-              {service.included.map((item) => (
-                <li class="flex gap-2 text-sm text-gray-300">
-                  <span class="text-teal">&#8226;</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div class="space-y-4">
-            {service.statCallout && (
-              <p class="rounded-md border border-amber/30 bg-amber/10 p-4 text-sm text-amber">
-                {service.statCallout}
-              </p>
-            )}
-            <p class="text-sm text-gray-400">
-              <span class="font-semibold text-white">Who it's for: </span>
-              {service.who}
-            </p>
-            <p class="text-sm text-gray-400">
-              <span class="font-semibold text-white">Outcome: </span>
-              {service.outcome}
-            </p>
-          </div>
-        </div>
+      <h2 class="mt-6 text-3xl text-gray-900 sm:text-4xl">{service.heading}</h2>
+      <div class="mt-6 space-y-4 text-lg leading-relaxed text-gray-700">
+        {service.intro.map((p) => <p>{p}</p>)}
       </div>
+    </div>
+  </section>
 
-      <div class="mt-12 border-t border-gray-300 pt-8">
-        <p class="text-marker text-amber-deep">other services</p>
-        <div class="mt-3 flex flex-wrap gap-3">
-          {others.map((s) => (
-            <a
-              href={`/services/${s.slug}`}
-              class="rounded-full border border-surface px-4 py-2 text-sm font-semibold text-gray-700 transition-colors hover:border-teal-deep hover:text-teal-deep"
-            >
-              {s.name}
-            </a>
-          ))}
+  <!-- What's included -->
+  <section class="bg-band px-4 py-16 sm:px-6">
+    <SectionHeader onLight eyebrow="what's included" heading="Everything you get" />
+    <div class="mx-auto mt-10 grid max-w-content gap-6 sm:grid-cols-2">
+      {service.included.map((item) => (
+        <div class="rounded-xl border border-surface bg-[#1f2125] p-6">
+          <h3 class="font-bold text-teal">{item.title}</h3>
+          <p class="mt-2 text-sm text-gray-300">{item.description}</p>
         </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Who it's for -->
+  <section class="px-4 py-16 sm:px-6">
+    <div class="mx-auto max-w-3xl">
+      <SectionHeader onLight align="left" eyebrow="who it's for" heading="This is for you if&hellip;" />
+      <ul class="mt-6 space-y-3">
+        {service.whoFor.map((item) => (
+          <li class="flex gap-3 text-gray-700">
+            <svg viewBox="0 0 24 24" class="mt-0.5 h-5 w-5 flex-none text-teal-deep" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="bg-band px-4 py-16 sm:px-6">
+    <SectionHeader onLight eyebrow="how it works" heading="How we'll work together" />
+    <div class="mx-auto mt-10 max-w-2xl space-y-8">
+      {service.steps.map((step, i) => (
+        <div class="flex gap-6">
+          <div class="flex h-14 w-14 flex-none items-center justify-center rounded-full bg-amber text-xl font-bold text-charcoal">
+            {`0${i + 1}`}
+          </div>
+          <div>
+            <h3 class="text-xl text-gray-900">{step.name}</h3>
+            <p class="mt-1 text-gray-700">{step.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Why it matters / outcome -->
+  <section class="px-4 py-16 sm:px-6">
+    <div class="mx-auto max-w-3xl rounded-2xl border border-amber/40 bg-amber/15 p-8 text-center sm:p-10">
+      <p class="text-lg text-amber-deep">{service.statCallout}</p>
+      <p class="text-marker mt-5 text-xl text-teal-deep">{service.outcome}</p>
+    </div>
+  </section>
+
+  <!-- FAQs -->
+  <section class="bg-band px-4 py-16 sm:px-6">
+    <SectionHeader onLight eyebrow="questions" heading="Common questions" />
+    <div class="mx-auto mt-10 max-w-2xl space-y-6">
+      {service.faqs.map((faq) => (
+        <div>
+          <p class="font-semibold text-gray-900">{faq.q}</p>
+          <p class="mt-1 text-gray-700">{faq.a}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Other services -->
+  <section class="px-4 py-12 sm:px-6">
+    <div class="mx-auto max-w-3xl text-center">
+      <p class="text-marker text-amber-deep">explore more</p>
+      <div class="mt-3 flex flex-wrap justify-center gap-3">
+        {others.map((s) => (
+          <a
+            href={`/services/${s.slug}`}
+            class="rounded-full border border-surface px-4 py-2 text-sm font-semibold text-gray-700 transition-colors hover:border-teal-deep hover:text-teal-deep"
+          >
+            {s.name}
+          </a>
+        ))}
       </div>
     </div>
   </section>
