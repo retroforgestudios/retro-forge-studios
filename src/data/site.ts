@@ -5,6 +5,20 @@ export const SITE = {
   name: "Retro Forge Studios",
   email: "jgregory@retroforgestudios.com",
   schedulerUrl: "https://meetings.hubspot.com/retroforgestudios",
+  // One-sentence description used for SEO metadata and structured data.
+  description:
+    "AI-enhanced content, brand strategy & SEO, and social media management for Nebraska & Iowa small businesses.",
+};
+
+// Analytics & search-console. Fill these in and they wire up automatically.
+export const ANALYTICS = {
+  // Google Analytics 4 Measurement ID — looks like "G-XXXXXXXXXX".
+  // GA4 → Admin → Data streams → your stream → Measurement ID.
+  // Leave "" to disable analytics entirely.
+  googleTagId: "",
+  // Google Search Console "HTML tag" verification code (just the content value,
+  // e.g. "abc123..."). Leave "" if you verify via DNS or your GA connection.
+  googleSiteVerification: "",
 };
 
 export const NAV_LINKS = [

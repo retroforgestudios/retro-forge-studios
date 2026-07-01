@@ -7,6 +7,7 @@ import "@fontsource/open-sans/700.css";
 import "../styles/global.css";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
+import { SITE, SOCIAL_LINKS, ANALYTICS } from "../data/site";
 
 interface Props {
   title: string;
@@ -17,6 +18,28 @@ const { title, description } = Astro.props;
 const pageTitle = `${title} | Retro Forge Studios`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL("/images/hero-forge.webp", Astro.site);
+
+const analyticsEnabled = ANALYTICS.googleTagId.length > 0;
+
+// LocalBusiness / ProfessionalService structured data (helps Google understand
+// the business for local search). Output site-wide.
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: SITE.name,
+  description: SITE.description,
+  url: new URL("/", Astro.site).href,
+  email: SITE.email,
+  image: ogImageURL.href,
+  logo: new URL("/images/icon-mark.png", Astro.site).href,
+  priceRange: "$$",
+  founder: { "@type": "Person", name: "John Gregory" },
+  areaServed: [
+    { "@type": "State", name: "Nebraska" },
+    { "@type": "State", name: "Iowa" },
+  ],
+  sameAs: SOCIAL_LINKS.map((s) => s.href),
+};
 ---
 
 <!doctype html>
@@ -24,6 +47,22 @@ const ogImageURL = new URL("/images/hero-forge.webp", Astro.site);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {analyticsEnabled && (
+      <Fragment>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS.googleTagId}`}></script>
+        <script is:inline define:vars={{ gaId: ANALYTICS.googleTagId }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() { dataLayer.push(arguments); }
+          gtag("js", new Date());
+          gtag("config", gaId);
+        </script>
+      </Fragment>
+    )}
+    {ANALYTICS.googleSiteVerification && (
+      <meta name="google-site-verification" content={ANALYTICS.googleSiteVerification} />
+    )}
+
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -43,6 +82,8 @@ const ogImageURL = new URL("/images/hero-forge.webp", Astro.site);
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageURL} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} is:inline />
   </head>
   <body class="flex min-h-screen flex-col">
     <Nav />
