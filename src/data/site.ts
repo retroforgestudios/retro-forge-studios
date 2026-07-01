@@ -125,7 +125,7 @@ export const SERVICES = [
     faqs: [
       { q: "How long until I see SEO results?", a: "SEO is a build, not a switch. Some fixes (like your Google Business Profile) help quickly; ranking gains typically build over a few months. I'll set honest expectations up front." },
       { q: "Do I need a full rebrand?", a: "Not necessarily. Often it's sharpening your message and positioning, not redoing your logo. We start with what'll move the needle most." },
-      { q: "Can you guarantee a #1 ranking?", a: "Nobody legitimately can — and anyone who promises it is lying. What I can do is apply proven, white-hat strategies that steadily improve where you show up." },
+      { q: "Can you guarantee a #1 ranking?", a: "Nobody legitimately can — and anyone who promises it isn't being straight with you. What I can do is apply proven, white-hat strategies that steadily improve where you show up." },
     ],
   },
   {
@@ -202,7 +202,7 @@ export const PRICING_TIERS = [
   },
   {
     name: "Growth",
-    tagline: "fan favorite",
+    tagline: "best value",
     price: "$199/mo",
     featured: true,
     features: [
