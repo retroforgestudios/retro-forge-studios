@@ -31,6 +31,25 @@ export const NAV_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
+// Downloadable lead magnet — powers the /questionnaire landing page.
+export const LEAD_MAGNET = {
+  eyebrow: "Free Download",
+  title: "The Website Project Questionnaire",
+  subtitle:
+    "The exact questions to answer before you build (or rebuild) your website — so you start your project with clarity instead of guesswork.",
+  image: "/images/questionnaire-cover.svg",
+  bullets: [
+    "Nail your elevator pitch and your ideal customer",
+    "Define your brand's look, feel, and personality",
+    "Pin down the must-have features your site actually needs",
+    "Get clear on content, timeline, and budget up front",
+  ],
+  fileUrl: "/downloads/website-project-questionnaire.pdf",
+  // Lead submissions are emailed here via FormSubmit (no signup). Change to
+  // point leads wherever you want (e.g. a HubSpot form endpoint later).
+  formEndpoint: "https://formsubmit.co/jgregory@retroforgestudios.com",
+};
+
 // Featured CTA card on the right side of the Services mega-menu in the nav.
 export const MENU_FEATURE = {
   eyebrow: "Not sure where to start?",

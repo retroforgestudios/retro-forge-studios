@@ -1,0 +1,93 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { LEAD_MAGNET } from "../data/site";
+
+const thankYouUrl = new URL("/questionnaire/?sent=1", Astro.site).href;
+const fieldClass =
+  "mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-teal-deep focus:outline-none focus:ring-1 focus:ring-teal-deep";
+---
+
+<BaseLayout title={LEAD_MAGNET.title} description={LEAD_MAGNET.subtitle}>
+  <section class="bg-charcoal px-4 py-20 sm:px-6">
+    <div class="mx-auto grid max-w-content items-center gap-12 md:grid-cols-2">
+      <!-- Left: pitch -->
+      <div>
+        <p class="text-marker text-lg text-amber">{LEAD_MAGNET.eyebrow}</p>
+        <h1 class="mt-2 text-4xl text-white sm:text-5xl">{LEAD_MAGNET.title}</h1>
+        <p class="mt-4 text-lg text-gray-300">{LEAD_MAGNET.subtitle}</p>
+
+        <ul class="mt-6 space-y-3">
+          {LEAD_MAGNET.bullets.map((b) => (
+            <li class="flex gap-3 text-gray-200">
+              <svg viewBox="0 0 24 24" class="mt-0.5 h-5 w-5 flex-none text-teal" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              {b}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Right: cover + capture form / success -->
+      <div class="rounded-2xl bg-white p-8 shadow-xl">
+        <img
+          src={LEAD_MAGNET.image}
+          alt={LEAD_MAGNET.title}
+          class="mx-auto w-full max-w-xs rounded-lg"
+          width="400"
+          height="280"
+        />
+
+        <!-- Success state (after submit, ?sent=1) -->
+        <div id="lm-success" hidden class="mt-6 text-center">
+          <p class="text-xl font-bold text-gray-900">You're in! 🎉</p>
+          <p class="mt-2 text-sm text-gray-600">Your questionnaire is ready — and a copy is on its way to your inbox.</p>
+          <a
+            href={LEAD_MAGNET.fileUrl}
+            target="_blank"
+            rel="noopener"
+            class="mt-6 inline-block w-full rounded-md bg-red px-6 py-3 font-bold text-white transition duration-200 hover:bg-red/90"
+          >
+            Download the questionnaire
+          </a>
+        </div>
+
+        <!-- Capture form -->
+        <form id="lm-form" action={LEAD_MAGNET.formEndpoint} method="POST" class="mt-6 space-y-4">
+          <p class="text-center text-sm font-semibold text-gray-700">
+            Enter your details and we'll send it right over.
+          </p>
+          <div>
+            <label for="name" class="block text-sm font-semibold text-gray-700">Name</label>
+            <input type="text" id="name" name="name" required class={fieldClass} />
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-semibold text-gray-700">Email</label>
+            <input type="email" id="email" name="email" required class={fieldClass} />
+          </div>
+
+          <input type="hidden" name="_subject" value={`New questionnaire download: ${LEAD_MAGNET.title}`} />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_next" value={thankYouUrl} />
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+          <button
+            type="submit"
+            class="w-full rounded-md bg-red px-6 py-3 font-bold text-white transition duration-200 hover:bg-red/90"
+          >
+            Send me the questionnaire
+          </button>
+          <p class="text-center text-xs text-gray-400">No spam. Unsubscribe anytime.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script is:inline>
+    if (location.search.includes("sent=1")) {
+      document.getElementById("lm-success")?.removeAttribute("hidden");
+      document.getElementById("lm-form")?.setAttribute("hidden", "");
+    }
+  </script>
+</BaseLayout>
