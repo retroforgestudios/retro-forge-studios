@@ -13,9 +13,31 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+// BlogPosting structured data — helps posts qualify for richer search results.
+const postUrl = new URL(`/blog/${post.id}/`, Astro.site).href;
+const imageUrl = new URL(post.data.image ?? "/images/hero-forge.webp", Astro.site).href;
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.data.title,
+  description: post.data.description,
+  image: imageUrl,
+  datePublished: post.data.date.toISOString(),
+  dateModified: post.data.date.toISOString(),
+  author: { "@type": "Person", name: post.data.author },
+  publisher: {
+    "@type": "Organization",
+    name: "Retro Forge Studios",
+    logo: { "@type": "ImageObject", url: new URL("/images/icon-mark.png", Astro.site).href },
+  },
+  mainEntityOfPage: { "@type": "WebPage", "@id": postUrl },
+};
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} is:inline />
+
   <!-- Post header -->
   <section class="bg-charcoal px-4 py-16 text-center sm:px-6">
     <div class="mx-auto max-w-2xl">
