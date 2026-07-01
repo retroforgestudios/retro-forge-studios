@@ -55,11 +55,14 @@ const latestPosts = (await getCollection("blog"))
   <section class="border-y border-surface bg-band py-8">
     <div class="mx-auto max-w-content px-4 text-center sm:px-6">
       <p class="text-sm text-gray-700">
-        Powered by the tools that actually move the needle — built by a veteran who calls Nebraska home.
+        The tools I use every day to get results — built by a veteran who calls Nebraska home.
       </p>
       <div class="mt-6 flex flex-nowrap items-center justify-center gap-x-4 overflow-x-auto sm:gap-x-10">
         {TRUST_TOOLS.map((tool) => <ToolIcon name={tool} class="h-5 shrink-0 sm:h-7" />)}
       </div>
+      <p class="mt-4 text-xs text-gray-500">
+        Product names and logos are trademarks of their respective owners. Not an official partner or endorsement.
+      </p>
     </div>
   </section>
 
@@ -87,9 +90,9 @@ const latestPosts = (await getCollection("blog"))
       <div>
         <h2 class="text-3xl text-gray-900 sm:text-4xl">Why a local studio instead of a big agency?</h2>
         <p class="mt-6 text-gray-700">
-          Big agencies hand you off to a junior account manager and a 12-month contract. I'm the one doing the work,
-          and I know the Nebraska and Iowa market because I live in it. You get agency-level strategy and AI-powered
-          speed, with the kind of personal attention a small business actually needs.
+          Many agencies lock you into a long contract and hand you off to a junior account manager. I don't — you work
+          directly with me. And I know the Nebraska and Iowa market because I live in it. You get agency-level strategy
+          and AI-powered speed, with the kind of personal attention a small business actually needs.
         </p>
       </div>
     </div>

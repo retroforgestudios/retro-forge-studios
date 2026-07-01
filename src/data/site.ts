@@ -34,7 +34,7 @@ export const STATS = [
     value: "46%",
     label: "of all Google searches have local intent",
     sourceLabel: "Think with Google, 2026",
-    sourceUrl: "https://biziq.com/blog/local-seo-statistics-2026/",
+    sourceUrl: "https://www.thinkwithgoogle.com/consumer-insights/consumer-trends/local-search-statistics/",
   },
   {
     value: "97%",
@@ -46,7 +46,7 @@ export const STATS = [
     value: "98%",
     label: "of small businesses now use at least one AI tool",
     sourceLabel: "AP News, 2026",
-    sourceUrl: "https://seoprofy.com/blog/local-seo-statistics/",
+    sourceUrl: "https://apnews.com/article/small-business-artificial-intelligence-productivity-f6fa7b2a1ce0a9f2e5b8b48670b3098a",
   },
 ];
 
