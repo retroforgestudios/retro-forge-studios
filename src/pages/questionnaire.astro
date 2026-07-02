@@ -69,6 +69,7 @@ const fieldClass =
           <input type="hidden" name="_subject" value={`New questionnaire download: ${LEAD_MAGNET.title}`} />
           <input type="hidden" name="_captcha" value="false" />
           <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_autoresponse" value={LEAD_MAGNET.autoResponse} />
           <input type="hidden" name="_next" value={thankYouUrl} />
           <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
 
