@@ -45,8 +45,8 @@ export const LEAD_MAGNET = {
     "Get clear on content, timeline, and budget up front",
   ],
   fileUrl: "/downloads/website-project-questionnaire.pdf",
-  // Lead submissions are emailed here via FormSubmit (no signup). Change to
-  // point leads wherever you want (e.g. a HubSpot form endpoint later).
+  // Lead submissions use the same FormSubmit build as the template's contact
+  // form (no signup — FormSubmit emails each submission to the address below).
   formEndpoint: "https://formsubmit.co/jgregory@retroforgestudios.com",
 };
 
