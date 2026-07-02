@@ -45,11 +45,9 @@ export const LEAD_MAGNET = {
     "Get clear on content, timeline, and budget up front",
   ],
   fileUrl: "/downloads/website-project-questionnaire.pdf",
-  // Lead submissions use the same FormSubmit build as the template's contact
-  // form (no signup — FormSubmit emails each submission to the address below).
-  formEndpoint: "https://formsubmit.co/jgregory@retroforgestudios.com",
-  // Auto-reply emailed to the person who fills out the form (FormSubmit
-  // _autoresponse). Plain text only — no attachment — so it links to the PDF.
+  // Auto-reply emailed to the person who fills out the form (sent via
+  // src/pages/api/lead.ts using Cloudflare Email Sending). Plain text only —
+  // no attachment — so it links to the PDF.
   autoResponse:
     "Thanks for grabbing The Website Project Questionnaire!\n\nHere's your download: https://retroforgestudios.com/downloads/website-project-questionnaire.pdf\n\nWork through it at your own pace — it'll get you clear on exactly what your website needs before you build. Reply to this email anytime if you have questions or want to talk through your project.\n\n— Johnny, Retro Forge Studios",
 };

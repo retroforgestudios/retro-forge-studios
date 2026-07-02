@@ -2,7 +2,6 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { LEAD_MAGNET } from "../data/site";
 
-const thankYouUrl = new URL("/questionnaire/?sent=1", Astro.site).href;
 const fieldClass =
   "mt-1 w-full rounded-md border border-gray-300 px-3 py-2 focus:border-teal-deep focus:outline-none focus:ring-1 focus:ring-teal-deep";
 ---
@@ -53,7 +52,7 @@ const fieldClass =
         </div>
 
         <!-- Capture form -->
-        <form id="lm-form" action={LEAD_MAGNET.formEndpoint} method="POST" class="mt-6 space-y-4">
+        <form id="lm-form" action="/api/lead" method="POST" class="mt-6 space-y-4">
           <p class="text-center text-sm font-semibold text-gray-700">
             Enter your details and we'll send it right over.
           </p>
@@ -66,10 +65,6 @@ const fieldClass =
             <input type="email" id="email" name="email" required class={fieldClass} />
           </div>
 
-          <input type="hidden" name="_subject" value={`New questionnaire download: ${LEAD_MAGNET.title}`} />
-          <input type="hidden" name="_template" value="table" />
-          <input type="hidden" name="_autoresponse" value={LEAD_MAGNET.autoResponse} />
-          <input type="hidden" name="_next" value={thankYouUrl} />
           <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
 
           <button
