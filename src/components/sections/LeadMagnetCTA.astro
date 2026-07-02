@@ -1,0 +1,43 @@
+---
+// Reusable promo strip for the questionnaire lead magnet. Config-driven from
+// LEAD_MAGNET so copy/links stay in one place. Used on the homepage and at the
+// end of every blog post to funnel readers to /questionnaire.
+import Button from "../ui/Button.astro";
+import { LEAD_MAGNET } from "../../data/site";
+
+interface Props {
+  // "band" = light section for the homepage; "card" = bordered card for blog posts.
+  variant?: "band" | "card";
+}
+const { variant = "band" } = Astro.props;
+
+const wrapperClass =
+  variant === "card"
+    ? "mt-12 rounded-2xl border border-surface bg-[#1f2125] p-8"
+    : "bg-band px-4 py-16 sm:px-6";
+---
+
+<section class={wrapperClass}>
+  <div class="mx-auto flex max-w-3xl flex-col items-center gap-8 sm:flex-row">
+    <img
+      src={LEAD_MAGNET.image}
+      alt={LEAD_MAGNET.title}
+      class="w-40 flex-none rounded-lg sm:w-48"
+      width="400"
+      height="280"
+      loading="lazy"
+    />
+    <div class="text-center sm:text-left">
+      <p class="text-marker text-sm text-amber">{LEAD_MAGNET.eyebrow}</p>
+      <h2 class={variant === "card" ? "mt-1 text-2xl text-white" : "mt-1 text-2xl text-gray-900 sm:text-3xl"}>
+        {LEAD_MAGNET.title}
+      </h2>
+      <p class={variant === "card" ? "mt-3 text-sm text-gray-300" : "mt-3 text-gray-700"}>
+        {LEAD_MAGNET.subtitle}
+      </p>
+      <div class="mt-6">
+        <Button href="/questionnaire">Get the free questionnaire</Button>
+      </div>
+    </div>
+  </div>
+</section>

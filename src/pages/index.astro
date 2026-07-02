@@ -5,6 +5,7 @@ import SectionHeader from "../components/ui/SectionHeader.astro";
 import ServiceCard from "../components/sections/ServiceCard.astro";
 import StatsBar from "../components/sections/StatsBar.astro";
 import CTABanner from "../components/sections/CTABanner.astro";
+import LeadMagnetCTA from "../components/sections/LeadMagnetCTA.astro";
 import VeteranPill from "../components/badges/VeteranPill.astro";
 import ToolIcon from "../components/ui/ToolIcon.astro";
 import { getCollection } from "astro:content";
@@ -107,8 +108,11 @@ const latestPosts = (await getCollection("blog"))
     <a href="/how-i-work" class="mt-6 inline-block font-semibold text-teal hover:underline">See how I work &rarr;</a>
   </section>
 
+  <!-- Lead magnet -->
+  <LeadMagnetCTA variant="band" />
+
   <!-- Stats bar -->
-  <section class="bg-band px-4 py-20 sm:px-6">
+  <section class="px-4 py-20 sm:px-6">
     <StatsBar onLight />
   </section>
 

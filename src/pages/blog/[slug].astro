@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CTABanner from "../../components/sections/CTABanner.astro";
+import LeadMagnetCTA from "../../components/sections/LeadMagnetCTA.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -62,6 +63,8 @@ const articleSchema = {
       <div class="prose prose-lg mt-8 max-w-none prose-headings:font-display prose-a:text-teal-deep">
         <Content />
       </div>
+
+      <LeadMagnetCTA variant="card" />
     </div>
   </section>
 
