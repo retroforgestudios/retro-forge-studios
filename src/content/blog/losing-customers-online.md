@@ -1,7 +1,7 @@
 ---
 title: "5 Signs Your Local Business Is Losing Customers Online (and How to Fix Them)"
 date: 2026-06-28
-author: "John Gregory"
+author: "Johnny Gregory"
 image: "/images/blog/online-presence-audit.svg"
 description: "Before a customer ever calls you, they check you out online. Here's a quick, honest audit of what they're finding — and what to do about it."
 ---

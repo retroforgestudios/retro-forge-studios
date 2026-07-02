@@ -1,7 +1,7 @@
 ---
 title: "Should Your Small Business Use AI for Marketing? An Honest Take"
 date: 2026-06-21
-author: "John Gregory"
+author: "Johnny Gregory"
 image: "/images/blog/ai-honestly.svg"
 description: "AI can save you hours — or make you sound like everyone else. Here's where it helps, where it hurts, and how to use it without losing your voice."
 ---

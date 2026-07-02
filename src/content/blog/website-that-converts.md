@@ -1,7 +1,7 @@
 ---
 title: "Your Website Has 5 Seconds to Make a Sale. Here's What It Needs."
 date: 2026-06-15
-author: "John Gregory"
+author: "Johnny Gregory"
 image: "/images/blog/built-to-convert.svg"
 description: "Visitors decide in seconds whether to stay or bounce. Here are the five things every small business homepage needs to turn clicks into customers."
 ---

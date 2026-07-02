@@ -1,7 +1,7 @@
 ---
 title: "The Free Google Tool Most Local Businesses Set Up Wrong"
 date: 2026-06-26
-author: "John Gregory"
+author: "Johnny Gregory"
 image: "/images/blog/get-found-local.svg"
 description: "Your Google Business Profile is the most powerful free marketing you have — and most businesses barely use half of it. Here's how to fix that."
 ---

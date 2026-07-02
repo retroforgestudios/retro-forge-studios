@@ -1,7 +1,7 @@
 ---
 title: "How to Post on Social Media Consistently Without It Eating Your Week"
 date: 2026-06-24
-author: "John Gregory"
+author: "Johnny Gregory"
 image: "/images/blog/stay-consistent.svg"
 description: "Consistency beats going viral every time — but only if you can keep it up. Here's the batching system that makes it sustainable."
 ---

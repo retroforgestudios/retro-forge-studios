@@ -1,7 +1,7 @@
 ---
 title: "How to Get More Google Reviews (Without Being Annoying)"
 date: 2026-06-18
-author: "John Gregory"
+author: "Johnny Gregory"
 image: "/images/blog/more-reviews.svg"
 description: "Reviews make or break local businesses. Here's how to get a steady stream of them without nagging your customers."
 ---
