@@ -1,0 +1,57 @@
+---
+// Auto-rotating strip of tool logos — avoids the horizontal-scroll problem
+// the static flex row had on mobile when all icons didn't fit on screen.
+import ToolIcon from "../ui/ToolIcon.astro";
+import { TRUST_TOOLS } from "../../data/site";
+---
+
+<div class="marquee mt-6" role="list" aria-label="Tools used">
+  <div class="marquee-track">
+    {[...TRUST_TOOLS, ...TRUST_TOOLS].map((tool) => (
+      <span class="marquee-item" role="listitem">
+        <ToolIcon name={tool} class="h-6 sm:h-7" />
+      </span>
+    ))}
+  </div>
+</div>
+
+<style>
+  .marquee {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    align-items: center;
+    gap: 2.5rem;
+    animation: marquee 22s linear infinite;
+  }
+
+  .marquee-item {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      /* Track is duplicated content, so -50% is exactly one full loop. */
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
+    .marquee {
+      overflow-x: auto;
+    }
+  }
+</style>
