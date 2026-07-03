@@ -129,6 +129,22 @@ export const LAUNCH_BUILD_FAQS = [
   },
 ];
 
+// Live example builds shown on the Website Design service page.
+export const WEBSITE_PORTFOLIO = [
+  {
+    name: "eCommerce Site",
+    description: "A product-based storefront with cart and checkout built in.",
+    image: "/images/portfolio/ecommerce-template.webp",
+    href: "https://client-site-template-a0y.pages.dev/",
+  },
+  {
+    name: "Insurance Agent Site",
+    description: "A service-based agency site built to generate quote requests.",
+    image: "/images/portfolio/insurance-template.webp",
+    href: "https://gemini-template-website.jgregory-bc5.workers.dev/",
+  },
+];
+
 export const SERVICES = [
   {
     slug: "content-creation",
@@ -266,6 +282,7 @@ export const SERVICES = [
       { title: "Fixed price, fixed scope", description: "No surprise invoices — you know the cost before we start." },
       { title: "30-day check-in", description: "Included at no extra charge, so nothing breaks and nothing gets stale right after launch." },
     ],
+    portfolio: WEBSITE_PORTFOLIO,
     whoFor: [
       "Your current site looks outdated, or you don't have one yet",
       "You want something built around your brand — not a recycled template",
