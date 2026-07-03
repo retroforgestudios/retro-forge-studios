@@ -135,6 +135,10 @@ export const LAUNCH_BUILD_FAQS = [
     q: "What happens after it launches?",
     a: "You get a 30-day check-in, no extra charge. If you want help keeping it growing after that — SEO, content, reviews — we'll talk about it then, once you've seen what I actually deliver.",
   },
+  {
+    q: "Are you an Omaha web design company, or an out-of-state agency?",
+    a: "I'm based right here in Omaha, NE. That means you're talking to the person actually designing your site, not a project manager relaying notes to a team overseas — and I understand the Nebraska and Iowa market because I live and work in it.",
+  },
 ];
 
 // Live example builds shown on the Website Design service page.
@@ -273,10 +277,10 @@ export const SERVICES = [
     slug: "website-design",
     name: "Website Design",
     icon: "M4 5h16v12H4z M9 20h6 M12 17v3",
-    teaser: "A custom, on-brand website — fixed price, fixed scope, live in days, not months.",
-    heading: "A custom website, without the agency price tag or timeline",
+    teaser: "Omaha's fixed-price web design studio — a custom, on-brand website built and launched in days, not months.",
+    heading: "Omaha web design, without the agency price tag or timeline",
     intro: [
-      "Most small business websites fall into one of two camps: a recycled template that looks like every other business in the industry, or an agency quote with a five-figure price tag and a months-long timeline. Neither actually fits a small business that just needs a site that looks great, works, and doesn't take forever.",
+      "Most small business websites fall into one of two camps: a recycled template that looks like every other business in the industry, or an agency quote with a five-figure price tag and a months-long timeline. Neither actually fits an Omaha small business that just needs a site that looks great, works, and doesn't take forever.",
       "A Launch Build is different. It's a custom-designed site built around your brand — not a theme you customize after the fact — with the forms, reviews, and e-commerce your business actually needs already wired in. AI speeds up the build so it moves in days instead of months, but every decision about how it looks and feels is still mine.",
       "You get a fixed price, a fixed scope, and a site that looks like a much bigger investment than it was.",
     ],

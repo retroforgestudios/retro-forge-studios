@@ -3,7 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/sections/PageHero.astro";
 import SectionHeader from "../../components/ui/SectionHeader.astro";
 import CTABanner from "../../components/sections/CTABanner.astro";
-import { SERVICES } from "../../data/site";
+import { SERVICES, SITE } from "../../data/site";
 
 export function getStaticPaths() {
   return SERVICES.map((service) => ({
@@ -14,9 +14,25 @@ export function getStaticPaths() {
 
 const { service } = Astro.props;
 const others = SERVICES.filter((s) => s.slug !== service.slug);
+
+// Per-service structured data — reinforces the site-wide ProfessionalService
+// schema with the specific offering + service area, for local search.
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  serviceType: service.name,
+  description: service.teaser,
+  provider: { "@type": "ProfessionalService", name: SITE.name, url: new URL("/", Astro.site).href },
+  areaServed: [
+    { "@type": "City", name: `${SITE.city}, ${SITE.region}` },
+    { "@type": "State", name: "Nebraska" },
+    { "@type": "State", name: "Iowa" },
+  ],
+};
 ---
 
 <BaseLayout title={service.name} description={service.teaser}>
+  <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} is:inline />
   <PageHero eyebrow="what i do" heading={service.name} subhead={service.teaser} />
 
   <!-- Intro -->
