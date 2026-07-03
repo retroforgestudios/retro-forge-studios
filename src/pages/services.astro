@@ -12,13 +12,13 @@ import { PROCESS_STEPS, SERVICES } from "../data/site";
 >
   <PageHero
     eyebrow="what i do"
-    heading="Three ways to grow, one local studio."
+    heading="Four ways to grow, one local studio."
     subhead="Whether you need a one-time push or ongoing monthly support, I act as a fast, tech-forward extension of your team — not another vendor to manage."
   />
 
   <!-- Service teaser cards -->
   <section class="px-4 py-16 sm:px-6">
-    <div class="mx-auto grid max-w-content grid-cols-1 gap-6 sm:grid-cols-3">
+    <div class="mx-auto grid max-w-content grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {SERVICES.map((service) => (
         <a
           href={`/services/${service.slug}`}

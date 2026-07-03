@@ -85,6 +85,50 @@ export const STATS = [
   },
 ];
 
+// The one-time website build offer, shown as its own featured block on the
+// Pricing page (separate from the recurring monthly PRICING_TIERS above).
+export const LAUNCH_BUILD = {
+  name: "Launch Build",
+  tagline: "The professional website your business deserves, without the agency price tag.",
+  description: "Fixed price. Fixed timeline. No compromises on how it looks.",
+  features: [
+    "Custom-designed, on-brand site (not a template)",
+    "Up to 20 pages, mobile-optimized",
+    "Formspree-powered contact/lead forms",
+    "Elfsight Google Reviews integration, so your reputation shows up front and center",
+    "Snipcart e-commerce*, if you're selling products online",
+    "Launches in days, not months",
+    "30-day check-in included, so nothing breaks and nothing gets stale",
+  ],
+  footnote: "*Snipcart billing is separate — see the FAQ below.",
+  cta: "Get your Launch Build quote",
+};
+
+// Shared FAQ content for the Launch Build website tier — used on both the
+// Website Design service page and the Pricing page's Launch Build section.
+export const LAUNCH_BUILD_FAQS = [
+  {
+    q: "How can it be this affordable if it's actually good?",
+    a: "Because AI took the slow, repetitive parts of building a website off my plate — not the design thinking. You're not paying for hours of manual coding anymore. You're paying for a decade of brand and design experience, applied fast.",
+  },
+  {
+    q: "Will it look like an AI-generated template?",
+    a: "No. Every Launch Build starts with your brand, your business, your customers — the same process I've used since I was doing brand work for accounts worth multi-million-dollar budgets. AI is the tool. The eye is mine.",
+  },
+  {
+    q: "What tools do you actually build with?",
+    a: "I use battle-tested tools, not homegrown plugins that break at the first update: Formspree for forms, Elfsight for live Google Reviews, and Snipcart for e-commerce — all fast, reliable, and easy for me to maintain if something needs to change down the road.",
+  },
+  {
+    q: "What's this Snipcart fee I keep seeing an asterisk next to?",
+    a: "Snipcart is the checkout system I use for e-commerce builds — it's excellent, but it's a separate service from me. Snipcart charges its own plan or per-transaction fee directly to you as the store owner, based on your sales volume. That cost isn't part of your Launch Build price and isn't something I mark up or profit from — it's simply the platform's fee for processing your sales securely. I'll walk you through their current pricing before we build your store, so there are no surprises.",
+  },
+  {
+    q: "What happens after it launches?",
+    a: "You get a 30-day check-in, no extra charge. If you want help keeping it growing after that — SEO, content, reviews — we'll talk about it then, once you've seen what I actually deliver.",
+  },
+];
+
 export const SERVICES = [
   {
     slug: "content-creation",
@@ -200,6 +244,44 @@ export const SERVICES = [
       { q: "Do you create the content or just post it?", a: "Both — I plan, create, and schedule the content, then handle engagement. You can be as hands-on or hands-off as you like." },
       { q: "Will you respond to comments and messages?", a: "Yes. Community engagement is part of it — responding to comments, DMs, and reviews so nothing (and no lead) slips through the cracks." },
     ],
+  },
+  {
+    slug: "website-design",
+    name: "Website Design",
+    icon: "M4 5h16v12H4z M9 20h6 M12 17v3",
+    teaser: "A custom, on-brand website — fixed price, fixed scope, live in days, not months.",
+    heading: "A custom website, without the agency price tag or timeline",
+    intro: [
+      "Most small business websites fall into one of two camps: a recycled template that looks like every other business in the industry, or an agency quote with a five-figure price tag and a months-long timeline. Neither actually fits a small business that just needs a site that looks great, works, and doesn't take forever.",
+      "A Launch Build is different. It's a custom-designed site built around your brand — not a theme you customize after the fact — with the forms, reviews, and e-commerce your business actually needs already wired in. AI speeds up the build so it moves in days instead of months, but every decision about how it looks and feels is still mine.",
+      "You get a fixed price, a fixed scope, and a site that looks like a much bigger investment than it was.",
+    ],
+    included: [
+      { title: "Custom design", description: "Built around your brand from the ground up — not a theme you customize after the fact." },
+      { title: "Up to 20 pages", description: "Fully mobile-optimized, so it looks and works great on every screen size." },
+      { title: "Contact & lead forms", description: "Powered by Formspree — reliable, spam-filtered, no bloated plugin to maintain." },
+      { title: "Live Google Reviews", description: "Powered by Elfsight — real social proof on your site with zero manual updates." },
+      { title: "Online storefront*", description: "Checkout via Snipcart, for businesses that sell products online. (*Snipcart's own transaction fee applies separately — see the pricing page FAQ.)" },
+      { title: "Fast turnaround", description: "Days, not months — not a months-long agency timeline." },
+      { title: "Fixed price, fixed scope", description: "No surprise invoices — you know the cost before we start." },
+      { title: "30-day check-in", description: "Included at no extra charge, so nothing breaks and nothing gets stale right after launch." },
+    ],
+    whoFor: [
+      "Your current site looks outdated, or you don't have one yet",
+      "You want something built around your brand — not a recycled template",
+      "You need contact forms, reviews, or an online store that actually works",
+      "You want a fixed price and a fast, no-surprises timeline",
+    ],
+    steps: [
+      { name: "Discovery", description: "We nail down your brand, your pages, and what the site actually needs to do for your business." },
+      { name: "Design", description: "I design every page around your brand — not a theme you customize later." },
+      { name: "Build", description: "AI accelerates the build so it moves in days, with forms, reviews, and e-commerce wired in as needed." },
+      { name: "Launch & check-in", description: "Your site goes live, and I check back in 30 days later to make sure everything's still running smoothly." },
+    ],
+    statCallout:
+      "A custom site built around your brand converts better than a generic template — because it actually looks and feels like you, not just any business in your industry.",
+    outcome: "A site that looks like a bigger investment than it was — live in days, not months.",
+    faqs: LAUNCH_BUILD_FAQS,
   },
 ];
 
