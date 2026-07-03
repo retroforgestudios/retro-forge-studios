@@ -9,7 +9,7 @@ import LeadMagnetCTA from "../components/sections/LeadMagnetCTA.astro";
 import ToolMarquee from "../components/sections/ToolMarquee.astro";
 import VeteranPill from "../components/badges/VeteranPill.astro";
 import { getCollection } from "astro:content";
-import { HERO_HEADLINE, SERVICES } from "../data/site";
+import { HERO_HEADLINE, SERVICES, SITE } from "../data/site";
 
 const latestPosts = (await getCollection("blog"))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
@@ -18,7 +18,7 @@ const latestPosts = (await getCollection("blog"))
 
 <BaseLayout
   title="Home"
-  description="AI-enhanced content, social, and brand strategy for Nebraska & Iowa business owners — moving at the speed your business needs."
+  description={`AI-enhanced content, social, and brand strategy for Nebraska & Iowa business owners — based in ${SITE.city}, ${SITE.region}, moving at the speed your business needs.`}
 >
   <!-- Hero -->
   <section class="relative flex h-[534px] w-full items-center overflow-hidden">

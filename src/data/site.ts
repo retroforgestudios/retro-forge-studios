@@ -5,9 +5,14 @@ export const SITE = {
   name: "Retro Forge Studios",
   email: "jgregory@retroforgestudios.com",
   schedulerUrl: "https://meetings.hubspot.com/retroforgestudios",
+  // Base city/state — used in page titles, structured data, and on-page copy
+  // for local SEO. Keep this in sync with your Google Business Profile and
+  // social profiles (Facebook/Instagram already list Omaha, NE).
+  city: "Omaha",
+  region: "NE",
   // One-sentence description used for SEO metadata and structured data.
   description:
-    "AI-enhanced content, brand strategy & SEO, and social media management for Nebraska & Iowa small businesses.",
+    "AI-enhanced content, brand strategy & SEO, and social media management for Nebraska & Iowa small businesses, based in Omaha, NE.",
 };
 
 // Analytics & search-console. Fill these in and they wire up automatically.

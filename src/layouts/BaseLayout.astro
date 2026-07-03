@@ -15,7 +15,7 @@ interface Props {
 }
 const { title, description } = Astro.props;
 
-const pageTitle = `${title} | Retro Forge Studios`;
+const pageTitle = `${title} | ${SITE.city}, ${SITE.region} | Retro Forge Studios`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL("/images/hero-forge.webp", Astro.site);
 
@@ -34,7 +34,16 @@ const structuredData = {
   logo: new URL("/images/icon-mark.png", Astro.site).href,
   priceRange: "$$",
   founder: { "@type": "Person", name: "Johnny Gregory" },
+  // No street address published (service-area business, no public office) —
+  // city/region only, per Google's guidance for service-area businesses.
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: SITE.city,
+    addressRegion: SITE.region,
+    addressCountry: "US",
+  },
   areaServed: [
+    { "@type": "City", name: `${SITE.city}, ${SITE.region}` },
     { "@type": "State", name: "Nebraska" },
     { "@type": "State", name: "Iowa" },
   ],
