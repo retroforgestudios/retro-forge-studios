@@ -53,13 +53,16 @@ export const LEAD_MAGNET = {
 };
 
 // Featured CTA card on the right side of the Services mega-menu in the nav.
+// Promotes the free questionnaire lead magnet (see LEAD_MAGNET above) —
+// a lower-commitment ask than booking a call, with that as a fallback link.
 export const MENU_FEATURE = {
-  eyebrow: "Not sure where to start?",
-  title: "Book a free call",
-  text: "No pressure, no jargon — let's figure out the right mix for your business.",
-  image: "/images/menu/book-call.svg",
-  ctaLabel: "Book a free call",
-  href: "/contact",
+  eyebrow: LEAD_MAGNET.eyebrow,
+  title: LEAD_MAGNET.title,
+  text: "The exact questions I ask every client before we build — get clear on your brand, features, and budget before you spend a dollar.",
+  image: LEAD_MAGNET.image,
+  ctaLabel: "Get the free guide",
+  href: "/questionnaire",
+  secondary: { label: "Not ready yet? Book a free call", href: "/contact" },
 };
 
 export const HERO_HEADLINE = "Marketing that hits different.";
