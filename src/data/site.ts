@@ -281,4 +281,4 @@ export const SOCIAL_LINKS = [
   { label: "X", href: "https://x.com/RetroForgeStud" },
 ];
 
-export const TRUST_TOOLS = ["HubSpot", "Claude", "YouTube", "WordPress", "Gemini", "TikTok"];
+export const TRUST_TOOLS = ["React", "TikTok", "WordPress", "HubSpot", "Gemini", "GitHub", "Node.js", "YouTube", "Claude"];
