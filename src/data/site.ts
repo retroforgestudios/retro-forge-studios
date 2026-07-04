@@ -45,6 +45,13 @@ export const TOOLS = [
     teaser: "Run a free, instant audit of any website — HTTPS, mobile-friendliness, SEO basics, and more.",
     href: "/website-audit",
   },
+  {
+    slug: "blog-topic-generator",
+    name: "Blog Topic Generator",
+    icon: "M7 4h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM9 12h6M9 16h6",
+    teaser: "Enter your industry and city, get 10 tailored blog post ideas in seconds — free, no signup.",
+    href: "/blog-topic-generator",
+  },
 ];
 
 // Downloadable lead magnet — powers the /questionnaire landing page.

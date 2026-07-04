@@ -1,0 +1,146 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Free Blog Topic Generator"
+  description="Enter your industry and city, get 10 tailored blog post ideas in seconds — free, no signup required."
+>
+  <section class="bg-charcoal px-4 py-20 sm:px-6">
+    <div class="mx-auto max-w-2xl">
+      <div class="rounded-2xl border border-surface bg-[#1f2125] p-8 shadow-2xl sm:p-10">
+        <div class="text-center">
+          <span class="inline-flex items-center gap-2 rounded-full border border-teal/40 bg-teal/10 px-4 py-1 text-xs font-bold uppercase tracking-wide text-teal">
+            <span class="h-1.5 w-1.5 rounded-full bg-teal"></span> Blog Topic Generator
+          </span>
+          <h1 class="mt-4 text-3xl text-white sm:text-4xl">Never stare at a blank page again</h1>
+          <p class="mx-auto mt-3 max-w-md text-gray-300">
+            Tell us your industry and city, get 10 blog post ideas tailored to your business — free, no email required.
+          </p>
+        </div>
+
+        <form id="idea-form" class="mt-8 space-y-4">
+          <div class="flex items-center gap-2 rounded-lg border border-surface bg-charcoal px-4 py-3">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 flex-none text-teal" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M4 5h16v12H4z" />
+              <path d="M9 20h6M12 17v3" />
+            </svg>
+            <input
+              id="idea-industry"
+              type="text"
+              placeholder="Your industry — e.g. dog grooming, HVAC, coffee shop"
+              class="flex-1 bg-transparent text-white placeholder:text-gray-500 focus:outline-none"
+              autocomplete="off"
+              required
+            />
+          </div>
+
+          <div class="flex items-center gap-2 rounded-lg border border-surface bg-charcoal px-4 py-3">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 flex-none text-teal" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z" />
+              <circle cx="12" cy="10" r="2.5" />
+            </svg>
+            <input
+              id="idea-city"
+              type="text"
+              placeholder="Your city (optional) — e.g. Omaha, NE"
+              class="flex-1 bg-transparent text-white placeholder:text-gray-500 focus:outline-none"
+              autocomplete="off"
+            />
+          </div>
+
+          <button
+            id="idea-submit"
+            type="submit"
+            class="w-full rounded-md bg-red px-6 py-3 text-center font-bold text-white transition duration-200 hover:bg-red/90 disabled:opacity-60"
+          >
+            Generate Ideas
+          </button>
+        </form>
+
+        <div id="idea-error" hidden class="mt-4 rounded-md border border-red/40 bg-red/10 px-4 py-3 text-sm text-red"></div>
+
+        <div id="idea-results" hidden class="mt-8 border-t border-surface pt-8">
+          <p class="text-marker text-lg text-amber">Your 10 blog post ideas</p>
+          <ol id="idea-list" class="mt-4 space-y-3"></ol>
+
+          <div class="mt-8 rounded-xl bg-amber p-6 text-center">
+            <p class="font-semibold text-charcoal">Like these, but don't have time to write them?</p>
+            <p class="mt-1 text-sm text-charcoal/80">
+              I turn ideas like these into finished, on-brand posts — built fast with AI, polished by hand.
+            </p>
+            <a
+              href="/services/content-creation"
+              class="mt-4 inline-block rounded-md bg-red px-6 py-3 font-bold text-white transition duration-200 hover:bg-red/90"
+            >
+              See Content Creation &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById("idea-form") as HTMLFormElement;
+    const industryInput = document.getElementById("idea-industry") as HTMLInputElement;
+    const cityInput = document.getElementById("idea-city") as HTMLInputElement;
+    const submitBtn = document.getElementById("idea-submit") as HTMLButtonElement;
+    const errorBox = document.getElementById("idea-error") as HTMLDivElement;
+    const results = document.getElementById("idea-results") as HTMLDivElement;
+    const ideaList = document.getElementById("idea-list") as HTMLOListElement;
+
+    function renderIdea(idea: string) {
+      const li = document.createElement("li");
+      li.className = "flex gap-3 rounded-lg border border-surface bg-charcoal px-4 py-3";
+
+      const bullet = document.createElement("span");
+      bullet.className = "flex h-6 w-6 flex-none items-center justify-center rounded-full bg-teal/20 text-xs font-bold text-teal";
+
+      const text = document.createElement("p");
+      text.className = "text-sm text-gray-200";
+      text.textContent = idea;
+
+      li.append(bullet, text);
+      return li;
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorBox.hidden = true;
+      results.hidden = true;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Generating ideas...";
+
+      try {
+        const res = await fetch("/api/blog-ideas", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ industry: industryInput.value, city: cityInput.value }),
+        });
+        const data = await res.json();
+
+        if (!data.ok) {
+          errorBox.textContent = data.error || "Something went wrong. Please try again.";
+          errorBox.hidden = false;
+          return;
+        }
+
+        ideaList.innerHTML = "";
+        data.ideas.forEach((idea: string, i: number) => {
+          const li = renderIdea(idea);
+          (li.querySelector("span") as HTMLSpanElement).textContent = String(i + 1);
+          ideaList.appendChild(li);
+        });
+
+        results.hidden = false;
+      } catch {
+        errorBox.textContent = "Something went wrong. Please try again.";
+        errorBox.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Generate Ideas";
+      }
+    });
+  </script>
+</BaseLayout>
