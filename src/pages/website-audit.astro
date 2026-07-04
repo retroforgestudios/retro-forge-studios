@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { SITE } from "../data/site";
 ---
 
 <BaseLayout
@@ -91,8 +92,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </div>
   </section>
 
+  <script define:vars={{ contactEmail: SITE.email }}>
+    window.__RFS_CONTACT_EMAIL = contactEmail;
+  </script>
+
   <script>
     import { jsPDF } from "jspdf";
+
+    const CONTACT_EMAIL = (window as unknown as { __RFS_CONTACT_EMAIL: string }).__RFS_CONTACT_EMAIL;
 
     const form = document.getElementById("audit-form") as HTMLFormElement;
     const urlInput = document.getElementById("audit-url") as HTMLInputElement;
@@ -229,32 +236,39 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             y = margin;
           }
 
+          // Filled circular badge behind the mark — much more prominent
+          // than a bare glyph, and reads clearly even at a glance.
           const markColor = check.pass ? BRAND.teal : BRAND.red;
-          doc.setTextColor(...markColor);
+          const markCX = margin + 3.2;
+          const markCY = y - 2.1;
+          doc.setFillColor(...markColor);
+          doc.circle(markCX, markCY, 3.4, "F");
+          doc.setTextColor(255, 255, 255);
           doc.setFont("helvetica", "bold");
-          doc.setFontSize(11);
-          doc.text(check.pass ? "✓" : "✗", margin, y);
+          doc.setFontSize(10.5);
+          doc.text(check.pass ? "✓" : "✗", markCX, markCY + 1.3, { align: "center" });
 
           doc.setTextColor(...BRAND.charcoal);
-          doc.text(check.label, margin + 7, y);
+          doc.setFontSize(11);
+          doc.text(check.label, margin + 10, y);
 
           y += 5.5;
           doc.setFont("helvetica", "normal");
           doc.setFontSize(9.5);
           doc.setTextColor(...BRAND.gray);
-          doc.text(detailLines, margin + 7, y);
+          doc.text(detailLines, margin + 10, y);
           y += detailLines.length * 4.6 + 5;
         }
 
         // Footer CTA on the last page
-        if (y + 30 > pageHeight - 10) {
+        if (y + 36 > pageHeight - 10) {
           doc.addPage();
           y = margin;
         }
-        y = Math.max(y, pageHeight - 40);
+        y = Math.max(y, pageHeight - 46);
         doc.setDrawColor(...BRAND.amber);
         doc.setFillColor(...BRAND.amber);
-        doc.roundedRect(margin, y, contentWidth, 24, 3, 3, "F");
+        doc.roundedRect(margin, y, contentWidth, 30, 3, 3, "F");
         doc.setTextColor(...BRAND.charcoal);
         doc.setFont("helvetica", "bold");
         doc.setFontSize(11);
@@ -262,6 +276,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         doc.setFont("helvetica", "normal");
         doc.setFontSize(9.5);
         doc.text("Book a free call — retroforgestudios.com/contact", margin + 6, y + 16);
+        doc.setFont("helvetica", "bold");
+        doc.text(CONTACT_EMAIL, margin + 6, y + 23);
 
         const hostname = (() => {
           try {
