@@ -57,6 +57,7 @@ export const POST: APIRoute = async ({ request }) => {
   const checks: Check[] = [];
   let html = "";
   let loadTimeMs = 0;
+  let contentEncoding = "";
 
   try {
     const start = Date.now();
@@ -69,6 +70,7 @@ export const POST: APIRoute = async ({ request }) => {
         { status: 400 },
       );
     }
+    contentEncoding = res.headers.get("content-encoding") ?? "";
     html = await res.text();
   } catch {
     return new Response(
@@ -129,6 +131,101 @@ export const POST: APIRoute = async ({ request }) => {
     detail: hasViewport
       ? "A mobile viewport tag is set up correctly."
       : "No mobile viewport tag found — the site likely won't render properly on phones.",
+  });
+
+  const robotsMetaMatch = head.match(/<meta[^>]+name=["']robots["'][^>]*content=["']([^"']*)["']/i);
+  const isNoindex = /noindex/i.test(robotsMetaMatch?.[1] ?? "");
+  checks.push({
+    key: "indexable",
+    label: "Not blocked from Google",
+    pass: !isNoindex,
+    detail: isNoindex
+      ? "This page has a \"noindex\" tag — it's telling Google not to show it in search results at all."
+      : "No noindex tag found — the page is free to appear in search results.",
+  });
+
+  const hasCanonical = /<link[^>]+rel=["']canonical["']/i.test(head);
+  checks.push({
+    key: "canonical",
+    label: "Canonical tag",
+    pass: hasCanonical,
+    detail: hasCanonical
+      ? "A canonical tag is set — helps avoid duplicate-content confusion."
+      : "No canonical tag found — worth adding to prevent duplicate-content issues (e.g. www vs non-www).",
+  });
+
+  const h1Count = (head.match(/<h1[\s>]/gi) ?? []).length;
+  checks.push({
+    key: "h1",
+    label: "Single H1 heading",
+    pass: h1Count === 1,
+    detail:
+      h1Count === 1
+        ? "Exactly one <h1> found — clear page structure for search engines."
+        : h1Count === 0
+          ? "No <h1> found — the page is missing its main heading."
+          : `${h1Count} <h1> tags found — having more than one can confuse search engines about the page's main topic.`,
+  });
+
+  const imgTags = head.match(/<img\b[^>]*>/gi) ?? [];
+  const imgWithAlt = imgTags.filter((tag) => /alt=["'][^"']+["']/i.test(tag)).length;
+  const altPass = imgTags.length === 0 || imgWithAlt / imgTags.length >= 0.9;
+  checks.push({
+    key: "alt-text",
+    label: "Image alt text",
+    pass: altPass,
+    detail:
+      imgTags.length === 0
+        ? "No images found on the page."
+        : `${imgWithAlt} of ${imgTags.length} images have alt text (${Math.round((imgWithAlt / imgTags.length) * 100)}%) — alt text helps accessibility and image search.`,
+  });
+
+  const hasLang = /<html[^>]+lang=["'][a-zA-Z-]+["']/i.test(head);
+  checks.push({
+    key: "lang",
+    label: "Page language declared",
+    pass: hasLang,
+    detail: hasLang
+      ? "The page declares its language — helps screen readers and search engines."
+      : "No lang attribute on the <html> tag — an easy accessibility fix.",
+  });
+
+  let hasFavicon = /<link[^>]+rel=["'](?:shortcut )?icon["']/i.test(head);
+  if (!hasFavicon) {
+    try {
+      const faviconRes = await fetchWithTimeout(new URL("/favicon.ico", target).href, 4000);
+      hasFavicon = faviconRes.ok;
+    } catch {
+      // Leave as false — a failed favicon fetch just means it's missing.
+    }
+  }
+  checks.push({
+    key: "favicon",
+    label: "Favicon present",
+    pass: hasFavicon,
+    detail: hasFavicon
+      ? "A favicon is set — a small but real polish signal for browser tabs and bookmarks."
+      : "No favicon found — browser tabs show a blank/default icon instead of your brand.",
+  });
+
+  const isCompressed = /\b(gzip|br|deflate)\b/i.test(contentEncoding);
+  checks.push({
+    key: "compression",
+    label: "Compression enabled",
+    pass: isCompressed,
+    detail: isCompressed
+      ? `Responses are compressed (${contentEncoding}) — faster downloads for visitors.`
+      : "No compression detected on the response — pages are being sent larger than they need to be.",
+  });
+
+  const hasMixedContent = target.protocol === "https:" && /(?:src|href)=["']http:\/\//i.test(head);
+  checks.push({
+    key: "mixed-content",
+    label: "No mixed content",
+    pass: !hasMixedContent,
+    detail: hasMixedContent
+      ? "This HTTPS page loads at least one resource over plain HTTP — browsers may block it or show a security warning."
+      : "No mixed content detected — all resources load securely.",
   });
 
   const hasStructuredData = /<script[^>]+type=["']application\/ld\+json["']/i.test(head);
