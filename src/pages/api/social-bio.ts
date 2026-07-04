@@ -85,7 +85,11 @@ async function generateBios(userPrompt: string): Promise<BioResult | null> {
         ? (result.choices[0].message.content as string)
         : "";
 
-  return extractJsonObject(text);
+  const parsed = extractJsonObject(text);
+  if (!parsed) {
+    console.log("Social bio parse failed. Raw text:", text.slice(0, 800));
+  }
+  return parsed;
 }
 
 export const POST: APIRoute = async ({ request }) => {
