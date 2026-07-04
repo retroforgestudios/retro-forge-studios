@@ -67,11 +67,20 @@ export const POST: APIRoute = async ({ request }) => {
         { role: "user", content: userPrompt },
       ],
       temperature: 0.7,
-    })) as { response?: unknown };
+    })) as {
+      response?: unknown;
+      choices?: { message?: { content?: unknown } }[];
+    };
 
-    console.log("AI raw result:", JSON.stringify(result).slice(0, 500));
-
-    const text = typeof result.response === "string" ? result.response : "";
+    // This model returns an OpenAI-compatible chat-completion shape
+    // (choices[0].message.content), not the simpler { response } shape
+    // some other Workers AI models use — handle both.
+    const text =
+      typeof result.response === "string"
+        ? result.response
+        : typeof result.choices?.[0]?.message?.content === "string"
+          ? (result.choices[0].message.content as string)
+          : "";
     const ideas = extractJsonArray(text) ?? extractLines(text);
 
     if (ideas.length === 0) {
