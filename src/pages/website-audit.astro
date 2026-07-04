@@ -1,0 +1,154 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Free Website Audit"
+  description="Run a free, instant audit of any website — HTTPS, mobile-friendliness, SEO basics, and more."
+>
+  <section class="bg-charcoal px-4 py-20 sm:px-6">
+    <div class="mx-auto max-w-2xl">
+      <div class="rounded-2xl border border-surface bg-[#1f2125] p-8 shadow-2xl sm:p-10">
+        <div class="text-center">
+          <span class="inline-flex items-center gap-2 rounded-full border border-teal/40 bg-teal/10 px-4 py-1 text-xs font-bold uppercase tracking-wide text-teal">
+            <span class="h-1.5 w-1.5 rounded-full bg-teal"></span> Website Audit
+          </span>
+          <h1 class="mt-4 text-3xl text-white sm:text-4xl">Check your website's health</h1>
+          <p class="mx-auto mt-3 max-w-md text-gray-300">
+            How's your site really doing? Run a free audit and find out in seconds — no email required.
+          </p>
+        </div>
+
+        <form id="audit-form" class="mt-8">
+          <div class="flex items-center gap-2 rounded-lg border border-surface bg-charcoal px-4 py-3">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 flex-none text-teal" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M3 12h18M12 3c2.5 2.5 3.5 5.5 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-5.5-3.5-9s1-6.5 3.5-9z" />
+            </svg>
+            <input
+              id="audit-url"
+              type="text"
+              placeholder="Enter your website — e.g. yourbusiness.com"
+              class="flex-1 bg-transparent text-white placeholder:text-gray-500 focus:outline-none"
+              autocomplete="off"
+              required
+            />
+            <span class="flex-none rounded-md bg-surface px-2 py-1 text-xs font-bold text-gray-400">URL</span>
+          </div>
+
+          <button
+            id="audit-submit"
+            type="submit"
+            class="mt-4 w-full rounded-md bg-red px-6 py-3 text-center font-bold text-white transition duration-200 hover:bg-red/90 disabled:opacity-60"
+          >
+            Run Audit
+          </button>
+        </form>
+
+        <div id="audit-error" hidden class="mt-4 rounded-md border border-red/40 bg-red/10 px-4 py-3 text-sm text-red"></div>
+
+        <div id="audit-results" hidden class="mt-8 border-t border-surface pt-8">
+          <div class="flex items-center gap-4">
+            <div id="audit-score-ring" class="flex h-20 w-20 flex-none items-center justify-center rounded-full border-4 border-teal">
+              <span id="audit-score" class="text-xl font-bold text-white"></span>
+            </div>
+            <div>
+              <p class="text-marker text-lg text-amber">Grade: <span id="audit-grade"></span></p>
+              <p class="text-sm text-gray-400"><span id="audit-count"></span> checks passed</p>
+            </div>
+          </div>
+
+          <ul id="audit-checklist" class="mt-6 space-y-4"></ul>
+
+          <div class="mt-8 rounded-xl bg-amber p-6 text-center">
+            <p class="font-semibold text-charcoal">Want these fixed?</p>
+            <p class="mt-1 text-sm text-charcoal/80">
+              I build fast, custom websites that pass every one of these checks out of the box.
+            </p>
+            <a
+              href="/services/website-design"
+              class="mt-4 inline-block rounded-md bg-red px-6 py-3 font-bold text-white transition duration-200 hover:bg-red/90"
+            >
+              See Website Design &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById("audit-form") as HTMLFormElement;
+    const urlInput = document.getElementById("audit-url") as HTMLInputElement;
+    const submitBtn = document.getElementById("audit-submit") as HTMLButtonElement;
+    const errorBox = document.getElementById("audit-error") as HTMLDivElement;
+    const results = document.getElementById("audit-results") as HTMLDivElement;
+    const scoreEl = document.getElementById("audit-score") as HTMLSpanElement;
+    const scoreRing = document.getElementById("audit-score-ring") as HTMLDivElement;
+    const gradeEl = document.getElementById("audit-grade") as HTMLSpanElement;
+    const countEl = document.getElementById("audit-count") as HTMLSpanElement;
+    const checklist = document.getElementById("audit-checklist") as HTMLUListElement;
+
+    const ringColor: Record<string, string> = {
+      A: "border-teal",
+      B: "border-teal",
+      C: "border-amber",
+      D: "border-red",
+      F: "border-red",
+    };
+
+    function renderCheck(check: { label: string; pass: boolean; detail: string }) {
+      const li = document.createElement("li");
+      li.className = "flex gap-3";
+
+      const icon = check.pass
+        ? `<svg viewBox="0 0 24 24" class="mt-0.5 h-5 w-5 flex-none text-teal" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" /></svg>`
+        : `<svg viewBox="0 0 24 24" class="mt-0.5 h-5 w-5 flex-none text-red" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" stroke-linejoin="round" /></svg>`;
+
+      li.innerHTML = `${icon}<div><p class="font-semibold text-white">${check.label}</p><p class="mt-0.5 text-sm text-gray-400">${check.detail}</p></div>`;
+      return li;
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorBox.hidden = true;
+      results.hidden = true;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Running audit...";
+
+      try {
+        const res = await fetch("/api/audit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: urlInput.value }),
+        });
+        const data = await res.json();
+
+        if (!data.ok) {
+          errorBox.textContent = data.error || "Something went wrong. Please try again.";
+          errorBox.hidden = false;
+          return;
+        }
+
+        scoreEl.textContent = `${data.score}%`;
+        gradeEl.textContent = data.grade;
+        countEl.textContent = `${data.checks.filter((c: { pass: boolean }) => c.pass).length} of ${data.checks.length}`;
+
+        scoreRing.className = `flex h-20 w-20 flex-none items-center justify-center rounded-full border-4 ${ringColor[data.grade] || "border-teal"}`;
+
+        checklist.innerHTML = "";
+        data.checks.forEach((check: { label: string; pass: boolean; detail: string }) => {
+          checklist.appendChild(renderCheck(check));
+        });
+
+        results.hidden = false;
+      } catch {
+        errorBox.textContent = "Something went wrong. Please try again.";
+        errorBox.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Run Audit";
+      }
+    });
+  </script>
+</BaseLayout>
