@@ -28,14 +28,30 @@ const SYSTEM_PROMPT = `You write social media bios and captions for a small loca
 Respond with ONLY a JSON object in this exact shape, nothing else — no markdown, no commentary before or after:
 {"bios": [{"platform": "Instagram", "text": "..."}, {"platform": "X (Twitter)", "text": "..."}, {"platform": "Facebook", "text": "..."}, {"platform": "LinkedIn", "text": "..."}], "captions": ["...", "...", "...", "...", "..."]}`;
 
+// The model consistently forgets to close the "bios" array before
+// appending a stray {"captions": [...]} entry, e.g.:
+//   {"bios": [ {...}, {...}, {"captions": [...]} }
+// instead of the requested:
+//   {"bios": [ {...}, {...} ], "captions": [...]}
+// That's genuinely invalid JSON (unbalanced brackets) — JSON.parse throws
+// before any post-parse repair logic can run, so the string itself needs
+// fixing first.
+function repairMissingBiosClose(json: string): string {
+  return json.replace(/,\s*\{\s*"captions"\s*:\s*(\[[\s\S]*\])\s*\}\s*\}\s*$/, '],"captions":$1}');
+}
+
 function extractJsonObject(text: string): BioResult | null {
   const match = text.match(/\{[\s\S]*\}/);
   if (!match) return null;
 
   // The model occasionally emits a stray unescaped quote/apostrophe that
   // breaks strict JSON.parse. Try as-is first, then with smart quotes
-  // normalized to straight quotes.
-  for (const candidate of [match[0], match[0].replace(/[‘’]/g, "'").replace(/[“”]/g, '"')]) {
+  // normalized to straight quotes, then with the missing-bracket repair
+  // applied to each of those.
+  const base = [match[0], match[0].replace(/[‘’]/g, "'").replace(/[“”]/g, '"')];
+  const candidates = [...base, ...base.map(repairMissingBiosClose)];
+
+  for (const candidate of candidates) {
     try {
       const parsed = JSON.parse(candidate);
       if (!parsed || !Array.isArray(parsed.bios)) continue;
@@ -99,11 +115,7 @@ async function generateBios(userPrompt: string): Promise<BioResult | null> {
         ? (result.choices[0].message.content as string)
         : "";
 
-  const parsed = extractJsonObject(text);
-  if (!parsed) {
-    console.log("Social bio parse failed. Text length:", text.length, "Raw:", text.slice(0, 1200));
-  }
-  return parsed;
+  return extractJsonObject(text);
 }
 
 export const POST: APIRoute = async ({ request }) => {
