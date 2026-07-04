@@ -157,6 +157,15 @@ import { SITE } from "../data/site";
       downloadBtn.disabled = true;
       downloadBtn.textContent = "Preparing PDF...";
 
+      // Fire-and-forget: lets Johnny know a lead downloaded their report.
+      // Never awaited and errors are swallowed — a failed/slow notification
+      // must never delay or break the actual PDF download.
+      fetch("/api/audit-notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: lastAudit.url, score: lastAudit.score, grade: lastAudit.grade }),
+      }).catch(() => {});
+
       try {
         const doc = new jsPDF({ unit: "mm", format: "a4" });
         const pageWidth = doc.internal.pageSize.getWidth();
