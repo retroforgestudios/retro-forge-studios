@@ -63,9 +63,13 @@ async function fetchPsiOnce(psiUrl: string, timeoutMs: number): Promise<PsiRespo
 // the results into our own check format — never surfaced to visitors as
 // "PageSpeed"/"Lighthouse"/"Google," just additional findings in the same
 // list. Fails silently (returns no checks) if PSI_API_KEY isn't configured,
-// so the rest of the audit still works. A full mobile Lighthouse run has
-// real run-to-run variance and occasionally exceeds a single timeout, so
-// this retries once on transient failure before giving up.
+// so the rest of the audit still works.
+//
+// Deliberately a single attempt, not retried: a retry roughly doubles the
+// worst-case wait (measured: one live run took >90s with a retry in place),
+// which is worse for a real visitor than occasionally missing the extra
+// checks. A single generous timeout bounds the wait while still covering
+// the vast majority of runs (observed 10-40s in normal conditions).
 async function runRealUserChecks(target: URL): Promise<Check[]> {
   const apiKey = (env as { PSI_API_KEY?: string }).PSI_API_KEY;
   if (!apiKey) return [];
@@ -76,14 +80,11 @@ async function runRealUserChecks(target: URL): Promise<Check[]> {
   psiUrl.searchParams.set("strategy", "mobile");
   ["performance", "accessibility", "best-practices"].forEach((c) => psiUrl.searchParams.append("category", c));
 
-  let data: PsiResponse | null = null;
-  for (let attempt = 0; attempt < 2; attempt++) {
-    try {
-      data = await fetchPsiOnce(psiUrl.href, 55_000);
-      break;
-    } catch {
-      if (attempt === 1) return [];
-    }
+  let data: PsiResponse | null;
+  try {
+    data = await fetchPsiOnce(psiUrl.href, 70_000);
+  } catch {
+    return [];
   }
   if (!data) return [];
 
