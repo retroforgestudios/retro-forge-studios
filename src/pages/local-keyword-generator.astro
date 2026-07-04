@@ -1,0 +1,136 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Free Local Keyword Ideas Generator"
+  description="Enter your industry and city, get long-tail local search phrases real customers actually type — free, no signup required."
+>
+  <section class="bg-charcoal px-4 py-20 sm:px-6">
+    <div class="mx-auto max-w-2xl">
+      <div class="rounded-2xl border border-surface bg-[#1f2125] p-8 shadow-2xl sm:p-10">
+        <div class="text-center">
+          <span class="inline-flex items-center gap-2 rounded-full border border-teal/40 bg-teal/10 px-4 py-1 text-xs font-bold uppercase tracking-wide text-teal">
+            <span class="h-1.5 w-1.5 rounded-full bg-teal"></span> Local Keyword Ideas
+          </span>
+          <h1 class="mt-4 text-3xl text-white sm:text-4xl">Find out what customers actually search</h1>
+          <p class="mx-auto mt-3 max-w-md text-gray-300">
+            Enter your industry and city, get real local search phrases to target — free, no email required.
+          </p>
+        </div>
+
+        <form id="kw-form" class="mt-8 space-y-4">
+          <div class="flex items-center gap-2 rounded-lg border border-surface bg-charcoal px-4 py-3">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 flex-none text-teal" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M4 5h16v12H4z" />
+              <path d="M9 20h6M12 17v3" />
+            </svg>
+            <input
+              id="kw-industry"
+              type="text"
+              placeholder="Your industry — e.g. dog grooming, HVAC, coffee shop"
+              class="flex-1 bg-transparent text-white placeholder:text-gray-500 focus:outline-none"
+              autocomplete="off"
+              required
+            />
+          </div>
+
+          <div class="flex items-center gap-2 rounded-lg border border-surface bg-charcoal px-4 py-3">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 flex-none text-teal" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z" />
+              <circle cx="12" cy="10" r="2.5" />
+            </svg>
+            <input
+              id="kw-city"
+              type="text"
+              placeholder="Your city (optional) — e.g. Omaha, NE"
+              class="flex-1 bg-transparent text-white placeholder:text-gray-500 focus:outline-none"
+              autocomplete="off"
+            />
+          </div>
+
+          <button
+            id="kw-submit"
+            type="submit"
+            class="w-full rounded-md bg-red px-6 py-3 text-center font-bold text-white transition duration-200 hover:bg-red/90 disabled:opacity-60"
+          >
+            Generate Keyword Ideas
+          </button>
+        </form>
+
+        <div id="kw-error" hidden class="mt-4 rounded-md border border-red/40 bg-red/10 px-4 py-3 text-sm text-red"></div>
+
+        <div id="kw-results" hidden class="mt-8 border-t border-surface pt-8">
+          <p class="text-marker text-lg text-amber">Search phrases your customers actually use</p>
+          <ul id="kw-list" class="mt-4 flex flex-wrap gap-2"></ul>
+
+          <div class="mt-8 rounded-xl bg-amber p-6 text-center">
+            <p class="font-semibold text-charcoal">Want your site actually ranking for these?</p>
+            <p class="mt-1 text-sm text-charcoal/80">
+              I build brand and SEO strategy backed by real research — not just a keyword list.
+            </p>
+            <a
+              href="/services/brand-strategy-seo"
+              class="mt-4 inline-block rounded-md bg-red px-6 py-3 font-bold text-white transition duration-200 hover:bg-red/90"
+            >
+              See Brand Strategy &amp; SEO &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById("kw-form") as HTMLFormElement;
+    const industryInput = document.getElementById("kw-industry") as HTMLInputElement;
+    const cityInput = document.getElementById("kw-city") as HTMLInputElement;
+    const submitBtn = document.getElementById("kw-submit") as HTMLButtonElement;
+    const errorBox = document.getElementById("kw-error") as HTMLDivElement;
+    const results = document.getElementById("kw-results") as HTMLDivElement;
+    const kwList = document.getElementById("kw-list") as HTMLUListElement;
+
+    function renderKeyword(phrase: string) {
+      const li = document.createElement("li");
+      li.className = "rounded-full border border-surface bg-charcoal px-4 py-2 text-sm text-gray-200";
+      li.textContent = phrase;
+      return li;
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorBox.hidden = true;
+      results.hidden = true;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Generating ideas...";
+
+      try {
+        const res = await fetch("/api/local-keywords", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ industry: industryInput.value, city: cityInput.value }),
+        });
+        const data = await res.json();
+
+        if (!data.ok) {
+          errorBox.textContent = data.error || "Something went wrong. Please try again.";
+          errorBox.hidden = false;
+          return;
+        }
+
+        kwList.innerHTML = "";
+        data.keywords.forEach((phrase: string) => {
+          kwList.appendChild(renderKeyword(phrase));
+        });
+
+        results.hidden = false;
+      } catch {
+        errorBox.textContent = "Something went wrong. Please try again.";
+        errorBox.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Generate Keyword Ideas";
+      }
+    });
+  </script>
+</BaseLayout>

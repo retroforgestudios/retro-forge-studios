@@ -59,6 +59,13 @@ export const TOOLS = [
     teaser: "Get 5 SEO-optimized title tag and meta description pairs for your business — free, no signup.",
     href: "/meta-tag-generator",
   },
+  {
+    slug: "local-keyword-generator",
+    name: "Local Keyword Ideas",
+    icon: "M21 21l-4.35-4.35M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z",
+    teaser: "Find the real long-tail search phrases your local customers actually type — free, no signup.",
+    href: "/local-keyword-generator",
+  },
 ];
 
 // Downloadable lead magnet — powers the /questionnaire landing page.
