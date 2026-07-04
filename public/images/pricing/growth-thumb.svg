@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800">
+  <rect width="800" height="800" fill="#2c2f34" />
+  <rect x="24" y="24" width="752" height="752" rx="24" fill="none" stroke="#ef342f" stroke-width="5" />
+
+  <!-- Best value ribbon -->
+  <rect x="540" y="50" width="220" height="52" rx="26" fill="#ef342f" />
+  <text x="650" y="84" font-family="Arial, sans-serif" font-size="22" font-weight="800" letter-spacing="1" fill="#ffffff" text-anchor="middle">BEST VALUE</text>
+
+  <text x="60" y="90" font-family="Arial, sans-serif" font-size="20" font-weight="700" letter-spacing="3" fill="#ef9c2f">RETRO FORGE STUDIOS</text>
+
+  <text x="60" y="230" font-family="Arial, sans-serif" font-size="72" font-weight="800" fill="#ffffff">Growth</text>
+  <text x="60" y="280" font-family="Arial, sans-serif" font-size="26" fill="#9ca3af">best value</text>
+
+  <text x="60" y="420" font-family="Arial, sans-serif" font-size="96" font-weight="800" fill="#ef9c2f">$199<tspan font-size="40" fill="#9ca3af">/mo</tspan></text>
+
+  <g font-family="Arial, sans-serif" font-size="26" fill="#e5e7eb">
+    <circle cx="72" cy="480" r="7" fill="#4caac9" />
+    <text x="96" y="489">Daily social presence</text>
+    <circle cx="72" cy="530" r="7" fill="#4caac9" />
+    <text x="96" y="539">Full content strategy</text>
+    <circle cx="72" cy="580" r="7" fill="#4caac9" />
+    <text x="96" y="589">SEO optimization</text>
+    <circle cx="72" cy="630" r="7" fill="#4caac9" />
+    <text x="96" y="639">Bi-weekly reporting</text>
+  </g>
+
+  <rect x="60" y="690" width="300" height="64" rx="8" fill="#ef342f" />
+  <text x="210" y="731" font-family="Arial, sans-serif" font-size="26" font-weight="800" fill="#ffffff" text-anchor="middle">I'm ready grow today</text>
+</svg>
