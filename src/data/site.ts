@@ -66,6 +66,13 @@ export const TOOLS = [
     teaser: "Find the real long-tail search phrases your local customers actually type — free, no signup.",
     href: "/local-keyword-generator",
   },
+  {
+    slug: "social-bio-generator",
+    name: "Social Bio Generator",
+    icon: "M18 8a3 3 0 1 0-2.83-4H15a3 3 0 1 0 0 6 2.97 2.97 0 0 0 1.74-.56l-5.49 3.2a3 3 0 1 0 0 2.72l5.49 3.2A2.97 2.97 0 0 0 15 17a3 3 0 1 0 2.83-4",
+    teaser: "Get ready-to-paste bios for Instagram, X, Facebook, and LinkedIn — plus caption starters. Free.",
+    href: "/social-bio-generator",
+  },
 ];
 
 // Downloadable lead magnet — powers the /questionnaire landing page.

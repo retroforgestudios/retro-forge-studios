@@ -1,0 +1,187 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Free Social Bio & Caption Generator"
+  description="Enter your business, get ready-to-paste bios for Instagram, X, Facebook, and LinkedIn — plus caption starters. Free, no signup."
+>
+  <section class="bg-charcoal px-4 py-20 sm:px-6">
+    <div class="mx-auto max-w-2xl">
+      <div class="rounded-2xl border border-surface bg-[#1f2125] p-8 shadow-2xl sm:p-10">
+        <div class="text-center">
+          <span class="inline-flex items-center gap-2 rounded-full border border-teal/40 bg-teal/10 px-4 py-1 text-xs font-bold uppercase tracking-wide text-teal">
+            <span class="h-1.5 w-1.5 rounded-full bg-teal"></span> Social Bio Generator
+          </span>
+          <h1 class="mt-4 text-3xl text-white sm:text-4xl">Bios that don't sound like everyone else's</h1>
+          <p class="mx-auto mt-3 max-w-md text-gray-300">
+            Tell us about your business, get ready-to-paste bios for every platform plus caption starters — free, no email required.
+          </p>
+        </div>
+
+        <form id="bio-form" class="mt-8 space-y-4">
+          <div class="flex items-center gap-2 rounded-lg border border-surface bg-charcoal px-4 py-3">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 flex-none text-teal" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M4 21V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v13" />
+              <path d="M9 21v-6h6v6" />
+            </svg>
+            <input
+              id="bio-business"
+              type="text"
+              placeholder="Business name (optional) — e.g. Riverside Dog Grooming"
+              class="flex-1 bg-transparent text-white placeholder:text-gray-500 focus:outline-none"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="flex items-center gap-2 rounded-lg border border-surface bg-charcoal px-4 py-3">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 flex-none text-teal" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M4 5h16v12H4z" />
+              <path d="M9 20h6M12 17v3" />
+            </svg>
+            <input
+              id="bio-service"
+              type="text"
+              placeholder="What you do — e.g. dog grooming, HVAC repair, coffee shop"
+              class="flex-1 bg-transparent text-white placeholder:text-gray-500 focus:outline-none"
+              autocomplete="off"
+              required
+            />
+          </div>
+
+          <div class="flex items-center gap-2 rounded-lg border border-surface bg-charcoal px-4 py-3">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 flex-none text-teal" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z" />
+              <circle cx="12" cy="10" r="2.5" />
+            </svg>
+            <input
+              id="bio-city"
+              type="text"
+              placeholder="Your city (optional) — e.g. Omaha, NE"
+              class="flex-1 bg-transparent text-white placeholder:text-gray-500 focus:outline-none"
+              autocomplete="off"
+            />
+          </div>
+
+          <button
+            id="bio-submit"
+            type="submit"
+            class="w-full rounded-md bg-red px-6 py-3 text-center font-bold text-white transition duration-200 hover:bg-red/90 disabled:opacity-60"
+          >
+            Generate Bios
+          </button>
+        </form>
+
+        <div id="bio-error" hidden class="mt-4 rounded-md border border-red/40 bg-red/10 px-4 py-3 text-sm text-red"></div>
+
+        <div id="bio-results" hidden class="mt-8 border-t border-surface pt-8">
+          <p class="text-marker text-lg text-amber">Your bios</p>
+          <div id="bio-list" class="mt-4 space-y-4"></div>
+
+          <p class="text-marker mt-8 text-lg text-amber">Caption starters</p>
+          <ul id="caption-list" class="mt-4 space-y-2"></ul>
+
+          <div class="mt-8 rounded-xl bg-amber p-6 text-center">
+            <p class="font-semibold text-charcoal">Want your socials actually managed, not just written once?</p>
+            <p class="mt-1 text-sm text-charcoal/80">
+              I handle the posting, engagement, and strategy — so this becomes a system, not a one-time task.
+            </p>
+            <a
+              href="/services/social-media-management"
+              class="mt-4 inline-block rounded-md bg-red px-6 py-3 font-bold text-white transition duration-200 hover:bg-red/90"
+            >
+              See Social Media Management &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById("bio-form") as HTMLFormElement;
+    const businessInput = document.getElementById("bio-business") as HTMLInputElement;
+    const serviceInput = document.getElementById("bio-service") as HTMLInputElement;
+    const cityInput = document.getElementById("bio-city") as HTMLInputElement;
+    const submitBtn = document.getElementById("bio-submit") as HTMLButtonElement;
+    const errorBox = document.getElementById("bio-error") as HTMLDivElement;
+    const results = document.getElementById("bio-results") as HTMLDivElement;
+    const bioList = document.getElementById("bio-list") as HTMLDivElement;
+    const captionList = document.getElementById("caption-list") as HTMLUListElement;
+
+    type Bio = { platform: string; text: string; limit: number };
+
+    function renderBio(bio: Bio) {
+      const card = document.createElement("div");
+      card.className = "rounded-lg border border-surface bg-charcoal p-4";
+
+      const label = document.createElement("p");
+      label.className = "text-xs font-bold uppercase tracking-wide text-gray-500";
+      label.textContent = bio.platform;
+
+      const text = document.createElement("p");
+      text.className = "mt-1 text-sm text-gray-200";
+      text.textContent = bio.text;
+
+      const meta = document.createElement("p");
+      const ok = bio.text.length <= bio.limit;
+      meta.className = `mt-1 text-xs ${ok ? "text-teal" : "text-amber"}`;
+      meta.textContent = `${bio.text.length} of ${bio.limit} characters${ok ? "" : " — a bit long for this platform"}`;
+
+      card.append(label, text, meta);
+      return card;
+    }
+
+    function renderCaption(caption: string) {
+      const li = document.createElement("li");
+      li.className = "rounded-lg border border-surface bg-charcoal px-4 py-3 text-sm text-gray-200";
+      li.textContent = caption;
+      return li;
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorBox.hidden = true;
+      results.hidden = true;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Generating bios...";
+
+      try {
+        const res = await fetch("/api/social-bio", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            business: businessInput.value,
+            service: serviceInput.value,
+            city: cityInput.value,
+          }),
+        });
+        const data = await res.json();
+
+        if (!data.ok) {
+          errorBox.textContent = data.error || "Something went wrong. Please try again.";
+          errorBox.hidden = false;
+          return;
+        }
+
+        bioList.innerHTML = "";
+        data.bios.forEach((bio: Bio) => {
+          bioList.appendChild(renderBio(bio));
+        });
+
+        captionList.innerHTML = "";
+        data.captions.forEach((caption: string) => {
+          captionList.appendChild(renderCaption(caption));
+        });
+
+        results.hidden = false;
+      } catch {
+        errorBox.textContent = "Something went wrong. Please try again.";
+        errorBox.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Generate Bios";
+      }
+    });
+  </script>
+</BaseLayout>
