@@ -7,7 +7,7 @@
   <text x="60" y="230" font-family="Arial, sans-serif" font-size="72" font-weight="800" fill="#ffffff">Pro</text>
   <text x="60" y="280" font-family="Arial, sans-serif" font-size="26" fill="#9ca3af">for businesses ready to scale</text>
 
-  <text x="60" y="420" font-family="Arial, sans-serif" font-size="96" font-weight="800" fill="#ef9c2f">$299<tspan font-size="40" fill="#9ca3af">/mo</tspan></text>
+  <text x="60" y="420" font-family="Arial, sans-serif" font-size="96" font-weight="800" fill="#ef9c2f">$199<tspan font-size="40" fill="#9ca3af">/mo</tspan></text>
 
   <g font-family="Arial, sans-serif" font-size="26" fill="#e5e7eb">
     <circle cx="72" cy="500" r="7" fill="#4caac9" />

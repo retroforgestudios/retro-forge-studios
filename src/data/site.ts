@@ -366,7 +366,7 @@ export const PRICING_TIERS = [
   {
     name: "Starter",
     tagline: "for businesses just getting consistent",
-    price: "$99/mo",
+    price: "$129/mo",
     featured: false,
     features: ["A few posts a week", "Basic content calendar", "Monthly check-in"],
     cta: "Get started",
@@ -374,7 +374,7 @@ export const PRICING_TIERS = [
   {
     name: "Growth",
     tagline: "best value",
-    price: "$199/mo",
+    price: "$159/mo",
     featured: true,
     features: [
       "Daily social presence",
@@ -387,7 +387,7 @@ export const PRICING_TIERS = [
   {
     name: "Pro",
     tagline: "for businesses ready to scale",
-    price: "$299/mo",
+    price: "$199/mo",
     featured: false,
     features: ["Everything in Growth", "Brand strategy sessions", "Priority turnaround"],
     cta: "Get started",
