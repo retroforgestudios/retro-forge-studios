@@ -237,16 +237,25 @@ import { SITE } from "../data/site";
           }
 
           // Filled circular badge behind the mark — much more prominent
-          // than a bare glyph, and reads clearly even at a glance.
+          // than a bare glyph, and reads clearly even at a glance. The
+          // check/X itself is drawn as vector lines rather than a Unicode
+          // ✓/✗ character: jsPDF's built-in helvetica font has no glyph for
+          // those code points, so doc.text() silently rendered nothing —
+          // lines always render regardless of font.
           const markColor = check.pass ? BRAND.teal : BRAND.red;
           const markCX = margin + 3.2;
           const markCY = y - 2.1;
           doc.setFillColor(...markColor);
           doc.circle(markCX, markCY, 3.4, "F");
-          doc.setTextColor(255, 255, 255);
-          doc.setFont("helvetica", "bold");
-          doc.setFontSize(10.5);
-          doc.text(check.pass ? "✓" : "✗", markCX, markCY + 1.3, { align: "center" });
+          doc.setDrawColor(255, 255, 255);
+          doc.setLineWidth(0.7);
+          if (check.pass) {
+            doc.line(markCX - 1.6, markCY, markCX - 0.4, markCY + 1.3);
+            doc.line(markCX - 0.4, markCY + 1.3, markCX + 1.8, markCY - 1.5);
+          } else {
+            doc.line(markCX - 1.5, markCY - 1.5, markCX + 1.5, markCY + 1.5);
+            doc.line(markCX - 1.5, markCY + 1.5, markCX + 1.5, markCY - 1.5);
+          }
 
           doc.setTextColor(...BRAND.charcoal);
           doc.setFontSize(11);
