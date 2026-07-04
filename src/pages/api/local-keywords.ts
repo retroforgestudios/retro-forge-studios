@@ -54,6 +54,9 @@ async function generateKeywords(userPrompt: string): Promise<string[] | null> {
       { role: "user", content: userPrompt },
     ],
     temperature: 0.7,
+    // Default max_tokens is only 256 — cutting it close for 15 phrases in
+    // JSON. See social-bio.ts for the truncation bug this guards against.
+    max_tokens: 768,
   })) as {
     response?: unknown;
     choices?: { message?: { content?: unknown } }[];

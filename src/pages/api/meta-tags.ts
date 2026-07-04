@@ -57,6 +57,9 @@ async function generatePairs(userPrompt: string): Promise<MetaPair[] | null> {
       { role: "user", content: userPrompt },
     ],
     temperature: 0.7,
+    // Default max_tokens is only 256 — too small for 5 title+description
+    // pairs in JSON, risking silent output truncation. See social-bio.ts.
+    max_tokens: 1024,
   })) as {
     response?: unknown;
     choices?: { message?: { content?: unknown } }[];

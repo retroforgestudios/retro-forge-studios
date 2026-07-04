@@ -80,6 +80,10 @@ async function generateBios(userPrompt: string): Promise<BioResult | null> {
       { role: "user", content: userPrompt },
     ],
     temperature: 0.7,
+    // Default max_tokens is only 256 — too small for 4 bios + 5 captions in
+    // JSON. Output was silently truncating mid-generation, producing
+    // syntactically incomplete JSON no parsing fix could repair.
+    max_tokens: 1024,
   })) as {
     response?: unknown;
     choices?: { message?: { content?: unknown } }[];
