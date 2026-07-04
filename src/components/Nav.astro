@@ -1,5 +1,5 @@
 ---
-import { NAV_LINKS, SERVICES, MENU_FEATURE } from "../data/site";
+import { NAV_LINKS, SERVICES, MENU_FEATURE, TOOLS } from "../data/site";
 import MegaMenu from "./MegaMenu.astro";
 
 const currentPath = new URL(Astro.request.url).pathname;
@@ -8,6 +8,12 @@ const serviceLinks = SERVICES.map((s) => ({
   href: `/services/${s.slug}`,
   label: s.name,
   description: s.teaser,
+}));
+
+const toolLinks = TOOLS.map((t) => ({
+  href: t.href,
+  label: t.name,
+  description: t.teaser,
 }));
 ---
 
@@ -28,6 +34,18 @@ const serviceLinks = SERVICES.map((s) => ({
               linksHeading="what i do"
               links={serviceLinks}
               feature={MENU_FEATURE}
+            />
+          );
+        }
+
+        if (link.href === "/tools") {
+          return (
+            <MegaMenu
+              label={link.label}
+              href="/tools"
+              active={currentPath.startsWith("/tools") || currentPath.startsWith("/website-audit")}
+              linksHeading="free tools"
+              links={toolLinks}
             />
           );
         }
@@ -75,6 +93,25 @@ const serviceLinks = SERVICES.map((s) => ({
           <li>
             <a href="/services" class="block px-3 pt-3 text-marker text-sm text-amber">Services</a>
             {serviceLinks.map((sub) => (
+              <a
+                href={sub.href}
+                class:list={[
+                  "block rounded-md py-2 pl-6 pr-3 text-sm font-semibold",
+                  currentPath === sub.href ? "text-teal" : "text-gray-200",
+                ]}
+              >
+                {sub.label}
+              </a>
+            ))}
+          </li>
+        );
+      }
+
+      if (link.href === "/tools") {
+        return (
+          <li>
+            <a href="/tools" class="block px-3 pt-3 text-marker text-sm text-amber">Tools</a>
+            {toolLinks.map((sub) => (
               <a
                 href={sub.href}
                 class:list={[

@@ -1,0 +1,43 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CTABanner from "../components/sections/CTABanner.astro";
+import PageHero from "../components/sections/PageHero.astro";
+import { TOOLS } from "../data/site";
+---
+
+<BaseLayout
+  title="Free Tools"
+  description="Free, no-signup marketing tools from Retro Forge Studios — starting with an instant website audit."
+>
+  <PageHero
+    eyebrow="free tools"
+    heading="Free tools, no signup required."
+    subhead="A few things I've built to help you check where your business stands online — free to use, no email required."
+  />
+
+  <section class="px-4 py-16 sm:px-6">
+    <div class="mx-auto grid max-w-content grid-cols-1 gap-6 sm:grid-cols-2">
+      {TOOLS.map((tool) => (
+        <a
+          href={tool.href}
+          class="flex flex-col rounded-lg border border-surface bg-[#2c2f34] p-6 text-center transition-colors hover:bg-[#34373d]"
+        >
+          <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-charcoal text-amber">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="h-7 w-7">
+              <path d={tool.icon} />
+            </svg>
+          </div>
+          <h3 class="mt-4 text-lg text-white">{tool.name}</h3>
+          <p class="mt-2 flex-1 text-sm text-gray-300">{tool.teaser}</p>
+          <span class="mt-4 text-sm font-semibold text-teal">Try it &rarr;</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <CTABanner
+    heading="Want a hand fixing what the tools find?"
+    subtext="Let's talk through what's actually worth doing — no pressure, no jargon."
+    buttonLabel="Book a free call"
+  />
+</BaseLayout>

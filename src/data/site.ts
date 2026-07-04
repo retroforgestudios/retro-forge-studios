@@ -27,13 +27,24 @@ export const ANALYTICS = {
 };
 
 export const NAV_LINKS = [
-  { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
+  { href: "/tools", label: "Tools" },
   { href: "/how-i-work", label: "How I Work" },
   { href: "/pricing", label: "Pricing" },
   { href: "/blog", label: "Blog" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
+];
+
+// Free interactive tools, shown in the "Tools" nav dropdown and on /tools.
+export const TOOLS = [
+  {
+    slug: "website-audit",
+    name: "Website Audit",
+    icon: "M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm9 16l-4.35-4.35",
+    teaser: "Run a free, instant audit of any website — HTTPS, mobile-friendliness, SEO basics, and more.",
+    href: "/website-audit",
+  },
 ];
 
 // Downloadable lead magnet — powers the /questionnaire landing page.
