@@ -21,6 +21,7 @@
     "@fontsource/permanent-marker": "^5.2.7",
     "@tailwindcss/vite": "^4.3.1",
     "astro": "^7.0.3",
+    "jspdf": "^4.2.1",
     "tailwindcss": "^4.3.1"
   },
   "devDependencies": {

@@ -52,10 +52,17 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <div id="audit-score-ring" class="flex h-20 w-20 flex-none items-center justify-center rounded-full border-4 border-teal">
               <span id="audit-score" class="text-xl font-bold text-white"></span>
             </div>
-            <div>
+            <div class="flex-1">
               <p class="text-marker text-lg text-amber">Grade: <span id="audit-grade"></span></p>
               <p class="text-sm text-gray-400"><span id="audit-count"></span> checks passed</p>
             </div>
+            <button
+              id="audit-download"
+              type="button"
+              class="flex-none rounded-md border border-teal px-4 py-2 text-sm font-semibold text-teal transition-colors hover:bg-teal/10"
+            >
+              Download My Results
+            </button>
           </div>
 
           <ul id="audit-checklist" class="mt-6 space-y-4"></ul>
@@ -85,6 +92,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   </section>
 
   <script>
+    import { jsPDF } from "jspdf";
+
     const form = document.getElementById("audit-form") as HTMLFormElement;
     const urlInput = document.getElementById("audit-url") as HTMLInputElement;
     const submitBtn = document.getElementById("audit-submit") as HTMLButtonElement;
@@ -96,8 +105,181 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     const countEl = document.getElementById("audit-count") as HTMLSpanElement;
     const checklist = document.getElementById("audit-checklist") as HTMLUListElement;
     const summaryText = document.getElementById("audit-summary-text") as HTMLParagraphElement;
+    const downloadBtn = document.getElementById("audit-download") as HTMLButtonElement;
 
     type CheckResult = { key: string; label: string; pass: boolean; detail: string };
+    type AuditData = { url: string; score: number; grade: string; checks: CheckResult[] };
+
+    let lastAudit: AuditData | null = null;
+
+    // Brand colors as RGB triples for jsPDF (which doesn't read CSS vars).
+    const BRAND = {
+      charcoal: [31, 33, 37] as [number, number, number],
+      red: [239, 52, 47] as [number, number, number],
+      amber: [239, 156, 47] as [number, number, number],
+      teal: [76, 170, 201] as [number, number, number],
+      gray: [90, 97, 105] as [number, number, number],
+    };
+
+    // Decodes the logo (WebP) via canvas so jsPDF — which only accepts
+    // raster formats it can parse directly — gets a PNG data URL instead.
+    async function loadLogoAsPngDataUrl(): Promise<string | null> {
+      try {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        const loaded = new Promise<void>((resolve, reject) => {
+          img.onload = () => resolve();
+          img.onerror = () => reject(new Error("logo failed to load"));
+        });
+        img.src = "/images/logo-wordmark.webp";
+        await loaded;
+        const canvas = document.createElement("canvas");
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return null;
+        ctx.drawImage(img, 0, 0);
+        return canvas.toDataURL("image/png");
+      } catch {
+        return null;
+      }
+    }
+
+    async function downloadReport() {
+      if (!lastAudit) return;
+      downloadBtn.disabled = true;
+      downloadBtn.textContent = "Preparing PDF...";
+
+      try {
+        const doc = new jsPDF({ unit: "mm", format: "a4" });
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+        const margin = 18;
+        const contentWidth = pageWidth - margin * 2;
+
+        // Header band
+        doc.setFillColor(...BRAND.charcoal);
+        doc.rect(0, 0, pageWidth, 28, "F");
+        const logo = await loadLogoAsPngDataUrl();
+        if (logo) {
+          const logoW = 36;
+          const logoH = logoW / 4; // matches the source's 4:1 aspect ratio
+          doc.addImage(logo, "PNG", margin, 8, logoW, logoH);
+        } else {
+          doc.setTextColor(255, 255, 255);
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(16);
+          doc.text("Retro Forge Studios", margin, 18);
+        }
+        doc.setTextColor(...BRAND.amber);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.text("Free Website Audit Report", pageWidth - margin, 18, { align: "right" });
+
+        let y = 42;
+        doc.setTextColor(...BRAND.charcoal);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(18);
+        doc.text("Website Audit Results", margin, y);
+
+        y += 8;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(...BRAND.gray);
+        const dateStr = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+        doc.text(`${lastAudit.url}  —  ${dateStr}`, margin, y);
+
+        // Score + grade
+        y += 12;
+        const gradeColor =
+          lastAudit.grade === "A" || lastAudit.grade === "B"
+            ? BRAND.teal
+            : lastAudit.grade === "C"
+              ? BRAND.amber
+              : BRAND.red;
+        doc.setDrawColor(...gradeColor);
+        doc.setLineWidth(1.2);
+        doc.circle(margin + 10, y + 4, 10, "S");
+        doc.setTextColor(...gradeColor);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(14);
+        doc.text(lastAudit.grade, margin + 10, y + 8, { align: "center" });
+
+        doc.setTextColor(...BRAND.charcoal);
+        doc.setFontSize(12);
+        doc.text(`${lastAudit.score}% overall`, margin + 26, y + 2);
+        const passCount = lastAudit.checks.filter((c) => c.pass).length;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(...BRAND.gray);
+        doc.text(`${passCount} of ${lastAudit.checks.length} checks passed`, margin + 26, y + 8);
+
+        y += 22;
+        doc.setDrawColor(220, 220, 220);
+        doc.line(margin, y, pageWidth - margin, y);
+        y += 10;
+
+        // Checklist
+        for (const check of lastAudit.checks) {
+          const detailLines = doc.splitTextToSize(check.detail, contentWidth - 8) as string[];
+          const blockHeight = 6 + detailLines.length * 4.6 + 4;
+
+          if (y + blockHeight > pageHeight - 24) {
+            doc.addPage();
+            y = margin;
+          }
+
+          const markColor = check.pass ? BRAND.teal : BRAND.red;
+          doc.setTextColor(...markColor);
+          doc.setFont("helvetica", "bold");
+          doc.setFontSize(11);
+          doc.text(check.pass ? "✓" : "✗", margin, y);
+
+          doc.setTextColor(...BRAND.charcoal);
+          doc.text(check.label, margin + 7, y);
+
+          y += 5.5;
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(9.5);
+          doc.setTextColor(...BRAND.gray);
+          doc.text(detailLines, margin + 7, y);
+          y += detailLines.length * 4.6 + 5;
+        }
+
+        // Footer CTA on the last page
+        if (y + 30 > pageHeight - 10) {
+          doc.addPage();
+          y = margin;
+        }
+        y = Math.max(y, pageHeight - 40);
+        doc.setDrawColor(...BRAND.amber);
+        doc.setFillColor(...BRAND.amber);
+        doc.roundedRect(margin, y, contentWidth, 24, 3, 3, "F");
+        doc.setTextColor(...BRAND.charcoal);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(11);
+        doc.text("Want these fixed?", margin + 6, y + 9);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9.5);
+        doc.text("Book a free call — retroforgestudios.com/contact", margin + 6, y + 16);
+
+        const hostname = (() => {
+          try {
+            return new URL(lastAudit.url).hostname.replace(/\W+/g, "-");
+          } catch {
+            return "site";
+          }
+        })();
+        doc.save(`website-audit-${hostname}.pdf`);
+      } finally {
+        downloadBtn.disabled = false;
+        downloadBtn.textContent = "Download My Results";
+      }
+    }
+
+    downloadBtn.addEventListener("click", () => {
+      downloadReport();
+    });
 
     function buildSummary(checks: CheckResult[]) {
       const failed = checks.filter((c) => !c.pass);
@@ -196,6 +378,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         });
 
         summaryText.textContent = buildSummary(data.checks);
+
+        lastAudit = { url: data.url, score: data.score, grade: data.grade, checks: data.checks };
 
         results.hidden = false;
       } catch {
