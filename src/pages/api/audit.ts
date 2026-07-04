@@ -4,6 +4,7 @@
 export const prerender = false;
 
 import type { APIRoute } from "astro";
+import { env } from "cloudflare:workers";
 
 interface Check {
   key: string;
@@ -35,6 +36,125 @@ async function fetchWithTimeout(url: string, ms: number) {
     return await fetch(url, { signal: controller.signal, headers: { "User-Agent": "RetroForgeStudios-Audit/1.0" } });
   } finally {
     clearTimeout(timeout);
+  }
+}
+
+// Runs a real Lighthouse pass via Google's PageSpeed Insights API and folds
+// the results into our own check format — never surfaced to visitors as
+// "PageSpeed"/"Lighthouse"/"Google," just additional findings in the same
+// list. Fails silently (returns no checks) if PSI_API_KEY isn't configured
+// or the call errors/times out, so the rest of the audit still works.
+async function runRealUserChecks(target: URL): Promise<Check[]> {
+  const apiKey = (env as { PSI_API_KEY?: string }).PSI_API_KEY;
+  if (!apiKey) return [];
+
+  const psiUrl = new URL("https://www.googleapis.com/pagespeedonline/v5/runPagespeed");
+  psiUrl.searchParams.set("url", target.href);
+  psiUrl.searchParams.set("key", apiKey);
+  psiUrl.searchParams.set("strategy", "mobile");
+  ["performance", "accessibility", "best-practices"].forEach((c) => psiUrl.searchParams.append("category", c));
+
+  try {
+    const res = await fetchWithTimeout(psiUrl.href, 45_000);
+    if (!res.ok) return [];
+    const data = (await res.json()) as {
+      lighthouseResult?: {
+        categories?: Record<string, { score: number | null }>;
+        audits?: Record<string, { numericValue?: number }>;
+      };
+    };
+
+    const categories = data.lighthouseResult?.categories ?? {};
+    const audits = data.lighthouseResult?.audits ?? {};
+    const results: Check[] = [];
+
+    const perfScore = categories.performance?.score;
+    if (perfScore !== null && perfScore !== undefined) {
+      const pct = Math.round(perfScore * 100);
+      results.push({
+        key: "real-user-speed",
+        label: "Real-world speed score",
+        pass: pct >= 50,
+        detail:
+          pct >= 90
+            ? `Scores ${pct}/100 for real-world loading speed — excellent.`
+            : pct >= 50
+              ? `Scores ${pct}/100 for real-world loading speed — room to improve.`
+              : `Scores ${pct}/100 for real-world loading speed — visitors are likely waiting too long.`,
+      });
+    }
+
+    const lcp = audits["largest-contentful-paint"]?.numericValue;
+    if (typeof lcp === "number") {
+      const seconds = (lcp / 1000).toFixed(1);
+      results.push({
+        key: "lcp",
+        label: "Main content loads quickly",
+        pass: lcp < 2500,
+        detail:
+          lcp < 2500
+            ? `The main content appears in ${seconds}s — fast enough that visitors aren't left staring at a blank page.`
+            : `The main content takes ${seconds}s to appear — slow enough that visitors may leave before they see anything.`,
+      });
+    }
+
+    const cls = audits["cumulative-layout-shift"]?.numericValue;
+    if (typeof cls === "number") {
+      results.push({
+        key: "cls",
+        label: "Page doesn't jump around while loading",
+        pass: cls < 0.1,
+        detail:
+          cls < 0.1
+            ? "The layout stays stable as the page loads — no annoying jumping content."
+            : "Content visibly shifts around while the page loads — the kind of thing that causes mis-clicks and frustration.",
+      });
+    }
+
+    const tbt = audits["total-blocking-time"]?.numericValue;
+    if (typeof tbt === "number") {
+      results.push({
+        key: "tbt",
+        label: "Responds quickly to clicks and taps",
+        pass: tbt < 200,
+        detail:
+          tbt < 200
+            ? "The page stays responsive to interaction while it loads."
+            : `The page can feel unresponsive for up to ${Math.round(tbt)}ms after it appears — taps and clicks may seem to do nothing at first.`,
+      });
+    }
+
+    const a11yScore = categories.accessibility?.score;
+    if (a11yScore !== null && a11yScore !== undefined) {
+      const pct = Math.round(a11yScore * 100);
+      results.push({
+        key: "real-a11y",
+        label: "Accessibility check",
+        pass: pct >= 90,
+        detail:
+          pct >= 90
+            ? `Scores ${pct}/100 on accessibility — in good shape for visitors using screen readers or other assistive tech.`
+            : `Scores ${pct}/100 on accessibility — some visitors using screen readers or assistive tech may run into real problems.`,
+      });
+    }
+
+    const bpScore = categories["best-practices"]?.score;
+    if (bpScore !== null && bpScore !== undefined) {
+      const pct = Math.round(bpScore * 100);
+      results.push({
+        key: "real-best-practices",
+        label: "Modern web best practices",
+        pass: pct >= 90,
+        detail:
+          pct >= 90
+            ? `Scores ${pct}/100 on modern web best practices.`
+            : `Scores ${pct}/100 on modern web best practices — a handful of outdated or risky patterns were flagged.`,
+      });
+    }
+
+    return results;
+  } catch {
+    return [];
   }
 }
 
@@ -276,6 +396,9 @@ export const POST: APIRoute = async ({ request }) => {
       ? "A sitemap is referenced in robots.txt — helps search engines find all your pages."
       : "No sitemap reference found — search engines may miss pages on the site.",
   });
+
+  const realUserChecks = await runRealUserChecks(target);
+  checks.push(...realUserChecks);
 
   const passCount = checks.filter((c) => c.pass).length;
   const score = Math.round((passCount / checks.length) * 100);
