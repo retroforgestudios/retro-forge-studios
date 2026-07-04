@@ -20,8 +20,15 @@ interface Props {
   linksHeading?: string;
   links: MenuLink[];
   feature?: Feature;
+  columns?: 1 | 2;
 }
-const { label, href, active = false, linksHeading, links, feature } = Astro.props;
+const { label, href, active = false, linksHeading, links, feature, columns = 1 } = Astro.props;
+
+// Split into two columns — e.g. 5 links becomes 3 on the left, 2 on the
+// right (first column gets the extra one when the count is odd).
+const splitAt = Math.ceil(links.length / 2);
+const leftLinks = columns === 2 ? links.slice(0, splitAt) : links;
+const rightLinks = columns === 2 ? links.slice(splitAt) : [];
 ---
 
 <li class="group relative">
@@ -41,26 +48,50 @@ const { label, href, active = false, linksHeading, links, feature } = Astro.prop
   <div
     class:list={[
       "invisible absolute left-0 top-full z-50 pt-3 opacity-0 transition duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100",
-      feature ? "w-[640px] max-w-[90vw]" : "w-72",
+      feature ? "w-[640px] max-w-[90vw]" : columns === 2 ? "w-[420px] max-w-[90vw]" : "w-72",
     ]}
   >
     <div
       class:list={[
         "grid gap-6 rounded-xl border border-surface bg-[#1f2125] p-6 shadow-2xl",
-        feature ? "grid-cols-1 sm:grid-cols-[1fr_240px]" : "grid-cols-1",
+        feature ? "grid-cols-1 sm:grid-cols-[1fr_240px]" : columns === 2 ? "grid-cols-2" : "grid-cols-1",
       ]}
     >
-      <div class="space-y-1">
-        {linksHeading && (
-          <p class="text-marker px-3 pb-2 text-sm text-amber">{linksHeading}</p>
-        )}
-        {links.map((l) => (
-          <a href={l.href} class="block rounded-md p-3 transition-colors hover:bg-white/5">
-            <p class="font-semibold text-white">{l.label}</p>
-            {l.description && <p class="mt-0.5 text-sm text-gray-400">{l.description}</p>}
-          </a>
-        ))}
-      </div>
+      {columns === 2 ? (
+        <Fragment>
+          <div class="space-y-1">
+            {linksHeading && (
+              <p class="text-marker px-3 pb-2 text-sm text-amber">{linksHeading}</p>
+            )}
+            {leftLinks.map((l) => (
+              <a href={l.href} class="block rounded-md p-3 transition-colors hover:bg-white/5">
+                <p class="font-semibold text-white">{l.label}</p>
+                {l.description && <p class="mt-0.5 text-sm text-gray-400">{l.description}</p>}
+              </a>
+            ))}
+          </div>
+          <div class="space-y-1 sm:pt-[2.125rem]">
+            {rightLinks.map((l) => (
+              <a href={l.href} class="block rounded-md p-3 transition-colors hover:bg-white/5">
+                <p class="font-semibold text-white">{l.label}</p>
+                {l.description && <p class="mt-0.5 text-sm text-gray-400">{l.description}</p>}
+              </a>
+            ))}
+          </div>
+        </Fragment>
+      ) : (
+        <div class="space-y-1">
+          {linksHeading && (
+            <p class="text-marker px-3 pb-2 text-sm text-amber">{linksHeading}</p>
+          )}
+          {links.map((l) => (
+            <a href={l.href} class="block rounded-md p-3 transition-colors hover:bg-white/5">
+              <p class="font-semibold text-white">{l.label}</p>
+              {l.description && <p class="mt-0.5 text-sm text-gray-400">{l.description}</p>}
+            </a>
+          ))}
+        </div>
+      )}
 
       {feature && (
         <div class="flex flex-col overflow-hidden rounded-lg border border-surface bg-charcoal">

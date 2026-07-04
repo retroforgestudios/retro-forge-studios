@@ -43,9 +43,10 @@ const toolLinks = TOOLS.map((t) => ({
             <MegaMenu
               label={link.label}
               href="/tools"
-              active={currentPath.startsWith("/tools") || currentPath.startsWith("/website-audit")}
+              active={currentPath.startsWith("/tools") || toolLinks.some((t) => currentPath.startsWith(t.href))}
               linksHeading="free tools"
               links={toolLinks}
+              columns={2}
             />
           );
         }
