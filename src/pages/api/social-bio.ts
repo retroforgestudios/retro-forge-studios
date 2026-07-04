@@ -7,9 +7,9 @@ import { env } from "cloudflare:workers";
 
 const MODEL = "@cf/meta/llama-3.2-3b-instruct";
 
-interface BioResult {
-  bios: { platform: string; text: string }[];
-  captions: string[];
+interface Bio {
+  platform: string;
+  text: string;
 }
 
 const PLATFORM_LIMITS = [
@@ -19,68 +19,35 @@ const PLATFORM_LIMITS = [
   { platform: "LinkedIn", limit: 120 },
 ];
 
-const SYSTEM_PROMPT = `You write social media bios and captions for a small local business. You must:
+// Split into two separate, simpler generations instead of one combined
+// {bios: [...], captions: [...]} object. That combined shape (array-of-
+// objects with a sibling array-of-strings) consistently tripped up this
+// small model — it kept emitting subtly different unbalanced-bracket
+// variants (missing closes, misplaced closes) that no single regex repair
+// could reliably catch. Each call below reuses a schema already proven
+// reliable elsewhere in this codebase: array-of-objects (meta-tags.ts) and
+// array-of-strings (blog-ideas.ts).
+const BIOS_SYSTEM_PROMPT = `You write social media bios for a small local business. You must:
 - Write one bio per platform: Instagram (max 150 characters), X/Twitter (max 160 characters), Facebook (max 200 characters), LinkedIn (max 120 characters, more professional in tone than the others)
 - Each bio should sound like a real business, not corporate marketing-speak — warm, specific, a little personality where the platform allows it (Instagram/Facebook can be more casual, LinkedIn more professional)
 - Include what the business does and, if given, the city — naturally, not stuffed
-- Also write 5 short caption starters/hooks a business could adapt for real posts (things like a question, a behind-the-scenes opener, a customer-focused line) — NOT generic ("Check out our...")
 
-Respond with ONLY a JSON object in this exact shape, nothing else — no markdown, no commentary before or after:
-{"bios": [{"platform": "Instagram", "text": "..."}, {"platform": "X (Twitter)", "text": "..."}, {"platform": "Facebook", "text": "..."}, {"platform": "LinkedIn", "text": "..."}], "captions": ["...", "...", "...", "...", "..."]}`;
+Respond with ONLY a JSON array of exactly 4 objects, nothing else — no markdown, no commentary before or after. Example format:
+[{"platform": "Instagram", "text": "..."}, {"platform": "X (Twitter)", "text": "..."}, {"platform": "Facebook", "text": "..."}, {"platform": "LinkedIn", "text": "..."}]`;
 
-// The model consistently forgets to close the "bios" array before
-// appending a stray {"captions": [...]} entry, e.g.:
-//   {"bios": [ {...}, {...}, {"captions": [...]} }
-// instead of the requested:
-//   {"bios": [ {...}, {...} ], "captions": [...]}
-// That's genuinely invalid JSON (unbalanced brackets) — JSON.parse throws
-// before any post-parse repair logic can run, so the string itself needs
-// fixing first.
-function repairMissingBiosClose(json: string): string {
-  return json.replace(/,\s*\{\s*"captions"\s*:\s*(\[[\s\S]*\])\s*\}\s*\}\s*$/, '],"captions":$1}');
-}
+const CAPTIONS_SYSTEM_PROMPT = `You write social media caption starters/hooks for a small local business — things a business could adapt for real posts (a question, a behind-the-scenes opener, a customer-focused line). Avoid generic lines like "Check out our...".
 
-function extractJsonObject(text: string): BioResult | null {
-  const match = text.match(/\{[\s\S]*\}/);
+Respond with ONLY a JSON array of exactly 5 strings, nothing else — no markdown, no numbering, no commentary before or after. Example format:
+["Caption one", "Caption two"]`;
+
+function extractJsonArray<T>(text: string, validate: (item: unknown) => item is T): T[] | null {
+  const match = text.match(/\[[\s\S]*\]/);
   if (!match) return null;
-
-  // The model occasionally emits a stray unescaped quote/apostrophe that
-  // breaks strict JSON.parse. Try as-is first, then with smart quotes
-  // normalized to straight quotes, then with the missing-bracket repair
-  // applied to each of those.
-  const base = [match[0], match[0].replace(/[‘’]/g, "'").replace(/[“”]/g, '"')];
-  const candidates = [...base, ...base.map(repairMissingBiosClose)];
-
-  for (const candidate of candidates) {
+  for (const candidate of [match[0], match[0].replace(/[‘’]/g, "'").replace(/[“”]/g, '"')]) {
     try {
       const parsed = JSON.parse(candidate);
-      if (!parsed || !Array.isArray(parsed.bios)) continue;
-
-      // The model sometimes nests the captions list as a stray extra item
-      // inside the bios array (e.g. {"captions": [...]}) instead of as a
-      // top-level sibling key. Pull real {platform, text} bios out, and
-      // recover captions from either the correct top-level key or that
-      // misplaced entry.
-      let captions: unknown = Array.isArray(parsed.captions) ? parsed.captions : null;
-      const bios: { platform: string; text: string }[] = [];
-      for (const item of parsed.bios) {
-        const entry = item as Record<string, unknown>;
-        if (entry && typeof entry.platform === "string" && typeof entry.text === "string") {
-          bios.push({ platform: entry.platform.trim(), text: entry.text.trim() });
-        } else if (!captions && entry && Array.isArray(entry.captions)) {
-          captions = entry.captions;
-        }
-      }
-
-      if (
-        bios.length > 0 &&
-        Array.isArray(captions) &&
-        captions.every((c: unknown) => typeof c === "string")
-      ) {
-        return {
-          bios,
-          captions: (captions as string[]).map((c) => c.trim()).filter(Boolean),
-        };
+      if (Array.isArray(parsed) && parsed.every(validate)) {
+        return parsed;
       }
     } catch {
       // try next candidate / fall through
@@ -89,17 +56,29 @@ function extractJsonObject(text: string): BioResult | null {
   return null;
 }
 
-async function generateBios(userPrompt: string): Promise<BioResult | null> {
+function isBio(item: unknown): item is Bio {
+  const b = item as Record<string, unknown>;
+  return !!b && typeof b.platform === "string" && typeof b.text === "string";
+}
+
+// Fallback if the model doesn't return clean JSON for captions: pull one
+// per line, stripping common list markers.
+function extractLines(text: string): string[] {
+  return text
+    .split("\n")
+    .map((line) => line.replace(/^[\s"'\-*\d.)]+/, "").replace(/["']+$/, "").trim())
+    .filter((line) => line.length > 5 && line.length < 200)
+    .slice(0, 5);
+}
+
+async function runChat(systemPrompt: string, userPrompt: string, maxTokens: number): Promise<string> {
   const result = (await env.AI.run(MODEL, {
     messages: [
-      { role: "system", content: SYSTEM_PROMPT },
+      { role: "system", content: systemPrompt },
       { role: "user", content: userPrompt },
     ],
     temperature: 0.7,
-    // Default max_tokens is only 256 — too small for 4 bios + 5 captions in
-    // JSON. Output was silently truncating mid-generation, producing
-    // syntactically incomplete JSON no parsing fix could repair.
-    max_tokens: 1024,
+    max_tokens: maxTokens,
   })) as {
     response?: unknown;
     choices?: { message?: { content?: unknown } }[];
@@ -108,18 +87,26 @@ async function generateBios(userPrompt: string): Promise<BioResult | null> {
   // This model returns an OpenAI-compatible chat-completion shape
   // (choices[0].message.content), not the simpler { response } shape
   // some other Workers AI models use — handle both.
-  const text =
-    typeof result.response === "string"
-      ? result.response
-      : typeof result.choices?.[0]?.message?.content === "string"
-        ? (result.choices[0].message.content as string)
-        : "";
+  return typeof result.response === "string"
+    ? result.response
+    : typeof result.choices?.[0]?.message?.content === "string"
+      ? (result.choices[0].message.content as string)
+      : "";
+}
 
-  const parsed = extractJsonObject(text);
-  if (!parsed) {
-    console.log("Social bio parse failed. Text length:", text.length, "Raw:", text);
-  }
-  return parsed;
+async function generateBios(userPrompt: string): Promise<Bio[] | null> {
+  const text = await runChat(BIOS_SYSTEM_PROMPT, userPrompt, 512);
+  return extractJsonArray(text, isBio);
+}
+
+async function generateCaptions(userPrompt: string): Promise<string[] | null> {
+  const text = await runChat(CAPTIONS_SYSTEM_PROMPT, userPrompt, 384);
+  const captions = extractJsonArray(text, (item): item is string => typeof item === "string") ?? extractLines(text);
+  return captions.length > 0 ? captions : null;
+}
+
+async function withRetry<T>(fn: () => Promise<T | null>): Promise<T | null> {
+  return (await fn()) ?? (await fn());
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -150,18 +137,18 @@ export const POST: APIRoute = async ({ request }) => {
     .filter(Boolean)
     .join("\n");
 
-  const userPrompt = `${details}\n\nGive me bios for Instagram, X (Twitter), Facebook, and LinkedIn, plus 5 caption starters.`;
+  const bioPrompt = `${details}\n\nGive me bios for Instagram, X (Twitter), Facebook, and LinkedIn.`;
+  const captionPrompt = `${details}\n\nGive me 5 caption starters for this business's social posts.`;
 
   try {
-    // A generation occasionally comes back malformed — that's
-    // non-deterministic, so a fresh attempt usually succeeds even when the
-    // first one didn't. Retry once before failing.
-    let result = await generateBios(userPrompt);
-    if (!result) {
-      result = await generateBios(userPrompt);
-    }
+    // Run both generations in parallel — splitting into two simpler calls
+    // doesn't cost any extra wall-clock time this way.
+    const [bios, captions] = await Promise.all([
+      withRetry(() => generateBios(bioPrompt)),
+      withRetry(() => generateCaptions(captionPrompt)),
+    ]);
 
-    if (!result) {
+    if (!bios || !captions) {
       return new Response(
         JSON.stringify({ ok: false, error: "Couldn't generate a bio that time — please try again." }),
         { status: 502 },
@@ -170,12 +157,12 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Fold in the character limit for each bio so the page can show a
     // live "X of Y characters" check without duplicating the list client-side.
-    const bios = result.bios.map((bio) => {
+    const biosWithLimits = bios.map((bio) => {
       const match = PLATFORM_LIMITS.find((p) => p.platform === bio.platform);
       return { ...bio, limit: match?.limit ?? 160 };
     });
 
-    return new Response(JSON.stringify({ ok: true, bios, captions: result.captions.slice(0, 5) }), {
+    return new Response(JSON.stringify({ ok: true, bios: biosWithLimits, captions: captions.slice(0, 5) }), {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
