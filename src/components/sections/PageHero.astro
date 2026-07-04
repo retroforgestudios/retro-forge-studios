@@ -9,12 +9,15 @@ const { eyebrow, heading, subhead } = Astro.props;
 
 <section class="relative flex h-[534px] w-full items-center overflow-hidden">
   <img
-    src="/images/hero-forge.webp"
+    src="/images/hero-forge-1080.webp"
+    srcset="/images/hero-forge-640.webp 640w, /images/hero-forge-1080.webp 1080w, /images/hero-forge-1600.webp 1600w, /images/hero-forge-2048.webp 2048w"
+    sizes="100vw"
     alt="A blacksmith forging a glowing YouTube play button on an anvil stamped with the Retro Forge Studios logo"
     class="absolute inset-0 h-full w-full object-cover"
     width="2048"
     height="1152"
     loading="eager"
+    fetchpriority="high"
   />
   <div class="absolute inset-0 bg-charcoal/65"></div>
 

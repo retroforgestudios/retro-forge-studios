@@ -17,7 +17,7 @@ const { Content } = await render(post);
 
 // BlogPosting structured data — helps posts qualify for richer search results.
 const postUrl = new URL(`/blog/${post.id}/`, Astro.site).href;
-const imageUrl = new URL(post.data.image ?? "/images/hero-forge.webp", Astro.site).href;
+const imageUrl = new URL(post.data.image ?? "/images/hero-forge-1600.webp", Astro.site).href;
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
