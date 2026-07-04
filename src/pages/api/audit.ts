@@ -46,14 +46,19 @@ type PsiResponse = {
   };
 };
 
-// A single attempt at the PSI call. Throws on transient failures (network
-// error, timeout, rate-limit, server error) so the caller can retry; returns
-// null on non-retryable failures (bad key, malformed request) so we don't
-// waste a second, doomed attempt.
+// Thrown for a fast, transient failure (rate-limit or server error) — cheap
+// to retry since the failed attempt didn't consume the timeout budget.
+// A timed-out attempt throws AbortError instead and is deliberately NOT
+// retried, since retrying a full-length timeout roughly doubles the
+// worst-case wait for a real visitor.
+class PsiTransientError extends Error {}
+
+// A single attempt at the PSI call. Returns null on non-retryable failures
+// (bad key, malformed request) so we don't waste a second, doomed attempt.
 async function fetchPsiOnce(psiUrl: string, timeoutMs: number): Promise<PsiResponse | null> {
   const res = await fetchWithTimeout(psiUrl, timeoutMs);
   if (res.status === 429 || res.status >= 500) {
-    throw new Error(`PSI transient error: ${res.status}`);
+    throw new PsiTransientError(`PSI transient error: ${res.status}`);
   }
   if (!res.ok) return null;
   return (await res.json()) as PsiResponse;
@@ -65,11 +70,10 @@ async function fetchPsiOnce(psiUrl: string, timeoutMs: number): Promise<PsiRespo
 // list. Fails silently (returns no checks) if PSI_API_KEY isn't configured,
 // so the rest of the audit still works.
 //
-// Deliberately a single attempt, not retried: a retry roughly doubles the
-// worst-case wait (measured: one live run took >90s with a retry in place),
-// which is worse for a real visitor than occasionally missing the extra
-// checks. A single generous timeout bounds the wait while still covering
-// the vast majority of runs (observed 10-40s in normal conditions).
+// Retries once, but ONLY on a fast transient error (429/5xx) — those cost
+// almost nothing extra to retry. A genuine timeout is never retried, since
+// that would roughly double the worst-case wait (measured live: one run
+// exceeded 90s when timeouts were retried).
 async function runRealUserChecks(target: URL): Promise<Check[]> {
   const apiKey = (env as { PSI_API_KEY?: string }).PSI_API_KEY;
   if (!apiKey) return [];
@@ -83,8 +87,13 @@ async function runRealUserChecks(target: URL): Promise<Check[]> {
   let data: PsiResponse | null;
   try {
     data = await fetchPsiOnce(psiUrl.href, 70_000);
-  } catch {
-    return [];
+  } catch (err) {
+    if (!(err instanceof PsiTransientError)) return []; // timeout or other error — don't retry
+    try {
+      data = await fetchPsiOnce(psiUrl.href, 70_000);
+    } catch {
+      return [];
+    }
   }
   if (!data) return [];
 
