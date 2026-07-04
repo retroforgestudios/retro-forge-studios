@@ -25,20 +25,54 @@ Respond with ONLY a JSON array of exactly 5 objects, nothing else — no markdow
 function extractJsonArray(text: string): MetaPair[] | null {
   const match = text.match(/\[[\s\S]*\]/);
   if (!match) return null;
-  try {
-    const parsed = JSON.parse(match[0]);
-    if (
-      Array.isArray(parsed) &&
-      parsed.every(
-        (item) => item && typeof item.title === "string" && typeof item.description === "string",
-      )
-    ) {
-      return parsed.map((item) => ({ title: item.title.trim(), description: item.description.trim() }));
+
+  // The model occasionally emits a stray unescaped quote/apostrophe inside a
+  // title or description, which breaks strict JSON.parse. Try as-is first,
+  // then retry with straight quotes normalized to a form JSON.parse accepts.
+  for (const candidate of [match[0], match[0].replace(/[‘’]/g, "'").replace(/[“”]/g, '"')]) {
+    try {
+      const parsed = JSON.parse(candidate);
+      if (
+        Array.isArray(parsed) &&
+        parsed.every(
+          (item) => item && typeof item.title === "string" && typeof item.description === "string",
+        )
+      ) {
+        return parsed.map((item) => ({ title: item.title.trim(), description: item.description.trim() }));
+      }
+    } catch {
+      // try next candidate / fall through
     }
-  } catch {
-    // fall through
   }
   return null;
+}
+
+// One generation + parse attempt. Returns null (never throws for a bad
+// generation) so the caller can retry — a fresh generation is non-deterministic
+// and often succeeds even when the previous one didn't parse cleanly.
+async function generatePairs(userPrompt: string): Promise<MetaPair[] | null> {
+  const result = (await env.AI.run(MODEL, {
+    messages: [
+      { role: "system", content: SYSTEM_PROMPT },
+      { role: "user", content: userPrompt },
+    ],
+    temperature: 0.7,
+  })) as {
+    response?: unknown;
+    choices?: { message?: { content?: unknown } }[];
+  };
+
+  // This model returns an OpenAI-compatible chat-completion shape
+  // (choices[0].message.content), not the simpler { response } shape
+  // some other Workers AI models use — handle both.
+  const text =
+    typeof result.response === "string"
+      ? result.response
+      : typeof result.choices?.[0]?.message?.content === "string"
+        ? (result.choices[0].message.content as string)
+        : "";
+
+  return extractJsonArray(text);
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -72,27 +106,13 @@ export const POST: APIRoute = async ({ request }) => {
   const userPrompt = `${details}\n\nGive me 5 title tag + meta description pairs for this business's homepage.`;
 
   try {
-    const result = (await env.AI.run(MODEL, {
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        { role: "user", content: userPrompt },
-      ],
-      temperature: 0.7,
-    })) as {
-      response?: unknown;
-      choices?: { message?: { content?: unknown } }[];
-    };
-
-    // This model returns an OpenAI-compatible chat-completion shape
-    // (choices[0].message.content), not the simpler { response } shape
-    // some other Workers AI models use — handle both.
-    const text =
-      typeof result.response === "string"
-        ? result.response
-        : typeof result.choices?.[0]?.message?.content === "string"
-          ? (result.choices[0].message.content as string)
-          : "";
-    const pairs = extractJsonArray(text);
+    // A generation occasionally comes back with JSON the model broke with a
+    // stray quote — that's non-deterministic, so a fresh attempt usually
+    // succeeds even when the first one didn't. Retry once before failing.
+    let pairs = await generatePairs(userPrompt);
+    if (!pairs || pairs.length === 0) {
+      pairs = await generatePairs(userPrompt);
+    }
 
     if (!pairs || pairs.length === 0) {
       return new Response(
