@@ -38,22 +38,32 @@ function extractJsonObject(text: string): BioResult | null {
   for (const candidate of [match[0], match[0].replace(/[‘’]/g, "'").replace(/[“”]/g, '"')]) {
     try {
       const parsed = JSON.parse(candidate);
+      if (!parsed || !Array.isArray(parsed.bios)) continue;
+
+      // The model sometimes nests the captions list as a stray extra item
+      // inside the bios array (e.g. {"captions": [...]}) instead of as a
+      // top-level sibling key. Pull real {platform, text} bios out, and
+      // recover captions from either the correct top-level key or that
+      // misplaced entry.
+      let captions: unknown = Array.isArray(parsed.captions) ? parsed.captions : null;
+      const bios: { platform: string; text: string }[] = [];
+      for (const item of parsed.bios) {
+        const entry = item as Record<string, unknown>;
+        if (entry && typeof entry.platform === "string" && typeof entry.text === "string") {
+          bios.push({ platform: entry.platform.trim(), text: entry.text.trim() });
+        } else if (!captions && entry && Array.isArray(entry.captions)) {
+          captions = entry.captions;
+        }
+      }
+
       if (
-        parsed &&
-        Array.isArray(parsed.bios) &&
-        parsed.bios.every((b: unknown) => {
-          const bio = b as Record<string, unknown>;
-          return bio && typeof bio.platform === "string" && typeof bio.text === "string";
-        }) &&
-        Array.isArray(parsed.captions) &&
-        parsed.captions.every((c: unknown) => typeof c === "string")
+        bios.length > 0 &&
+        Array.isArray(captions) &&
+        captions.every((c: unknown) => typeof c === "string")
       ) {
         return {
-          bios: parsed.bios.map((b: { platform: string; text: string }) => ({
-            platform: b.platform.trim(),
-            text: b.text.trim(),
-          })),
-          captions: parsed.captions.map((c: string) => c.trim()).filter(Boolean),
+          bios,
+          captions: (captions as string[]).map((c) => c.trim()).filter(Boolean),
         };
       }
     } catch {
@@ -85,11 +95,7 @@ async function generateBios(userPrompt: string): Promise<BioResult | null> {
         ? (result.choices[0].message.content as string)
         : "";
 
-  const parsed = extractJsonObject(text);
-  if (!parsed) {
-    console.log("Social bio parse failed. Raw text:", text.slice(0, 800));
-  }
-  return parsed;
+  return extractJsonObject(text);
 }
 
 export const POST: APIRoute = async ({ request }) => {
