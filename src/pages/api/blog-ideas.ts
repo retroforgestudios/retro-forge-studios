@@ -67,9 +67,11 @@ export const POST: APIRoute = async ({ request }) => {
         { role: "user", content: userPrompt },
       ],
       temperature: 0.7,
-    })) as { response?: string };
+    })) as { response?: unknown };
 
-    const text = result.response ?? "";
+    console.log("AI raw result:", JSON.stringify(result).slice(0, 500));
+
+    const text = typeof result.response === "string" ? result.response : "";
     const ideas = extractJsonArray(text) ?? extractLines(text);
 
     if (ideas.length === 0) {
