@@ -1,0 +1,191 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Free Meta Title & Description Generator"
+  description="Enter your business, service, and city — get 5 SEO-optimized title tag and meta description pairs in seconds, free."
+>
+  <section class="bg-charcoal px-4 py-20 sm:px-6">
+    <div class="mx-auto max-w-2xl">
+      <div class="rounded-2xl border border-surface bg-[#1f2125] p-8 shadow-2xl sm:p-10">
+        <div class="text-center">
+          <span class="inline-flex items-center gap-2 rounded-full border border-teal/40 bg-teal/10 px-4 py-1 text-xs font-bold uppercase tracking-wide text-teal">
+            <span class="h-1.5 w-1.5 rounded-full bg-teal"></span> Meta Tag Generator
+          </span>
+          <h1 class="mt-4 text-3xl text-white sm:text-4xl">Title tags that actually get clicked</h1>
+          <p class="mx-auto mt-3 max-w-md text-gray-300">
+            Tell us about your business, get 5 SEO-ready title tag + meta description pairs — free, no email required.
+          </p>
+        </div>
+
+        <form id="meta-form" class="mt-8 space-y-4">
+          <div class="flex items-center gap-2 rounded-lg border border-surface bg-charcoal px-4 py-3">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 flex-none text-teal" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M4 21V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v13" />
+              <path d="M9 21v-6h6v6" />
+            </svg>
+            <input
+              id="meta-business"
+              type="text"
+              placeholder="Business name (optional) — e.g. Riverside Dog Grooming"
+              class="flex-1 bg-transparent text-white placeholder:text-gray-500 focus:outline-none"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="flex items-center gap-2 rounded-lg border border-surface bg-charcoal px-4 py-3">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 flex-none text-teal" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M4 5h16v12H4z" />
+              <path d="M9 20h6M12 17v3" />
+            </svg>
+            <input
+              id="meta-service"
+              type="text"
+              placeholder="What you do — e.g. dog grooming, HVAC repair, coffee shop"
+              class="flex-1 bg-transparent text-white placeholder:text-gray-500 focus:outline-none"
+              autocomplete="off"
+              required
+            />
+          </div>
+
+          <div class="flex items-center gap-2 rounded-lg border border-surface bg-charcoal px-4 py-3">
+            <svg viewBox="0 0 24 24" class="h-5 w-5 flex-none text-teal" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z" />
+              <circle cx="12" cy="10" r="2.5" />
+            </svg>
+            <input
+              id="meta-city"
+              type="text"
+              placeholder="Your city (optional) — e.g. Omaha, NE"
+              class="flex-1 bg-transparent text-white placeholder:text-gray-500 focus:outline-none"
+              autocomplete="off"
+            />
+          </div>
+
+          <button
+            id="meta-submit"
+            type="submit"
+            class="w-full rounded-md bg-red px-6 py-3 text-center font-bold text-white transition duration-200 hover:bg-red/90 disabled:opacity-60"
+          >
+            Generate Tags
+          </button>
+        </form>
+
+        <div id="meta-error" hidden class="mt-4 rounded-md border border-red/40 bg-red/10 px-4 py-3 text-sm text-red"></div>
+
+        <div id="meta-results" hidden class="mt-8 border-t border-surface pt-8">
+          <p class="text-marker text-lg text-amber">Your 5 title &amp; description pairs</p>
+          <div id="meta-list" class="mt-4 space-y-4"></div>
+
+          <div class="mt-8 rounded-xl bg-amber p-6 text-center">
+            <p class="font-semibold text-charcoal">Want your whole site optimized like this?</p>
+            <p class="mt-1 text-sm text-charcoal/80">
+              I build brand and SEO strategy backed by real research — not just a generator.
+            </p>
+            <a
+              href="/services/brand-strategy-seo"
+              class="mt-4 inline-block rounded-md bg-red px-6 py-3 font-bold text-white transition duration-200 hover:bg-red/90"
+            >
+              See Brand Strategy &amp; SEO &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const form = document.getElementById("meta-form") as HTMLFormElement;
+    const businessInput = document.getElementById("meta-business") as HTMLInputElement;
+    const serviceInput = document.getElementById("meta-service") as HTMLInputElement;
+    const cityInput = document.getElementById("meta-city") as HTMLInputElement;
+    const submitBtn = document.getElementById("meta-submit") as HTMLButtonElement;
+    const errorBox = document.getElementById("meta-error") as HTMLDivElement;
+    const results = document.getElementById("meta-results") as HTMLDivElement;
+    const metaList = document.getElementById("meta-list") as HTMLDivElement;
+
+    type MetaPair = { title: string; description: string };
+
+    function lengthNote(len: number, min: number, max: number) {
+      if (len < min) return { label: `${len} chars — a bit short`, ok: false };
+      if (len > max) return { label: `${len} chars — a bit long, may get truncated`, ok: false };
+      return { label: `${len} chars — good length`, ok: true };
+    }
+
+    function renderPair(pair: MetaPair) {
+      const card = document.createElement("div");
+      card.className = "rounded-lg border border-surface bg-charcoal p-4";
+
+      const titleNote = lengthNote(pair.title.length, 45, 60);
+      const descNote = lengthNote(pair.description.length, 120, 158);
+
+      const titleLabel = document.createElement("p");
+      titleLabel.className = "text-xs font-bold uppercase tracking-wide text-gray-500";
+      titleLabel.textContent = "Title tag";
+
+      const titleText = document.createElement("p");
+      titleText.className = "mt-1 font-semibold text-white";
+      titleText.textContent = pair.title;
+
+      const titleMeta = document.createElement("p");
+      titleMeta.className = `mt-0.5 text-xs ${titleNote.ok ? "text-teal" : "text-amber"}`;
+      titleMeta.textContent = titleNote.label;
+
+      const descLabel = document.createElement("p");
+      descLabel.className = "mt-3 text-xs font-bold uppercase tracking-wide text-gray-500";
+      descLabel.textContent = "Meta description";
+
+      const descText = document.createElement("p");
+      descText.className = "mt-1 text-sm text-gray-200";
+      descText.textContent = pair.description;
+
+      const descMeta = document.createElement("p");
+      descMeta.className = `mt-0.5 text-xs ${descNote.ok ? "text-teal" : "text-amber"}`;
+      descMeta.textContent = descNote.label;
+
+      card.append(titleLabel, titleText, titleMeta, descLabel, descText, descMeta);
+      return card;
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorBox.hidden = true;
+      results.hidden = true;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Generating tags...";
+
+      try {
+        const res = await fetch("/api/meta-tags", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            business: businessInput.value,
+            service: serviceInput.value,
+            city: cityInput.value,
+          }),
+        });
+        const data = await res.json();
+
+        if (!data.ok) {
+          errorBox.textContent = data.error || "Something went wrong. Please try again.";
+          errorBox.hidden = false;
+          return;
+        }
+
+        metaList.innerHTML = "";
+        data.pairs.forEach((pair: MetaPair) => {
+          metaList.appendChild(renderPair(pair));
+        });
+
+        results.hidden = false;
+      } catch {
+        errorBox.textContent = "Something went wrong. Please try again.";
+        errorBox.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Generate Tags";
+      }
+    });
+  </script>
+</BaseLayout>

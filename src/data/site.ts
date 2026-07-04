@@ -52,6 +52,13 @@ export const TOOLS = [
     teaser: "Enter your industry and city, get 10 tailored blog post ideas in seconds — free, no signup.",
     href: "/blog-topic-generator",
   },
+  {
+    slug: "meta-tag-generator",
+    name: "Meta Tag Generator",
+    icon: "M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zm0-3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM20 20l-4.35-4.35",
+    teaser: "Get 5 SEO-optimized title tag and meta description pairs for your business — free, no signup.",
+    href: "/meta-tag-generator",
+  },
 ];
 
 // Downloadable lead magnet — powers the /questionnaire landing page.
