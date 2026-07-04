@@ -129,11 +129,30 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       const li = document.createElement("li");
       li.className = "flex gap-3";
 
-      const icon = check.pass
+      // Built with DOM methods + textContent (not innerHTML) so a check's
+      // label/detail — which can include raw text pulled from the audited
+      // site itself (its title, its meta description, etc.) — is never
+      // parsed as markup. That avoids both the "<h1> found" text rendering
+      // as an actual empty <h1> tag, and a real script-injection risk from
+      // an untrusted third-party page's content.
+      const iconTemplate = document.createElement("template");
+      iconTemplate.innerHTML = check.pass
         ? `<svg viewBox="0 0 24 24" class="mt-0.5 h-5 w-5 flex-none text-teal" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" /></svg>`
         : `<svg viewBox="0 0 24 24" class="mt-0.5 h-5 w-5 flex-none text-red" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round" stroke-linejoin="round" /></svg>`;
+      li.appendChild(iconTemplate.content.firstElementChild as Node);
 
-      li.innerHTML = `${icon}<div><p class="font-semibold text-white">${check.label}</p><p class="mt-0.5 text-sm text-gray-400">${check.detail}</p></div>`;
+      const textWrap = document.createElement("div");
+
+      const labelEl = document.createElement("p");
+      labelEl.className = "font-semibold text-white";
+      labelEl.textContent = check.label;
+
+      const detailEl = document.createElement("p");
+      detailEl.className = "mt-0.5 text-sm text-teal/80";
+      detailEl.textContent = check.detail;
+
+      textWrap.append(labelEl, detailEl);
+      li.appendChild(textWrap);
       return li;
     }
 
