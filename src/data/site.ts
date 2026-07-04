@@ -370,6 +370,7 @@ export const PRICING_TIERS = [
     featured: false,
     features: ["A few posts a week", "Basic content calendar", "Monthly check-in"],
     cta: "Get started",
+    href: "https://buy.stripe.com/cNi6oHdmS3SA89v1tT8og08",
   },
   {
     name: "Growth",
@@ -383,6 +384,7 @@ export const PRICING_TIERS = [
       "Bi-weekly reporting",
     ],
     cta: "I'm ready grow today",
+    href: "https://buy.stripe.com/9B614n1Eadta89v3C18og09",
   },
   {
     name: "Pro",
@@ -391,6 +393,7 @@ export const PRICING_TIERS = [
     featured: false,
     features: ["Everything in Growth", "Brand strategy sessions", "Priority turnaround"],
     cta: "Get started",
+    href: "https://buy.stripe.com/00weVddmSbl29dz6Od8og0a",
   },
 ];
 

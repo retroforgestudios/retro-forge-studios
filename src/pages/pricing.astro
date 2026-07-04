@@ -81,7 +81,7 @@ import { LAUNCH_BUILD, LAUNCH_BUILD_FAQS, PRICING_FAQ, PRICING_TIERS } from "../
               </li>
             ))}
           </ul>
-          <Button href="/contact" variant={tier.featured ? "primary" : "secondary"} class="mt-8 w-full">
+          <Button href={tier.href} target="_blank" variant={tier.featured ? "primary" : "secondary"} class="mt-8 w-full">
             {tier.cta}
           </Button>
         </div>
