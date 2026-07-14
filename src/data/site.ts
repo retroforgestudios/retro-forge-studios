@@ -200,6 +200,12 @@ export const WEBSITE_PORTFOLIO = [
     image: "/images/portfolio/contractor-template.webp",
     href: "https://contractor-site-template.pages.dev/",
   },
+  {
+    name: "Restaurant Site",
+    description: "A restaurant site built to drive online orders and reservations.",
+    image: "/images/portfolio/restaurant-template.webp",
+    href: "https://chinese-restaurant-template.pages.dev/",
+  },
 ];
 
 export const SERVICES = [
