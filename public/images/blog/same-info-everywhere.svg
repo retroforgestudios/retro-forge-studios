@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 338">
+  <rect width="600" height="338" fill="#202020" />
+  <circle cx="280" cy="130" r="50" fill="none" stroke="#4caac9" stroke-width="10" />
+  <line x1="316" y1="166" x2="360" y2="210" stroke="#4caac9" stroke-width="12" stroke-linecap="round" />
+  <path d="M280 100 a20 20 0 0 1 20 20 c0 15 -20 34 -20 34 s-20 -19 -20 -34 a20 20 0 0 1 20 -20 z" fill="#ef9c2f" />
+  <circle cx="280" cy="120" r="7" fill="#202020" />
+  <text x="300" y="300" font-family="'Carter One', sans-serif" font-size="26" fill="#ef9c2f" text-anchor="middle">Same Info, Everywhere</text>
+</svg>
