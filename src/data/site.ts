@@ -194,6 +194,12 @@ export const WEBSITE_PORTFOLIO = [
     image: "/images/portfolio/insurance-template.webp",
     href: "https://gemini-template-website.jgregory-bc5.workers.dev/",
   },
+  {
+    name: "Contractor Site",
+    description: "A trades/home-services site built to turn visitors into estimate requests.",
+    image: "/images/portfolio/contractor-template.webp",
+    href: "https://contractor-site-template.pages.dev/",
+  },
 ];
 
 export const SERVICES = [
