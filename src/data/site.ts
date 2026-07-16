@@ -201,6 +201,12 @@ export const WEBSITE_PORTFOLIO = [
     href: "https://contractor-site-template.pages.dev/",
   },
   {
+    name: "Real Estate Site",
+    description: "An agent/brokerage site built to showcase listings and book consultations.",
+    image: "/images/portfolio/realestate-template.webp",
+    href: "https://realestate-site-template.pages.dev/",
+  },
+  {
     name: "Restaurant Site",
     description: "A restaurant site built to drive online orders and reservations.",
     image: "/images/portfolio/restaurant-template.webp",
