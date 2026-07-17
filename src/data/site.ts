@@ -36,8 +36,6 @@ export const NAV_LINKS = [
   { href: "/pricing", label: "Pricing" },
   { href: "/blog", label: "Blog" },
   { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-  { href: "/chat-with-johnny", label: "Chat With Johnny" },
 ];
 
 // Free interactive tools, shown in the "Tools" nav dropdown and on /tools.
