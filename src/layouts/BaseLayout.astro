@@ -20,6 +20,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL("/images/hero-forge-1600.webp", Astro.site);
 
 const analyticsEnabled = ANALYTICS.googleTagId.length > 0;
+const gtmEnabled = ANALYTICS.gtmId.length > 0;
 
 // LocalBusiness / ProfessionalService structured data (helps Google understand
 // the business for local search). Output site-wide.
@@ -57,6 +58,18 @@ const structuredData = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    {gtmEnabled && (
+      <script is:inline define:vars={{ gtmId: ANALYTICS.gtmId }}>
+        (function (w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+          var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != "dataLayer" ? "&l=" + l : "";
+          j.async = true;
+          j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+          f.parentNode.insertBefore(j, f);
+        })(window, document, "script", "dataLayer", gtmId);
+      </script>
+    )}
     {analyticsEnabled && (
       <Fragment>
         <script async src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS.googleTagId}`}></script>
@@ -95,6 +108,16 @@ const structuredData = {
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} is:inline />
   </head>
   <body class="flex min-h-screen flex-col">
+    {gtmEnabled && (
+      <noscript>
+        <iframe
+          src={`https://www.googletagmanager.com/ns.html?id=${ANALYTICS.gtmId}`}
+          height="0"
+          width="0"
+          style="display:none;visibility:hidden"
+        ></iframe>
+      </noscript>
+    )}
     <Nav />
     <main class="flex-1">
       <slot />

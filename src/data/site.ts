@@ -21,6 +21,9 @@ export const ANALYTICS = {
   // GA4 → Admin → Data streams → your stream → Measurement ID.
   // Leave "" to disable analytics entirely.
   googleTagId: "G-FGVZ189HFD",
+  // Google Tag Manager container ID — looks like "GTM-XXXXXXX".
+  // Leave "" if you're not using GTM (the GA4 tag above works standalone).
+  gtmId: "GTM-M3QFHG8Z",
   // Google Search Console "HTML tag" verification code (just the content value,
   // e.g. "abc123..."). Leave "" if you verify via DNS or your GA connection.
   googleSiteVerification: "",
