@@ -1,0 +1,85 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/sections/PageHero.astro";
+import SocialIcon from "../components/ui/SocialIcon.astro";
+import { SITE, SOCIAL_LINKS } from "../data/site";
+
+const callPoints = [
+  "We'll talk through where your business is right now and what's not working",
+  "I'll ask about your goals and who you're actually trying to reach",
+  "You'll leave knowing whether — and how — I can help. No pressure either way.",
+];
+---
+
+<BaseLayout
+  title="Chat With Johnny"
+  description="Book a free consultation with Retro Forge Studios — no obligation, no sales script. Email or scheduler only, no phone."
+>
+  <PageHero
+    eyebrow="let's talk"
+    heading="No pitch deck. No pressure. Just a conversation."
+    subhead="Book a free consultation — no obligation, no sales script."
+  />
+
+  <!-- Scheduler block -->
+  <section class="bg-surface px-4 py-16 sm:px-6">
+    <h2 class="text-center text-3xl text-white sm:text-4xl">Pick a time that works for you</h2>
+    <p class="mx-auto mt-3 max-w-xl text-center text-gray-200">
+      Grab a free 30-minute slot below — no forms to fill out first, no waiting on a callback.
+    </p>
+
+    <div class="mx-auto mt-8 max-w-3xl rounded-xl bg-surface p-2 sm:p-4">
+      <div class="meetings-iframe-container" data-src={`${SITE.schedulerUrl}?embed=true`}></div>
+      <script type="text/javascript" src="https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js" async></script>
+      <style>
+        .meetings-iframe-container iframe {
+          border: none !important;
+          box-shadow: none !important;
+        }
+      </style>
+    </div>
+
+    <p class="mx-auto mt-2 max-w-2xl text-center text-sm text-gray-300">
+      Prefer email? Reach out directly at{" "}
+      <a href={`mailto:${SITE.email}`} class="text-teal hover:underline">{SITE.email}</a>.
+    </p>
+    <p class="mx-auto mt-2 max-w-2xl text-center text-sm text-gray-400">
+      Based in {SITE.city}, {SITE.region} — serving small businesses across Nebraska & Iowa.
+    </p>
+  </section>
+
+  <section class="px-4 py-16 sm:px-6">
+    <div class="mx-auto max-w-2xl">
+      <h2 class="text-center text-2xl text-gray-900">What happens on this call</h2>
+      <ul class="mt-8 space-y-3">
+        {callPoints.map((point) => (
+          <li class="flex gap-3 text-gray-700">
+            <span class="text-teal-deep">&#8226;</span>
+            {point}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="bg-band px-4 py-16 sm:px-6">
+    <div class="mx-auto max-w-2xl text-center">
+      <p class="text-gray-700">
+        Curious about the founding client rate?{" "}
+        <a href="/pricing" class="text-teal-deep hover:underline">See pricing &rarr;</a>
+      </p>
+
+      <div class="mt-8 flex justify-center gap-6">
+        {SOCIAL_LINKS.map((social) => (
+          <a href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} class="text-gray-700 hover:text-teal-deep">
+            <SocialIcon label={social.label} class="h-6 w-6" />
+          </a>
+        ))}
+      </div>
+
+      <p class="mt-8 text-sm text-gray-700">
+        I read every message personally — you'll hear back from me, not a bot.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

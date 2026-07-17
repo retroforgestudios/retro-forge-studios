@@ -37,6 +37,7 @@ export const NAV_LINKS = [
   { href: "/blog", label: "Blog" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
+  { href: "/chat-with-johnny", label: "Chat With Johnny" },
 ];
 
 // Free interactive tools, shown in the "Tools" nav dropdown and on /tools.
@@ -109,7 +110,7 @@ export const MENU_FEATURE = {
   image: LEAD_MAGNET.image,
   ctaLabel: "Get the free guide",
   href: "/questionnaire",
-  secondary: { label: "Not ready yet? Book a free call", href: "/contact" },
+  secondary: { label: "Not ready yet? Get in touch", href: "/contact" },
 };
 
 export const HERO_HEADLINE = "Marketing that hits different.";
