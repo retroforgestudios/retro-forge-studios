@@ -148,6 +148,105 @@ import { SITE } from "../data/site";
       "real-best-practices": "Address the flagged issues — often outdated libraries, browser console errors, or insecure patterns.",
     };
 
+    // What category each check falls under, and the actual mechanism by
+    // which failing it hurts the site — not just "this is bad," but why:
+    // whether it's a direct Google ranking factor, a browser-enforced
+    // penalty, an accessibility/legal exposure, or a trust signal.
+    const WHY_IT_MATTERS: Record<string, { category: string; why: string }> = {
+      https: {
+        category: "Security & Trust",
+        why: "Browsers mark non-HTTPS pages \"Not Secure\" right in the address bar, and Google has confirmed HTTPS is a direct ranking signal — this can suppress rankings and scare off visitors before they read a word.",
+      },
+      speed: {
+        category: "Performance",
+        why: "Server response time is the floor every other load metric is built on — a slow server delays everything downstream, and Google factors real-world speed into ranking.",
+      },
+      title: {
+        category: "SEO",
+        why: "The title tag is one of the single strongest on-page ranking signals, and it's the clickable headline shown in search results — a missing or bad one directly suppresses both ranking and click-through rate.",
+      },
+      description: {
+        category: "SEO",
+        why: "Not a direct ranking factor, but it's usually the snippet text shown under the title in search results — a missing one lets Google auto-generate something generic, which quietly lowers click-through rate.",
+      },
+      mobile: {
+        category: "Mobile & SEO",
+        why: "Google indexes the mobile version of a site first, so a page that doesn't render properly on phones can be ranked worse — on top of frustrating the majority of visitors, who are on mobile.",
+      },
+      indexable: {
+        category: "SEO — Critical",
+        why: "A noindex tag tells Google not to show this page in search results at all — this is the most severe possible SEO issue since the page becomes invisible to search, regardless of everything else.",
+      },
+      canonical: {
+        category: "SEO",
+        why: "Without a canonical tag, Google can treat www vs. non-www or trailing-slash variants as separate duplicate pages, splitting ranking signals across them instead of consolidating into one.",
+      },
+      h1: {
+        category: "SEO & Accessibility",
+        why: "The H1 is the strongest heading-level signal for what a page is about — zero H1s leaves that signal blank, and multiple H1s dilute it, in both cases making it harder for Google and screen readers to identify the main topic.",
+      },
+      "alt-text": {
+        category: "Accessibility & SEO",
+        why: "Screen readers rely on alt text to describe images to visitors who can't see them — without it, that content is simply skipped. It's also indexed for Google Image Search, so missing alt text is a lost traffic channel too.",
+      },
+      lang: {
+        category: "Accessibility",
+        why: "Screen readers use the lang attribute to choose the correct pronunciation and voice — without it, assistive tech can mispronounce every word on the page.",
+      },
+      favicon: {
+        category: "Trust & Polish",
+        why: "It's a small detail, but a blank browser tab icon is a visible, immediate signal of an unfinished or unmaintained site — the kind of thing that quietly erodes trust before a visitor reads any content.",
+      },
+      compression: {
+        category: "Performance",
+        why: "Uncompressed responses can be 60-80% larger than they need to be — every visitor downloads more bytes than necessary, which disproportionately hurts anyone on a slower mobile connection.",
+      },
+      "mixed-content": {
+        category: "Security",
+        why: "Browsers actively block or flag insecure HTTP resources loaded on an HTTPS page — this can silently break images, scripts, or styles, or trigger a security warning that scares visitors off.",
+      },
+      schema: {
+        category: "SEO",
+        why: "Structured data is what unlocks rich results — star ratings, business hours, breadcrumbs — directly in the search listing. Without it, the listing looks plainer next to competitors who have it.",
+      },
+      social: {
+        category: "Marketing & Trust",
+        why: "Without Open Graph tags, links shared on Facebook, LinkedIn, or iMessage show no image and a generic title — a broken-looking preview that measurably lowers click-through from social shares.",
+      },
+      robots: {
+        category: "SEO — Crawlability",
+        why: "robots.txt is the first thing search engine crawlers check — without it, there's no way to point them to a sitemap or control what gets crawled, which can slow down how fast new pages get indexed.",
+      },
+      sitemap: {
+        category: "SEO — Crawlability",
+        why: "A sitemap is how search engines reliably discover every page on a site, especially ones with no internal links pointing to them — without one referenced, some pages may never get indexed at all.",
+      },
+      "real-user-speed": {
+        category: "Performance",
+        why: "This is Google's own real-world Lighthouse performance score — a confirmed ranking factor, and also one of the top reasons visitors abandon a page before it even finishes loading.",
+      },
+      lcp: {
+        category: "Performance — Core Web Vital",
+        why: "Largest Contentful Paint is one of Google's three official Core Web Vitals and a direct ranking factor — it measures how long a visitor stares at a blank or half-loaded page before seeing real content.",
+      },
+      cls: {
+        category: "User Experience — Core Web Vital",
+        why: "Cumulative Layout Shift is a Core Web Vital and ranking factor that measures content jumping around mid-load — the classic case is a visitor going to tap a button and hitting an ad that just shifted into place instead.",
+      },
+      tbt: {
+        category: "Performance",
+        why: "Total Blocking Time approximates how long the page looks loaded but doesn't actually respond to clicks or taps — a page that feels frozen right after appearing drives visitors to leave, thinking it's broken.",
+      },
+      "real-a11y": {
+        category: "Accessibility",
+        why: "This is an automated scan for real accessibility barriers — color contrast, missing form labels, ARIA errors — that can lock out visitors using screen readers or other assistive tech, and carries real ADA legal exposure.",
+      },
+      "real-best-practices": {
+        category: "Security & Modernity",
+        why: "This flags outdated libraries, browser console errors, and other risky patterns Google's own Lighthouse audit considers below modern standard — often early warning signs of larger security or stability issues.",
+      },
+    };
+
     // Brand colors as RGB triples for jsPDF (which doesn't read CSS vars).
     const BRAND = {
       charcoal: [31, 33, 37] as [number, number, number],
@@ -264,14 +363,14 @@ import { SITE } from "../data/site";
         // Legend — explains what the score/grade and marks actually mean,
         // so the report reads on its own without the live page next to it.
         doc.setFillColor(245, 246, 247);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
         const legendLines = doc.splitTextToSize(
-          "This report checks 20+ technical, SEO, and performance signals that search engines and browsers use to judge a site's speed, trust, and findability. The grade above reflects the share that passed. A teal check means the site passes that signal; a red X means it fails and is likely costing real traffic, trust, or conversions — each failed check below includes a plain-language recommendation for fixing it.",
+          "This report checks 20+ technical, SEO, and performance signals that search engines and browsers use to judge a site's speed, trust, and findability. The grade above reflects the share that passed. A teal check means the site passes that signal; a red X means it fails and is likely costing real traffic, trust, or conversions — each failed check below explains which category it falls under, the actual mechanism by which it affects the score, and a plain-language recommendation for fixing it.",
           contentWidth - 12,
         ) as string[];
         const legendHeight = legendLines.length * 4.4 + 10;
         doc.roundedRect(margin, y, contentWidth, legendHeight, 2, 2, "F");
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(9);
         doc.setTextColor(...BRAND.gray);
         doc.text(legendLines, margin + 6, y + 7);
         y += legendHeight + 12;
@@ -282,13 +381,37 @@ import { SITE } from "../data/site";
 
         // Checklist
         for (const check of lastAudit.checks) {
+          // splitTextToSize measures wrap width using whatever font is
+          // currently active on the doc — NOT the font the text is later
+          // drawn with. Each block must set its real font/size before being
+          // measured, or the computed line breaks won't match what actually
+          // renders (bold text is wider, so it silently overflows the margin).
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(9.5);
           const detailLines = doc.splitTextToSize(check.detail, contentWidth - 8) as string[];
+
+          const why = !check.pass ? WHY_IT_MATTERS[check.key] : undefined;
+          let whyLines: string[] = [];
+          if (why) {
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(9.5);
+            whyLines = doc.splitTextToSize(`${why.category}: ${why.why}`, contentWidth - 8) as string[];
+          }
+
           const recommendation = !check.pass ? RECOMMENDATIONS[check.key] : undefined;
-          const recommendationLines = recommendation
-            ? (doc.splitTextToSize(`Recommendation: ${recommendation}`, contentWidth - 8) as string[])
-            : [];
+          let recommendationLines: string[] = [];
+          if (recommendation) {
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(9.5);
+            recommendationLines = doc.splitTextToSize(`Recommendation: ${recommendation}`, contentWidth - 8) as string[];
+          }
+
           const blockHeight =
-            6 + detailLines.length * 4.6 + (recommendationLines.length ? recommendationLines.length * 4.6 + 2 : 0) + 4;
+            6 +
+            detailLines.length * 4.6 +
+            (whyLines.length ? whyLines.length * 4.6 + 2 : 0) +
+            (recommendationLines.length ? recommendationLines.length * 4.6 + 2 : 0) +
+            4;
 
           if (y + blockHeight > pageHeight - 24) {
             doc.addPage();
@@ -326,6 +449,15 @@ import { SITE } from "../data/site";
           doc.setTextColor(...BRAND.gray);
           doc.text(detailLines, margin + 10, y);
           y += detailLines.length * 4.6;
+
+          if (whyLines.length) {
+            y += 2;
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(9.5);
+            doc.setTextColor(...BRAND.charcoal);
+            doc.text(whyLines, margin + 10, y);
+            y += whyLines.length * 4.6;
+          }
 
           if (recommendationLines.length) {
             y += 2;
@@ -402,7 +534,7 @@ import { SITE } from "../data/site";
       F: "border-red",
     };
 
-    function renderCheck(check: { label: string; pass: boolean; detail: string }) {
+    function renderCheck(check: CheckResult) {
       const li = document.createElement("li");
       li.className = "flex gap-3";
 
@@ -429,6 +561,35 @@ import { SITE } from "../data/site";
       detailEl.textContent = check.detail;
 
       textWrap.append(labelEl, detailEl);
+
+      // Failed checks get an extra "why this affects the score" block —
+      // what category it falls under and the actual mechanism (ranking
+      // factor, browser-enforced penalty, accessibility exposure, etc.),
+      // not just a bare pass/fail.
+      if (!check.pass) {
+        const why = WHY_IT_MATTERS[check.key];
+        if (why) {
+          const whyEl = document.createElement("p");
+          whyEl.className = "mt-2 text-sm text-gray-300";
+
+          const categoryEl = document.createElement("span");
+          categoryEl.className = "mr-1.5 inline-block rounded bg-red/20 px-1.5 py-0.5 text-xs font-bold uppercase tracking-wide text-red";
+          categoryEl.textContent = why.category;
+
+          whyEl.appendChild(categoryEl);
+          whyEl.appendChild(document.createTextNode(why.why));
+          textWrap.appendChild(whyEl);
+        }
+
+        const recommendation = RECOMMENDATIONS[check.key];
+        if (recommendation) {
+          const recEl = document.createElement("p");
+          recEl.className = "mt-1.5 text-sm font-semibold text-amber";
+          recEl.textContent = `Recommendation: ${recommendation}`;
+          textWrap.appendChild(recEl);
+        }
+      }
+
       li.appendChild(textWrap);
       return li;
     }
