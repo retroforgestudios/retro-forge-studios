@@ -119,6 +119,35 @@ import { SITE } from "../data/site";
 
     let lastAudit: AuditData | null = null;
 
+    // One-line, actionable fix per check — shown in the PDF under any failed
+    // check so the report explains not just what's wrong, but what to do
+    // about it. Keyed by the check's stable `key`, not its label.
+    const RECOMMENDATIONS: Record<string, string> = {
+      https: "Install an SSL certificate (many hosts offer this free) and redirect all HTTP traffic to HTTPS.",
+      speed: "Move to a faster host or CDN, or reduce what the server does before it responds to a request.",
+      title: "Add a clear, keyword-relevant <title> tag between 10 and 65 characters — one of the biggest on-page SEO signals.",
+      description: "Write a meta description between 50 and 160 characters summarizing the page — it's often what shows up in search results.",
+      mobile: "Add a responsive viewport meta tag and confirm the layout adapts cleanly to phone-sized screens.",
+      indexable: "Remove the noindex tag unless this page is meant to be hidden — otherwise it can't appear in search results at all.",
+      canonical: "Add a canonical tag pointing to the preferred version of this URL to avoid duplicate-content issues.",
+      h1: "Make sure the page has exactly one <h1> that clearly states its main topic.",
+      "alt-text": "Add descriptive alt text to meaningful images — it helps accessibility and can drive image-search traffic.",
+      lang: "Add a lang attribute to the <html> tag (e.g. lang=\"en\") — a quick, easy accessibility fix.",
+      favicon: "Add a favicon so the site looks finished in browser tabs and bookmarks.",
+      compression: "Enable gzip or Brotli compression on the server or CDN to shrink page size and speed up loads.",
+      "mixed-content": "Update any plain-HTTP resource links to HTTPS so browsers stop blocking or flagging them.",
+      schema: "Add structured data (schema.org JSON-LD) so Google can better understand and showcase the business.",
+      social: "Add Open Graph tags (og:title, og:image, etc.) so shared links look right on social media.",
+      robots: "Add a robots.txt file at the site root to guide search engine crawlers.",
+      sitemap: "Reference a sitemap.xml file inside robots.txt so search engines can find every page.",
+      "real-user-speed": "Compress images, defer non-critical scripts, and trim what has to load before the page is usable.",
+      lcp: "Optimize the largest visible image or text block and cut render-blocking resources so content appears sooner.",
+      cls: "Reserve space for images, embeds, and ads up front so content doesn't jump around as the page loads.",
+      tbt: "Reduce heavy JavaScript that runs right after load and blocks the page from responding to taps and clicks.",
+      "real-a11y": "Fix the flagged accessibility issues — common culprits are color contrast, missing labels, and ARIA errors.",
+      "real-best-practices": "Address the flagged issues — often outdated libraries, browser console errors, or insecure patterns.",
+    };
+
     // Brand colors as RGB triples for jsPDF (which doesn't read CSS vars).
     const BRAND = {
       charcoal: [31, 33, 37] as [number, number, number],
@@ -230,7 +259,23 @@ import { SITE } from "../data/site";
         doc.setTextColor(...BRAND.gray);
         doc.text(`${passCount} of ${lastAudit.checks.length} checks passed`, margin + 26, y + 8);
 
-        y += 22;
+        y += 18;
+
+        // Legend — explains what the score/grade and marks actually mean,
+        // so the report reads on its own without the live page next to it.
+        doc.setFillColor(245, 246, 247);
+        const legendLines = doc.splitTextToSize(
+          "This report checks 20+ technical, SEO, and performance signals that search engines and browsers use to judge a site's speed, trust, and findability. The grade above reflects the share that passed. A teal check means the site passes that signal; a red X means it fails and is likely costing real traffic, trust, or conversions — each failed check below includes a plain-language recommendation for fixing it.",
+          contentWidth - 12,
+        ) as string[];
+        const legendHeight = legendLines.length * 4.4 + 10;
+        doc.roundedRect(margin, y, contentWidth, legendHeight, 2, 2, "F");
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(9);
+        doc.setTextColor(...BRAND.gray);
+        doc.text(legendLines, margin + 6, y + 7);
+        y += legendHeight + 12;
+
         doc.setDrawColor(220, 220, 220);
         doc.line(margin, y, pageWidth - margin, y);
         y += 10;
@@ -238,7 +283,12 @@ import { SITE } from "../data/site";
         // Checklist
         for (const check of lastAudit.checks) {
           const detailLines = doc.splitTextToSize(check.detail, contentWidth - 8) as string[];
-          const blockHeight = 6 + detailLines.length * 4.6 + 4;
+          const recommendation = !check.pass ? RECOMMENDATIONS[check.key] : undefined;
+          const recommendationLines = recommendation
+            ? (doc.splitTextToSize(`Recommendation: ${recommendation}`, contentWidth - 8) as string[])
+            : [];
+          const blockHeight =
+            6 + detailLines.length * 4.6 + (recommendationLines.length ? recommendationLines.length * 4.6 + 2 : 0) + 4;
 
           if (y + blockHeight > pageHeight - 24) {
             doc.addPage();
@@ -275,7 +325,18 @@ import { SITE } from "../data/site";
           doc.setFontSize(9.5);
           doc.setTextColor(...BRAND.gray);
           doc.text(detailLines, margin + 10, y);
-          y += detailLines.length * 4.6 + 5;
+          y += detailLines.length * 4.6;
+
+          if (recommendationLines.length) {
+            y += 2;
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(9.5);
+            doc.setTextColor(...BRAND.red);
+            doc.text(recommendationLines, margin + 10, y);
+            y += recommendationLines.length * 4.6;
+          }
+
+          y += 5;
         }
 
         // Footer CTA on the last page
