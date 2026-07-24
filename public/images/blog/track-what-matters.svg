@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 338">
+  <rect width="600" height="338" fill="#202020" />
+  <line x1="180" y1="220" x2="420" y2="220" stroke="#4caac9" stroke-width="4" />
+  <rect x="200" y="190" width="36" height="30" rx="4" fill="#ef9c2f" />
+  <rect x="256" y="165" width="36" height="55" rx="4" fill="#4caac9" />
+  <rect x="312" y="140" width="36" height="80" rx="4" fill="#ef9c2f" />
+  <rect x="368" y="110" width="36" height="110" rx="4" fill="#4caac9" />
+  <polyline points="218,185 274,160 330,135 386,105" fill="none" stroke="#ef9c2f" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="386" cy="105" r="9" fill="#ef9c2f" />
+  <text x="300" y="270" font-family="'Carter One', sans-serif" font-size="26" fill="#ef9c2f" text-anchor="middle">Track What Matters</text>
+</svg>
