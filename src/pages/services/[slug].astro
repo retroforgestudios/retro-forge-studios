@@ -14,6 +14,12 @@ export function getStaticPaths() {
 
 const { service } = Astro.props;
 const others = SERVICES.filter((s) => s.slug !== service.slug);
+const ironRidgeExample = {
+  name: "Construction & Excavation Site",
+  description: "A rugged construction site built to showcase services, project galleries, and estimate requests.",
+  image: "/images/portfolio/iron-ridge-earthworks-template.svg",
+  href: "https://iron-ridge-earthworks.retroforged.chatgpt.site/",
+};
 
 // Per-service structured data — reinforces the site-wide ProfessionalService
 // schema with the specific offering + service area, for local search.
@@ -88,6 +94,30 @@ const serviceSchema = {
             </div>
           </a>
         ))}
+        {service.slug === "website-design" && (
+          <a
+            href={ironRidgeExample.href}
+            target="_blank"
+            rel="noopener"
+            class="group overflow-hidden rounded-xl border border-surface bg-[#1f2125] transition-colors hover:border-teal"
+          >
+            <div class="aspect-[16/10] overflow-hidden bg-charcoal">
+              <img
+                src={ironRidgeExample.image}
+                alt={ironRidgeExample.name}
+                loading="lazy"
+                class="h-full w-full object-cover object-top transition duration-300 group-hover:scale-105"
+                width="1000"
+                height="625"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="font-bold text-white">{ironRidgeExample.name}</h3>
+              <p class="mt-2 text-sm text-gray-300">{ironRidgeExample.description}</p>
+              <span class="mt-4 inline-block text-sm font-semibold text-teal">Visit site &rarr;</span>
+            </div>
+          </a>
+        )}
       </div>
     </section>
   )}
