@@ -1,92 +1,98 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 625" role="img" aria-labelledby="title desc">
   <title id="title">Iron Ridge Earthworks website preview</title>
-  <desc id="desc">A navy construction website preview with excavator imagery, service icons, and before and after project panels.</desc>
+  <desc id="desc">Screenshot-style preview of a navy construction and excavation website.</desc>
   <defs>
-    <linearGradient id="navy" x1="0" x2="1" y1="0" y2="1">
+    <linearGradient id="hero" x1="0" x2="1" y1="0" y2="1">
       <stop offset="0" stop-color="#071a2f"/>
-      <stop offset="1" stop-color="#102a46"/>
+      <stop offset="0.55" stop-color="#102a46"/>
+      <stop offset="1" stop-color="#2c2119"/>
     </linearGradient>
-    <linearGradient id="sun" x1="0" x2="1">
-      <stop offset="0" stop-color="#d9a441"/>
-      <stop offset="1" stop-color="#b85f32"/>
+    <linearGradient id="dirt" x1="0" x2="1">
+      <stop offset="0" stop-color="#2a211b"/>
+      <stop offset="0.45" stop-color="#6f4b2e"/>
+      <stop offset="1" stop-color="#b98444"/>
     </linearGradient>
-    <pattern id="contours" width="84" height="84" patternUnits="userSpaceOnUse">
-      <path d="M-20 42c22-22 60-22 84 0s62 22 84 0M-20 70c22-22 60-22 84 0s62 22 84 0M-20 14c22-22 60-22 84 0s62 22 84 0" fill="none" stroke="#ffffff" stroke-opacity=".045" stroke-width="2"/>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#d7dde2" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#071a2f" stop-opacity=".08"/>
+    </linearGradient>
+    <pattern id="grain" width="34" height="34" patternUnits="userSpaceOnUse">
+      <path d="M0 25c9-8 21-8 34 0M-8 10c10-7 23-7 42 0" fill="none" stroke="#ffffff" stroke-opacity=".035" stroke-width="2"/>
     </pattern>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#02070d" flood-opacity=".45"/>
-    </filter>
   </defs>
-  <rect width="1000" height="625" fill="#12161d"/>
-  <rect x="18" y="18" width="964" height="589" rx="24" fill="#f7f3ea" filter="url(#shadow)"/>
-  <rect x="18" y="18" width="964" height="52" rx="24" fill="#071a2f"/>
-  <rect x="18" y="48" width="964" height="24" fill="#071a2f"/>
-  <circle cx="54" cy="44" r="7" fill="#b85f32"/>
-  <circle cx="78" cy="44" r="7" fill="#d9a441"/>
-  <circle cx="102" cy="44" r="7" fill="#6c7884"/>
-  <text x="138" y="51" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" fill="#eef2f3">iron-ridge-earthworks.retroforged.chatgpt.site</text>
 
-  <rect x="18" y="70" width="964" height="300" fill="url(#navy)"/>
-  <rect x="18" y="70" width="964" height="300" fill="url(#contours)"/>
-  <path d="M600 70h382v300H430z" fill="#2f3439" opacity=".7"/>
-  <path d="M432 370h550V236c-40 10-77 33-115 29-40-4-70-42-117-41-69 1-91 66-155 70-47 3-82-23-163-11z" fill="#5a4331"/>
-  <path d="M432 370h550v-63c-76 7-126 39-202 23-59-13-92-44-164-25-55 14-91 44-184 38z" fill="#2b211b" opacity=".92"/>
+  <rect width="1000" height="625" fill="#fbf8f2"/>
 
-  <g transform="translate(612 132)" fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M98 96l77-62 72 20" stroke="#d9a441" stroke-width="14"/>
-    <path d="M170 36l-24 90" stroke="#1d232a" stroke-width="18"/>
-    <path d="M83 109l74 0 27 31-126 0z" fill="#d9a441" stroke="#12161d" stroke-width="8"/>
-    <rect x="123" y="74" width="54" height="43" rx="4" fill="#102a46" stroke="#12161d" stroke-width="7"/>
-    <path d="M83 143h156" stroke="#12161d" stroke-width="12"/>
-    <path d="M27 150c35-10 63-14 94-6 22 6 42 7 75-1" stroke="#6c7884" stroke-width="18"/>
-    <path d="M255 61c24 35 16 73-23 96" stroke="#1d232a" stroke-width="14"/>
-    <path d="M220 153c21-2 42-10 62-24l13 29c-23 20-48 30-75 31z" fill="#6c7884" stroke="#12161d" stroke-width="8"/>
-    <circle cx="94" cy="151" r="28" fill="#101820" stroke="#d9a441" stroke-width="8"/>
-    <circle cx="196" cy="151" r="28" fill="#101820" stroke="#d9a441" stroke-width="8"/>
+  <rect width="1000" height="72" fill="#071a2f"/>
+  <g font-family="Arial, Helvetica, sans-serif" font-weight="800">
+    <text x="58" y="44" font-size="24" fill="#ffffff">Iron Ridge</text>
+    <text x="183" y="44" font-size="24" fill="#d9a441">Earthworks</text>
+  </g>
+  <g fill="#d7dde2" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" opacity=".82">
+    <text x="580" y="43">Services</text>
+    <text x="682" y="43">Projects</text>
+    <text x="784" y="43">Process</text>
+    <rect x="878" y="25" width="82" height="24" rx="2" fill="#d9a441"/>
   </g>
 
-  <g transform="translate(66 122)">
-    <path d="M0 0h54l18 26h-54z" fill="#b85f32"/>
-    <text x="0" y="76" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="900" fill="#ffffff">Iron Ridge</text>
-    <text x="0" y="136" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="900" fill="#d9a441">Earthworks</text>
-    <rect x="0" y="168" width="210" height="6" fill="#b85f32"/>
-    <text x="0" y="214" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#d7dde2">Construction and excavation website</text>
+  <rect y="72" width="1000" height="328" fill="url(#hero)"/>
+  <rect y="72" width="1000" height="328" fill="url(#grain)"/>
+  <path d="M566 72h434v328H451z" fill="url(#sky)"/>
+  <path d="M430 400h570V270c-60 24-112 58-202 43-75-13-122-55-203-34-70 18-111 61-165 63z" fill="url(#dirt)"/>
+  <path d="M429 400h571v-55c-96 13-144 46-246 24-67-15-111-38-178-17-56 17-95 40-147 42z" fill="#211a16" opacity=".85"/>
+
+  <g transform="translate(640 127)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M82 116l82-73 88 24" stroke="#d9a441" stroke-width="13"/>
+    <path d="M164 43l-25 93" stroke="#222831" stroke-width="17"/>
+    <path d="M59 132h116l37 33H25z" fill="#d9a441" stroke="#141922" stroke-width="7"/>
+    <rect x="119" y="91" width="58" height="44" rx="4" fill="#102a46" stroke="#141922" stroke-width="7"/>
+    <path d="M42 173h176" stroke="#141922" stroke-width="12"/>
+    <circle cx="77" cy="181" r="25" fill="#111820" stroke="#d9a441" stroke-width="7"/>
+    <circle cx="182" cy="181" r="25" fill="#111820" stroke="#d9a441" stroke-width="7"/>
+    <path d="M259 73c26 44 15 84-32 115" stroke="#20262d" stroke-width="12"/>
+    <path d="M218 182c26-4 49-13 70-31l16 30c-27 24-56 35-89 37z" fill="#6c7884" stroke="#141922" stroke-width="7"/>
   </g>
 
-  <g transform="translate(58 396)">
-    <rect width="206" height="92" rx="10" fill="#102a46"/>
-    <rect x="22" y="20" width="50" height="38" rx="4" fill="#d9a441"/>
-    <path d="M75 41h54l34 26" stroke="#d9a441" stroke-width="10" fill="none"/>
-    <text x="22" y="76" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="800" fill="#eef2f3">Excavation</text>
-  </g>
-  <g transform="translate(286 396)">
-    <rect width="206" height="92" rx="10" fill="#102a46"/>
-    <path d="M30 66h118l28-28" stroke="#d9a441" stroke-width="14" fill="none"/>
-    <text x="22" y="76" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="800" fill="#eef2f3">Grading</text>
-  </g>
-  <g transform="translate(514 396)">
-    <rect width="206" height="92" rx="10" fill="#102a46"/>
-    <path d="M36 57h102l22-30h-88z" fill="#d9a441"/>
-    <circle cx="67" cy="65" r="10" fill="#071a2f"/><circle cx="142" cy="65" r="10" fill="#071a2f"/>
-    <text x="22" y="76" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="800" fill="#eef2f3">Hauling</text>
-  </g>
-  <g transform="translate(742 396)">
-    <rect width="182" height="92" rx="10" fill="#102a46"/>
-    <path d="M35 68h112M52 52h72M66 36h44" stroke="#d9a441" stroke-width="9"/>
-    <text x="22" y="76" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="800" fill="#eef2f3">Drainage</text>
+  <g transform="translate(58 132)" font-family="Arial, Helvetica, sans-serif">
+    <text x="0" y="0" fill="#d9a441" font-size="16" font-weight="900" letter-spacing="2">RESIDENTIAL AND LIGHT COMMERCIAL SITEWORK</text>
+    <text x="0" y="72" fill="#ffffff" font-size="62" font-weight="900">Groundwork built</text>
+    <text x="0" y="138" fill="#ffffff" font-size="62" font-weight="900">for what comes next.</text>
+    <rect x="0" y="174" width="132" height="42" fill="#d9a441"/>
+    <rect x="150" y="174" width="112" height="42" fill="none" stroke="#ffffff" stroke-opacity=".45"/>
+    <rect x="0" y="242" width="270" height="86" fill="#071a2f" fill-opacity=".76"/>
+    <rect x="0" y="242" width="6" height="86" fill="#b85f32"/>
+    <text x="24" y="277" fill="#d9a441" font-size="26" font-weight="900">48 hr</text>
+    <text x="108" y="277" fill="#eef2f3" font-size="17" font-weight="700">estimate window</text>
+    <text x="24" y="311" fill="#d9a441" font-size="26" font-weight="900">12+</text>
+    <text x="108" y="311" fill="#eef2f3" font-size="17" font-weight="700">years in the field</text>
   </g>
 
-  <g transform="translate(58 516)">
-    <rect width="410" height="64" rx="10" fill="#e7e1d6"/>
-    <rect width="205" height="64" rx="10" fill="#594838"/>
-    <rect x="205" width="205" height="64" rx="10" fill="#b99654"/>
-    <path d="M205 0v64" stroke="#ffffff" stroke-width="3"/>
-    <text x="20" y="39" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="900" fill="#ffffff">Before</text>
-    <text x="226" y="39" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="900" fill="#071a2f">After</text>
+  <rect y="400" width="1000" height="225" fill="#fbf8f2"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="58" y="463" font-size="15" font-weight="900" fill="#b85f32" letter-spacing="2">WHAT WE HANDLE</text>
+    <text x="58" y="508" font-size="38" font-weight="900" fill="#18202a">One crew for excavation, grading, hauling, and drainage.</text>
   </g>
-  <g transform="translate(502 516)">
-    <rect width="422" height="64" rx="10" fill="#071a2f"/>
-    <text x="24" y="40" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="900" fill="#ffffff">Project galleries + estimate form</text>
-    <rect x="310" y="18" width="84" height="28" rx="14" fill="url(#sun)"/>
+
+  <g transform="translate(58 536)">
+    <g>
+      <rect width="205" height="64" fill="#ffffff" stroke="#d8dcde"/>
+      <text x="18" y="27" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="900" fill="#b85f32">01</text>
+      <text x="18" y="50" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="900" fill="#102a46">Excavation</text>
+    </g>
+    <g transform="translate(205)">
+      <rect width="205" height="64" fill="#ffffff" stroke="#d8dcde"/>
+      <text x="18" y="27" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="900" fill="#b85f32">02</text>
+      <text x="18" y="50" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="900" fill="#102a46">Hauling</text>
+    </g>
+    <g transform="translate(410)">
+      <rect width="205" height="64" fill="#ffffff" stroke="#d8dcde"/>
+      <text x="18" y="27" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="900" fill="#b85f32">03</text>
+      <text x="18" y="50" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="900" fill="#102a46">Concrete Prep</text>
+    </g>
+    <g transform="translate(615)">
+      <rect width="205" height="64" fill="#ffffff" stroke="#d8dcde"/>
+      <text x="18" y="27" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="900" fill="#b85f32">04</text>
+      <text x="18" y="50" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="900" fill="#102a46">Drainage</text>
+    </g>
   </g>
 </svg>
