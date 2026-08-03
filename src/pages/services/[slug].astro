@@ -21,6 +21,7 @@ const portfolioSites = service.slug === "website-design"
         name: "Construction & Excavation Site",
         description: "A rugged construction site built to showcase services, project galleries, and estimate requests.",
         image: "/images/portfolio/iron-ridge-earthworks-example.webp",
+        previewUrl: "https://iron-ridge-earthworks.retroforged.chatgpt.site/",
         href: "https://iron-ridge-earthworks.retroforged.chatgpt.site/",
       },
     ]
@@ -83,14 +84,26 @@ const serviceSchema = {
             class="group overflow-hidden rounded-xl border border-surface bg-[#1f2125] transition-colors hover:border-teal"
           >
             <div class="aspect-[16/10] overflow-hidden bg-charcoal">
-              <img
-                src={site.image}
-                alt={site.name}
-                loading="lazy"
-                class="h-full w-full object-cover object-top transition duration-300 group-hover:scale-105"
-                width="1000"
-                height="625"
-              />
+              {site.previewUrl ? (
+                <iframe
+                  src={site.previewUrl}
+                  title={`${site.name} preview`}
+                  loading="lazy"
+                  scrolling="no"
+                  tabindex="-1"
+                  aria-hidden="true"
+                  class="pointer-events-none h-[625px] w-[1000px] origin-top-left scale-[0.39] border-0 transition duration-300 group-hover:scale-[0.41]"
+                />
+              ) : (
+                <img
+                  src={site.image}
+                  alt={site.name}
+                  loading="lazy"
+                  class="h-full w-full object-cover object-top transition duration-300 group-hover:scale-105"
+                  width="1000"
+                  height="625"
+                />
+              )}
             </div>
             <div class="p-6">
               <h3 class="font-bold text-white">{site.name}</h3>
