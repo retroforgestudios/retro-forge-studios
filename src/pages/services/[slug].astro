@@ -3,8 +3,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/sections/PageHero.astro";
 import SectionHeader from "../../components/ui/SectionHeader.astro";
 import FAQAccordion from "../../components/ui/FAQAccordion.astro";
+import Breadcrumbs from "../../components/ui/Breadcrumbs.astro";
 import CTABanner from "../../components/sections/CTABanner.astro";
 import { SERVICES, SITE } from "../../data/site";
+import { getSchemaIds } from "../../data/schema";
 
 export function getStaticPaths() {
   return SERVICES.map((service) => ({
@@ -14,6 +16,8 @@ export function getStaticPaths() {
 }
 
 const { service } = Astro.props;
+const schemaIds = getSchemaIds(Astro.site);
+const serviceUrl = new URL(`/services/${service.slug}/`, Astro.site).href;
 const others = SERVICES.filter((s) => s.slug !== service.slug);
 const portfolioSites = service.slug === "website-design"
   ? [
@@ -33,9 +37,12 @@ const portfolioSites = service.slug === "website-design"
 const serviceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
+  "@id": `${serviceUrl}#service`,
+  url: serviceUrl,
   serviceType: service.name,
   description: service.teaser,
-  provider: { "@type": "ProfessionalService", name: SITE.name, url: new URL("/", Astro.site).href },
+  provider: { "@id": schemaIds.business },
+  mainEntityOfPage: { "@id": `${serviceUrl}#webpage` },
   areaServed: [
     { "@type": "City", name: `${SITE.city}, ${SITE.region}` },
     { "@type": "State", name: "Nebraska" },
@@ -46,6 +53,7 @@ const serviceSchema = {
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
+  "@id": `${serviceUrl}#faq`,
   mainEntity: service.faqs.map((faq) => ({
     "@type": "Question",
     name: faq.q,
@@ -61,12 +69,16 @@ const faqSchema = {
   <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} is:inline />
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
   <PageHero eyebrow="what i do" heading={service.name} subhead={service.teaser} />
+  <Breadcrumbs items={[
+    { label: "Home", href: "/" },
+    { label: "Services", href: "/services/" },
+    { label: service.name },
+  ]} />
 
   <!-- Intro -->
   <section class="px-4 py-16 sm:px-6">
     <div class="mx-auto max-w-3xl">
-      <a href="/services" class="text-sm font-semibold text-teal-deep hover:underline">&larr; All services</a>
-      <h2 class="mt-6 text-3xl text-gray-900 sm:text-4xl">{service.heading}</h2>
+      <h2 class="text-3xl text-gray-900 sm:text-4xl">{service.heading}</h2>
       <div class="mt-6 space-y-4 text-lg leading-relaxed text-gray-700">
         {service.intro.map((p) => <p>{p}</p>)}
       </div>

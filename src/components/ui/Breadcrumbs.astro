@@ -1,0 +1,48 @@
+---
+interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+const normalizedItems = items.map((item, index) => ({
+  ...item,
+  url: item.href
+    ? new URL(item.href, Astro.site).href
+    : index === items.length - 1
+      ? new URL(Astro.url.pathname, Astro.site).href
+      : undefined,
+}));
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: normalizedItems.map((item, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name: item.label,
+    ...(item.url ? { item: item.url } : {}),
+  })),
+};
+---
+
+<nav aria-label="Breadcrumb" class="px-4 py-4 sm:px-6">
+  <ol class="mx-auto flex max-w-3xl flex-wrap items-center gap-2 text-sm text-gray-600">
+    {normalizedItems.map((item, index) => (
+      <li class="flex items-center gap-2">
+        {index > 0 && <span aria-hidden="true" class="text-gray-400">/</span>}
+        {item.href && index < normalizedItems.length - 1 ? (
+          <a href={item.href} class="font-semibold text-teal-deep hover:underline">{item.label}</a>
+        ) : (
+          <span aria-current={index === normalizedItems.length - 1 ? "page" : undefined}>{item.label}</span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} is:inline />

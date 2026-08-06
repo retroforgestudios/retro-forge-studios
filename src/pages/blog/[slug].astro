@@ -3,6 +3,8 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CTABanner from "../../components/sections/CTABanner.astro";
 import LeadMagnetCTA from "../../components/sections/LeadMagnetCTA.astro";
+import Breadcrumbs from "../../components/ui/Breadcrumbs.astro";
+import { getSchemaIds } from "../../data/schema";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -18,6 +20,7 @@ const { Content } = await render(post);
 // BlogPosting structured data — helps posts qualify for richer search results.
 const postUrl = new URL(`/blog/${post.id}/`, Astro.site).href;
 const imageUrl = new URL(post.data.image ?? "/images/hero-forge-1600.webp", Astro.site).href;
+const schemaIds = getSchemaIds(Astro.site);
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
@@ -25,14 +28,11 @@ const articleSchema = {
   description: post.data.description,
   image: imageUrl,
   datePublished: post.data.date.toISOString(),
-  dateModified: post.data.date.toISOString(),
-  author: { "@type": "Person", name: post.data.author },
-  publisher: {
-    "@type": "Organization",
-    name: "Retro Forge Studios",
-    logo: { "@type": "ImageObject", url: new URL("/images/icon-mark.png", Astro.site).href },
-  },
-  mainEntityOfPage: { "@type": "WebPage", "@id": postUrl },
+  dateModified: (post.data.updated ?? post.data.date).toISOString(),
+  author: { "@id": schemaIds.person },
+  publisher: { "@id": schemaIds.business },
+  mainEntityOfPage: { "@id": `${postUrl}#webpage` },
+  inLanguage: "en-US",
 };
 ---
 
@@ -51,13 +51,17 @@ const articleSchema = {
     </div>
   </section>
 
+  <Breadcrumbs items={[
+    { label: "Home", href: "/" },
+    { label: "Blog", href: "/blog/" },
+    { label: post.data.title },
+  ]} />
+
   <!-- Post body -->
   <section class="bg-band px-4 py-16 sm:px-6">
     <div class="mx-auto max-w-2xl">
-      <a href="/blog/" class="text-sm font-semibold text-teal-deep hover:underline">&larr; Back to blog</a>
-
       {post.data.image && (
-        <img src={post.data.image} alt={post.data.title} class="mt-6 w-full rounded-xl border border-surface" />
+        <img src={post.data.image} alt={post.data.title} class="w-full rounded-xl border border-surface" />
       )}
 
       <div class="prose prose-lg mt-8 max-w-none prose-headings:font-display prose-a:text-teal-deep">
