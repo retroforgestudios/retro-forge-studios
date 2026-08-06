@@ -8,6 +8,7 @@ import "../styles/global.css";
 import Nav from "../components/Nav.astro";
 import Footer from "../components/Footer.astro";
 import { SITE, SOCIAL_LINKS, ANALYTICS } from "../data/site";
+import { getSchemaIds } from "../data/schema";
 
 interface Props {
   title: string;
@@ -18,6 +19,8 @@ const { title, description } = Astro.props;
 const pageTitle = `${title} | ${SITE.city}, ${SITE.region} | Retro Forge Studios`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL("/images/hero-forge-1600.webp", Astro.site);
+const pageId = `${canonicalURL.href}#webpage`;
+const schemaIds = getSchemaIds(Astro.site);
 
 const analyticsEnabled = ANALYTICS.googleTagId.length > 0;
 const gtmEnabled = ANALYTICS.gtmId.length > 0;
@@ -26,29 +29,66 @@ const gtmEnabled = ANALYTICS.gtmId.length > 0;
 // the business for local search). Output site-wide.
 const structuredData = {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  name: SITE.name,
-  description: SITE.description,
-  url: new URL("/", Astro.site).href,
-  email: SITE.email,
-  image: ogImageURL.href,
-  logo: new URL("/images/icon-mark.png", Astro.site).href,
-  priceRange: "$$",
-  founder: { "@type": "Person", name: "Johnny Gregory" },
-  // No street address published (service-area business, no public office) —
-  // city/region only, per Google's guidance for service-area businesses.
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: SITE.city,
-    addressRegion: SITE.region,
-    addressCountry: "US",
-  },
-  areaServed: [
-    { "@type": "City", name: `${SITE.city}, ${SITE.region}` },
-    { "@type": "State", name: "Nebraska" },
-    { "@type": "State", name: "Iowa" },
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": schemaIds.business,
+      name: SITE.name,
+      description: SITE.description,
+      url: new URL("/", Astro.site).href,
+      email: SITE.email,
+      image: { "@type": "ImageObject", url: ogImageURL.href },
+      logo: { "@type": "ImageObject", url: new URL("/images/icon-mark.png", Astro.site).href },
+      priceRange: "$$",
+      founder: { "@id": schemaIds.person },
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: SITE.city,
+        addressRegion: SITE.region,
+        addressCountry: "US",
+      },
+      areaServed: [
+        { "@type": "City", name: `${SITE.city}, ${SITE.region}` },
+        { "@type": "State", name: "Nebraska" },
+        { "@type": "State", name: "Iowa" },
+      ],
+      sameAs: SOCIAL_LINKS.map((s) => s.href),
+    },
+    {
+      "@type": "Person",
+      "@id": schemaIds.person,
+      name: "Johnny Gregory",
+      url: new URL("/about/", Astro.site).href,
+      image: new URL("/images/johnny-headshot.png", Astro.site).href,
+      jobTitle: "Founder and Digital Marketing Strategist",
+      worksFor: { "@id": schemaIds.business },
+      knowsAbout: [
+        "Content creation",
+        "Brand strategy",
+        "Local SEO",
+        "Social media management",
+        "Small business website design",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": schemaIds.website,
+      url: new URL("/", Astro.site).href,
+      name: SITE.name,
+      publisher: { "@id": schemaIds.business },
+      inLanguage: "en-US",
+    },
+    {
+      "@type": "WebPage",
+      "@id": pageId,
+      url: canonicalURL.href,
+      name: pageTitle,
+      description,
+      isPartOf: { "@id": schemaIds.website },
+      about: { "@id": schemaIds.business },
+      inLanguage: "en-US",
+    },
   ],
-  sameAs: SOCIAL_LINKS.map((s) => s.href),
 };
 ---
 
