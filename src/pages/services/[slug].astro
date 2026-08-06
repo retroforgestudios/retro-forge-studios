@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PageHero from "../../components/sections/PageHero.astro";
 import SectionHeader from "../../components/ui/SectionHeader.astro";
+import FAQAccordion from "../../components/ui/FAQAccordion.astro";
 import CTABanner from "../../components/sections/CTABanner.astro";
 import { SERVICES, SITE } from "../../data/site";
 
@@ -41,10 +42,24 @@ const serviceSchema = {
     { "@type": "State", name: "Iowa" },
   ],
 };
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: service.faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.a,
+    },
+  })),
+};
 ---
 
 <BaseLayout title={service.name} description={service.teaser}>
   <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} is:inline />
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
   <PageHero eyebrow="what i do" heading={service.name} subhead={service.teaser} />
 
   <!-- Intro -->
@@ -163,14 +178,7 @@ const serviceSchema = {
   <!-- FAQs -->
   <section class="bg-band px-4 py-16 sm:px-6">
     <SectionHeader onLight eyebrow="questions" heading="Common questions" />
-    <div class="mx-auto mt-10 max-w-2xl space-y-6">
-      {service.faqs.map((faq) => (
-        <div>
-          <p class="font-semibold text-gray-900">{faq.q}</p>
-          <p class="mt-1 text-gray-700">{faq.a}</p>
-        </div>
-      ))}
-    </div>
+    <FAQAccordion items={service.faqs} idPrefix={`faq-${service.slug}`} />
   </section>
 
   <!-- Other services -->
