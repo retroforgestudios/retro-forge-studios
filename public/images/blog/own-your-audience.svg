@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 338" role="img" aria-labelledby="title desc">
+  <title id="title">Stop renting your audience</title>
+  <desc id="desc">An envelope representing an owned email list separates from social media platform cards.</desc>
+  <rect width="600" height="338" fill="#202020"/>
+  <circle cx="300" cy="154" r="92" fill="#27292d"/>
+  <rect x="85" y="118" width="118" height="82" rx="10" fill="#2f3237" stroke="#666b73" stroke-width="2"/>
+  <circle cx="125" cy="149" r="13" fill="#666b73"/>
+  <rect x="149" y="140" width="35" height="7" rx="3.5" fill="#666b73"/>
+  <rect x="104" y="176" width="80" height="6" rx="3" fill="#4a4e54"/>
+  <path d="M214 159h45" stroke="#666b73" stroke-width="4" stroke-dasharray="8 8"/>
+  <rect x="257" y="101" width="154" height="108" rx="12" fill="#4caac9"/>
+  <path d="M269 116l65 52 65-52" fill="none" stroke="#202020" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M269 194l48-43m82 43l-48-43" fill="none" stroke="#202020" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="423" cy="105" r="22" fill="#ef9c2f"/>
+  <path d="M414 105l7 7 13-16" fill="none" stroke="#202020" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M411 159h54" stroke="#ef9c2f" stroke-width="5" stroke-linecap="round"/>
+  <text x="300" y="272" font-family="'Carter One', sans-serif" font-size="28" fill="#ef9c2f" text-anchor="middle">Own the Relationship</text>
+</svg>
