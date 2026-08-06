@@ -1,0 +1,109 @@
+---
+interface FAQItem {
+  q: string;
+  a: string;
+}
+
+interface Props {
+  items: FAQItem[];
+  idPrefix?: string;
+}
+
+const { items, idPrefix = "faq" } = Astro.props;
+---
+
+<div class="faq-accordion mx-auto mt-10 max-w-2xl divide-y divide-gray-300 border-y border-gray-300">
+  {items.map((faq, index) => {
+    const triggerId = `${idPrefix}-trigger-${index}`;
+    const panelId = `${idPrefix}-panel-${index}`;
+
+    return (
+      <div class="faq-item">
+        <h3>
+          <button
+            id={triggerId}
+            type="button"
+            class="faq-trigger flex w-full items-center justify-between gap-6 py-5 text-left text-gray-900 transition-colors hover:text-teal-deep focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-teal-deep"
+            aria-expanded="false"
+            aria-controls={panelId}
+          >
+            <span class="font-semibold">{faq.q}</span>
+            <svg
+              viewBox="0 0 24 24"
+              class="faq-icon h-5 w-5 flex-none text-teal-deep transition-transform duration-200"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              aria-hidden="true"
+            >
+              <path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </h3>
+        <div
+          id={panelId}
+          class="faq-panel grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out"
+          role="region"
+          aria-labelledby={triggerId}
+          hidden
+        >
+          <div class="overflow-hidden">
+            <p class="pb-5 pr-10 leading-relaxed text-gray-700">{faq.a}</p>
+          </div>
+        </div>
+      </div>
+    );
+  })}
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".faq-accordion").forEach((accordion) => {
+    const triggers = Array.from(accordion.querySelectorAll<HTMLButtonElement>(".faq-trigger"));
+
+    const closeItem = (trigger: HTMLButtonElement) => {
+      const panel = accordion.querySelector<HTMLElement>(`#${trigger.getAttribute("aria-controls")}`);
+      trigger.setAttribute("aria-expanded", "false");
+      panel?.classList.remove("grid-rows-[1fr]");
+      panel?.classList.add("grid-rows-[0fr]");
+
+      window.setTimeout(() => {
+        if (trigger.getAttribute("aria-expanded") === "false" && panel) panel.hidden = true;
+      }, 300);
+    };
+
+    const openItem = (trigger: HTMLButtonElement) => {
+      const panel = accordion.querySelector<HTMLElement>(`#${trigger.getAttribute("aria-controls")}`);
+      trigger.setAttribute("aria-expanded", "true");
+      if (panel) {
+        panel.hidden = false;
+        requestAnimationFrame(() => {
+          panel.classList.remove("grid-rows-[0fr]");
+          panel.classList.add("grid-rows-[1fr]");
+        });
+      }
+    };
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener("click", () => {
+        const shouldOpen = trigger.getAttribute("aria-expanded") === "false";
+        triggers.forEach((item) => {
+          if (item !== trigger) closeItem(item);
+        });
+        shouldOpen ? openItem(trigger) : closeItem(trigger);
+      });
+    });
+  });
+</script>
+
+<style>
+  .faq-trigger[aria-expanded="true"] .faq-icon {
+    transform: rotate(180deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-panel,
+    .faq-icon {
+      transition-duration: 0.01ms;
+    }
+  }
+</style>
