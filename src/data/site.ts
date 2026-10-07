@@ -185,6 +185,12 @@ export const LAUNCH_BUILD_FAQS = [
 // Live example builds shown on the Website Design service page.
 export const WEBSITE_PORTFOLIO = [
   {
+    name: "Hospitality POS Site",
+    description: "A POS reseller and integrator site built to showcase hospitality solutions and generate inquiries.",
+    image: "/images/portfolio/hospitalityinc-template.png",
+    href: "https://hospitalityinc.pages.dev/",
+  },
+  {
     name: "eCommerce Site",
     description: "A product-based storefront with cart and checkout built in.",
     image: "/images/portfolio/ecommerce-template.webp",
