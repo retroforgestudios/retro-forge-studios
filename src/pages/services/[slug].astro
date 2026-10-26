@@ -193,6 +193,17 @@ const faqSchema = {
     <FAQAccordion items={service.faqs} idPrefix={`faq-${service.slug}`} />
   </section>
 
+  {service.slug === "website-design" && (
+    <section class="px-4 py-16 sm:px-6">
+      <div class="mx-auto max-w-3xl rounded-2xl bg-charcoal p-8 sm:p-10">
+        <p class="text-marker text-teal">your website stays yours</p>
+        <h2 class="mt-3 text-3xl text-white">Let's plan your website.</h2>
+        <p class="mt-4 leading-relaxed text-gray-300">See how client-owned GitHub and Cloudflare accounts work, then share your goals, design ideas, and project details.</p>
+        <a href="/website-project-guide/" class="mt-6 inline-block rounded-md bg-red px-6 py-3 font-bold text-white hover:bg-red/90">Open the website project guide &rarr;</a>
+      </div>
+    </section>
+  )}
+
   <!-- Other services -->
   <section class="px-4 py-12 sm:px-6">
     <div class="mx-auto max-w-3xl text-center">

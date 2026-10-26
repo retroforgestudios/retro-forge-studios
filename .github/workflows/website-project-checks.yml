@@ -1,0 +1,29 @@
+name: Check website project guide
+
+on:
+  push:
+    branches: [feature/website-project-guide]
+  pull_request:
+    paths:
+      - 'src/data/website-project.ts'
+      - 'src/lib/website-project.ts'
+      - 'src/pages/website-project-guide.astro'
+      - 'src/pages/api/website-project.ts'
+      - 'tests/website-project.test.mjs'
+      - '.github/workflows/website-project-checks.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node --experimental-strip-types --test tests/website-project.test.mjs
+      - run: npm run build
