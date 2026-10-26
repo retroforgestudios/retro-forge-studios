@@ -1,0 +1,218 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { guideSections, questionGroups, projectFields, readinessItems, briefFields } from "../data/website-project";
+const references = [
+  ["GitHub repository roles", "https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization"],
+  ["Cloudflare account roles", "https://developers.cloudflare.com/fundamentals/manage-members/roles/"],
+  ["Cloudflare member management", "https://developers.cloudflare.com/fundamentals/manage-members/manage/"],
+  ["Cloudflare Pages Git integration", "https://developers.cloudflare.com/pages/configuration/git-integration/"],
+  ["Cloudflare custom domains", "https://developers.cloudflare.com/pages/configuration/custom-domains/"],
+  ["Cloudflare preview deployments", "https://developers.cloudflare.com/pages/configuration/preview-deployments/"],
+];
+---
+<BaseLayout title="Website Project Guide and Questionnaire" description="Own your website accounts, understand the build process, and share your website goals with Retro Forge Studios.">
+  <section class="project-hero">
+    <div class="project-wrap">
+      <a class="back-link" href="/services/website-design/">← Website design</a>
+      <p class="text-marker eyebrow">your business. your website.</p>
+      <h1>A clear start for<br /><span>your next website.</span></h1>
+      <p class="hero-copy">Know what you own, see how we'll work together, and tell us what your website needs to do.</p>
+      <div class="hero-actions">
+        <a class="primary-action" href="#project-form">Tell us about your project <span aria-hidden="true">↗</span></a>
+        <a class="secondary-action" href="#ownership-guide">Read the setup guide ↓</a>
+      </div>
+      <div class="hero-facts"><span>You own the accounts</span><span>We handle the build</span><span>You approve the launch</span></div>
+    </div>
+  </section>
+  <div class="project-wrap project-layout">
+    <aside class="project-index" aria-label="On this page">
+      <p class="index-label">YOUR WEBSITE STARTS HERE</p>
+      <a href="#ownership-guide">01 <span>Ownership and setup</span></a>
+      <a href="#project-form">02 <span>Project details</span></a>
+      {questionGroups.map((group, index) => <a href={"#questions-" + index}>{String(index + 3).padStart(2, "0")} <span>{group.title}</span></a>)}
+      <a href="#project-brief">09 <span>Next steps and submit</span></a>
+      <p class="index-note">Not sure about an answer? Leave it blank or tell us what you need help deciding.</p>
+    </aside>
+    <div class="project-content">
+      <section id="ownership-guide" class="guide-section">
+        <p class="text-marker section-eyebrow">built around ownership</p>
+        <h2>Your website stays yours.</h2>
+        <p class="section-intro">Your business controls GitHub, Cloudflare, your domain, and billing. Retro Forge Studios gets invited access to build and maintain the website. Expand each section for the practical steps.</p>
+        {guideSections.map((section, index) => (
+          <details class="guide-detail" open={index === 0} id={section.id}>
+            <summary><span class="detail-number">{String(index + 1).padStart(2, "0")}</span><h3>{index === 0 ? "What you own and how access works" : section.title}</h3><span class="detail-toggle" aria-hidden="true">+</span></summary>
+            <div class="guide-body">
+              {section.blocks.map((block) => (
+                block[0] === "table" ? <div class="table-scroll" role="region" aria-label={section.title + " table"} tabindex="0"><table><thead><tr>{block[1].map(label => <th scope="col">{label}</th>)}</tr></thead><tbody>{block[2].map(row => <tr>{row.map(cell => <td>{cell}</td>)}</tr>)}</tbody></table></div> :
+                block[0] === "h" ? <h4>{block[1]}</h4> :
+                block[0] === "c" ? <p class="guide-task"><span aria-hidden="true">✓</span><span set:html={block[1]} /></p> :
+                !String(block[1]).includes("____") ? <p class:list={[block[0] === "small" && "guide-note"]} set:html={block[1]} /> : null
+              ))}
+            </div>
+          </details>
+        ))}
+        <details class="guide-detail references"><summary><h3>Official setup references</h3><span class="detail-toggle" aria-hidden="true">+</span></summary><ol>{references.map(([label, href]) => <li><a href={href} target="_blank" rel="noopener noreferrer">{label} ↗</a></li>)}</ol></details>
+      </section>
+      <section id="project-form" class="form-section">
+        <p class="text-marker section-eyebrow">let's get the brief right</p>
+        <h2>Tell us what you're building.</h2>
+        <p class="section-intro">Start with your contact details, then share as much as you can. Only name, email, and business name are required. You can discuss the rest with Johnny.</p>
+        <div id="project-success" class="form-message success" role="status" tabindex="-1" hidden><h3>Your project details are on their way.</h3><p>Thanks for sharing your plans. Johnny will review your answers and follow up using the email you provided.</p></div>
+        <div id="project-error" class="form-message error" role="alert" tabindex="-1" hidden></div>
+        <form id="website-project-form" action="/api/website-project" method="POST">
+          <fieldset class="form-card"><legend>Project details</legend>
+            <div class="field-grid">
+              {projectFields.map(field => <div class:list={["form-field", field.id === "approval_contact" && "full-width"]}>
+                <label for={field.id}>{field.label} {field.required && <span aria-label="required">*</span>}</label>
+                <input id={field.id} name={field.id} type={field.type} required={field.required} maxlength={field.type === "date" ? undefined : 200} autocomplete={"autocomplete" in field ? field.autocomplete : undefined} placeholder={field.type === "url" ? "https://example.com" : undefined} />
+              </div>)}
+            </div>
+          </fieldset>
+          <fieldset class="form-card readiness"><legend>Where are you with account setup?</legend>
+            <p class="field-help">Optional. Check what is already available. It's fine if you need help with all of it.</p>
+            <div class="readiness-grid">{readinessItems.map((item, index) => <label for={"ready-" + index}><input type="checkbox" id={"ready-" + index} name="ready" value={item} /><span>{item}</span></label>)}</div>
+          </fieldset>
+          <div class="question-intro"><div><h3>A little discovery goes a long way.</h3><p>37 optional questions, grouped to make the conversation easier. “Not sure yet” is a useful answer.</p></div><p id="question-progress" role="status" aria-live="polite">0 of 37 answered</p></div>
+          {questionGroups.map((group, index) => <fieldset class="form-card questions" id={"questions-" + index}>
+            <legend>{group.title}</legend>
+            {group.questions.map(question => <div class="form-field question-field"><label for={question.id}><span class="question-number">{String(question.number).padStart(2,"0")}</span><span>{question.label}</span></label><textarea id={question.id} name={question.id} rows="3" maxlength="2000" data-discovery></textarea></div>)}
+          </fieldset>)}
+          <fieldset class="form-card" id="project-brief"><legend>Project brief and next steps</legend>
+            <p class="field-help">Optional. Add decisions you've already made, responsibilities you've discussed, or questions we should cover together.</p>
+            {briefFields.map(field => <div class="form-field"><label for={field.id}>{field.label}</label><textarea id={field.id} name={field.id} rows="3" maxlength="2000"></textarea></div>)}
+          </fieldset>
+          <div class="bot-field" aria-hidden="true"><label for="project-honey">Leave this field empty</label><input type="text" id="project-honey" name="_honey" tabindex="-1" autocomplete="off" /></div>
+          <div class="submission">
+            <p>Your answers are emailed to Johnny at Retro Forge Studios to discuss your project. Please don't include passwords, API keys, or customer records. See our <a href="/privacy/">privacy policy</a>.</p>
+            <button class="primary-action" id="project-submit" type="submit">Send my project details <span aria-hidden="true">↗</span></button>
+            <p class="submission-note">This starts a conversation. It isn't a contract or permission to change your accounts.</p>
+            <noscript><p>Your browser will show a confirmation after submitting. If sending fails, use the Back button to return to your answers.</p></noscript>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+  <script>
+    const form = document.querySelector<HTMLFormElement>("#website-project-form");
+    const button = document.querySelector<HTMLButtonElement>("#project-submit");
+    const success = document.querySelector<HTMLElement>("#project-success");
+    const error = document.querySelector<HTMLElement>("#project-error");
+    const progress = document.querySelector<HTMLElement>("#question-progress");
+    const fields = [...document.querySelectorAll<HTMLTextAreaElement>("[data-discovery]")];
+    form?.addEventListener("input", () => {
+      if (progress) progress.textContent = fields.filter(field => field.value.trim()).length + " of 37 answered";
+    });
+    const params = new URLSearchParams(location.search);
+    if (params.get("sent") === "1" && success && form) { success.hidden = false; form.hidden = true; }
+    if (params.get("error") === "1" && error) { error.textContent = "We couldn't send the form. Please try again, or contact jgregory@retroforgestudios.com."; error.hidden = false; }
+    form?.addEventListener("submit", async event => {
+      event.preventDefault();
+      if (!button || button.disabled || !success || !error) return;
+      button.disabled = true;
+      button.textContent = "Sending your details…";
+      error.hidden = true;
+      try {
+        const data = new URLSearchParams();
+        new FormData(form).forEach((value, key) => { if (typeof value === "string") data.append(key, value); });
+        const response = await fetch(form.action, { method: "POST", headers: { Accept: "application/json" }, body: data });
+        const result = await response.json();
+        if (!response.ok || !result.ok) throw new Error(result.message || "Please try again.");
+        success.hidden = false;
+        form.hidden = true;
+        success.focus();
+        success.scrollIntoView({ behavior: "smooth", block: "center" });
+      } catch (problem) {
+        error.textContent = (problem instanceof Error ? problem.message : "We couldn't send your answers.") + " You can also email jgregory@retroforgestudios.com.";
+        error.hidden = false;
+        error.focus();
+      } finally {
+        button.disabled = false;
+        button.textContent = "Send my project details ↗";
+      }
+    });
+  </script>
+  <style>
+    :global(html) { scroll-behavior:smooth; }
+    [id] { scroll-margin-top:7rem; }
+    .project-wrap { max-width:1180px; margin:auto; padding-left:24px; padding-right:24px; }
+    .project-hero { background:#202020; color:white; padding:44px 0 58px; }
+    .back-link { color:#b9c4ca; font-size:.85rem; text-decoration:underline; text-underline-offset:4px; }
+    .eyebrow { color:#ef9c2f; margin:32px 0 12px; font-size:1.1rem; }
+    h1 { font-size:clamp(2.35rem,5.3vw,4.3rem); line-height:1.18; max-width:850px; }
+    h1 span { color:#4caac9; }
+    .hero-copy { color:#d7dce1; max-width:620px; margin-top:20px; font-size:1.12rem; line-height:1.7; }
+    .hero-actions { display:flex; align-items:center; flex-wrap:wrap; gap:24px; margin-top:28px; }
+    .primary-action { display:inline-flex; align-items:center; justify-content:center; gap:24px; background:#ef342f; color:#fff; border-radius:7px; padding:15px 22px; font-weight:700; text-decoration:none; cursor:pointer; }
+    .primary-action:hover { background:#d52824; }
+    .primary-action:disabled { opacity:.65; cursor:wait; }
+    .secondary-action { color:white; text-decoration:underline; text-underline-offset:5px; }
+    .hero-facts { display:flex; flex-wrap:wrap; gap:12px 30px; margin-top:34px; font-size:.82rem; color:#d1d8dd; }
+    .hero-facts span:before { content:"✓"; color:#4caac9; margin-right:9px; }
+    .project-layout { display:grid; grid-template-columns:220px minmax(0,1fr); gap:45px; padding-top:54px; padding-bottom:80px; align-items:start; }
+    .project-index { position:sticky; top:110px; }
+    .index-label { font-weight:700; letter-spacing:.08em; font-size:.65rem; color:#666; margin-bottom:18px; }
+    .project-index a { display:flex; gap:12px; padding:9px 0; color:#1f7a93; font-size:.78rem; }
+    .project-index a span { color:#333; }
+    .project-index a:hover span { text-decoration:underline; }
+    .index-note { margin-top:20px; border-top:1px solid #d6dade; padding-top:18px; font-size:.76rem; line-height:1.7; color:#666; }
+    h2 { font-size:clamp(1.75rem,3vw,2.3rem); line-height:1.3; }
+    .section-eyebrow { color:#1f7a93; margin-bottom:10px; }
+    .section-intro { margin-top:16px; margin-bottom:28px; color:#545960; line-height:1.8; }
+    .guide-detail { border-bottom:1px solid #d6dade; }
+    .guide-detail summary { display:flex; align-items:center; gap:14px; padding:22px 0; cursor:pointer; list-style:none; }
+    .guide-detail summary::-webkit-details-marker { display:none; }
+    .guide-detail h3 { font-family:var(--font-body); font-size:1rem; font-weight:700; flex:1; }
+    .detail-number { color:#1f7a93; font-size:.8rem; font-weight:700; }
+    .detail-toggle { color:#1f7a93; font-size:1.6rem; }
+    details[open] .detail-toggle { transform:rotate(45deg); }
+    .guide-body { padding-bottom:24px; color:#41464c; font-size:.93rem; line-height:1.75; }
+    .guide-body p { margin:12px 0; }
+    .guide-body h4 { font-family:var(--font-body); font-weight:700; margin:25px 0 10px; font-size:1rem; color:#202020; }
+    .guide-task { display:flex; gap:10px; }
+    .guide-task > span:first-child { color:#1f7a93; flex-shrink:0; }
+    .guide-note { font-size:.82rem; }
+    .table-scroll { overflow-x:auto; margin:20px 0; }
+    table { border-collapse:collapse; width:100%; min-width:450px; background:white; font-size:.8rem; line-height:1.6; }
+    th,td { text-align:left; border:1px solid #d9dfe3; padding:12px; vertical-align:top; }
+    th { background:#deeff4; color:#173b46; }
+    .references ol { padding:0 0 24px 24px; font-size:.85rem; line-height:2; list-style:decimal; }
+    .references a { color:#1f7a93; text-decoration:underline; }
+    .form-section { margin-top:65px; }
+    .form-card { min-width:0; background:white; border:1px solid #d9dfe3; border-radius:12px; padding:24px; margin:0 0 28px; }
+    .form-card legend { font-family:var(--font-body); font-size:1.08rem; font-weight:700; padding:0 8px; color:#202020; }
+    .field-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .form-field { margin-bottom:18px; min-width:0; }
+    .field-grid .form-field { margin:0; }
+    .form-field label { display:block; font-size:.87rem; font-weight:600; line-height:1.6; color:#303740; margin-bottom:8px; }
+    .form-field label > span[aria-label] { color:#c62520; }
+    input:not([type=checkbox]),textarea { display:block; box-sizing:border-box; width:100%; min-width:0; padding:11px 12px; border:1px solid #b8c3cb; border-radius:6px; color:#202020; background:#fff; font:inherit; font-size:1rem; }
+    textarea { resize:vertical; min-height:90px; }
+    input:focus-visible,textarea:focus-visible,summary:focus-visible,a:focus-visible,button:focus-visible { outline:3px solid #1f7a93; outline-offset:3px; }
+    .full-width { grid-column:1/-1; }
+    .field-help { font-size:.84rem; line-height:1.7; color:#626972; margin:0 0 18px; }
+    .readiness-grid { display:grid; gap:14px; }
+    .readiness-grid label { display:flex; align-items:start; gap:12px; font-size:.87rem; line-height:1.6; cursor:pointer; }
+    input[type=checkbox] { width:19px; height:19px; flex-shrink:0; accent-color:#1f7a93; margin-top:2px; }
+    .question-intro { margin:45px 0 30px; }
+    .question-intro h3 { font-size:1.35rem; }
+    .question-intro p { color:#626972; font-size:.87rem; line-height:1.7; margin-top:10px; }
+    #question-progress { color:#1f7a93; font-weight:700; }
+    .question-field { margin-bottom:25px; }
+    .question-field:last-child { margin-bottom:0; }
+    .question-field label { display:flex; align-items:baseline; gap:12px; }
+    .question-number { color:#1f7a93; font-size:.8rem; font-weight:700; flex-shrink:0; }
+    .bot-field { position:absolute; left:-10000px; width:1px; height:1px; overflow:hidden; }
+    .submission p { color:#626972; font-size:.82rem; line-height:1.8; }
+    .submission a { color:#1f7a93; text-decoration:underline; }
+    .submission button { width:100%; margin-top:22px; }
+    .submission-note { text-align:center; margin-top:15px; }
+    .form-message { border:1px solid; border-radius:10px; padding:24px; margin:20px 0; }
+    .form-message[hidden],form[hidden] { display:none; }
+    .success { background:#edf8f3; border-color:#80bda0; color:#17492f; }
+    .success h3 { font-size:1.3rem; margin-bottom:12px; }
+    .error { background:#fff3f2; border-color:#de7772; color:#852c27; }
+    @media(max-width:850px) { .project-layout { grid-template-columns:1fr; gap:0; } .project-index { position:static; display:flex; flex-wrap:wrap; gap:8px 18px; margin-bottom:35px; padding-bottom:20px; border-bottom:1px solid #d6dade; } .index-label { width:100%; margin:0; } .project-index a { padding:4px 0; } .index-note { display:none; } }
+    @media(max-width:520px) { .project-wrap { padding-left:18px; padding-right:18px; } .field-grid { grid-template-columns:1fr; } .form-card { padding:18px; } .hero-actions { align-items:stretch; flex-direction:column; gap:20px; } .hero-facts { flex-direction:column; gap:10px; } }
+    @media(prefers-reduced-motion:reduce) { :global(html) { scroll-behavior:auto; } }
+  </style>
+</BaseLayout>
